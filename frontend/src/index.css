@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .bg-pattern {
+    background-color: #f4faff;
+    background-image: radial-gradient(#0d631b10 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
