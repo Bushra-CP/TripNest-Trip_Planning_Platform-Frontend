@@ -52,10 +52,10 @@ const LoginPage = () => {
                   <input
                     type="text"
                     placeholder="Enter your email or phone"
-                    className="w-full h-14 pl-4 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 placeholder:text-gray-400"
+                    className="w-full h-14 pl-4 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#6c63ff]/10 transition-all outline-none text-gray-900 placeholder:text-gray-400"
                   />
                   <User
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2e7d32] transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#6c63ff] transition-colors"
                     size={20}
                   />
                 </div>
@@ -78,17 +78,17 @@ const LoginPage = () => {
                   <input
                     type="password"
                     placeholder="Enter your password"
-                    className="w-full h-14 pl-4 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900"
+                    className="w-full h-14 pl-4 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#6c63ff]/10 transition-all outline-none text-gray-900"
                   />
                   <Eye
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2e7d32] transition-colors cursor-pointer"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#6c63ff] transition-colors cursor-pointer"
                     size={20}
                   />
                 </div>
               </div>
 
               {/* Sign In Button */}
-              <button className="w-full h-14 bg-[#2e7d32] hover:bg-[#256628] active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#2e7d32]/20 transition-all flex items-center justify-center gap-2">
+              <button className="w-full h-14 bg-[#6c63ff] hover:bg-[#534afe] active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#6c63ff]/20 transition-all flex items-center justify-center gap-2">
                 Sign In
                 <ArrowRight size={20} />
               </button>
@@ -137,7 +137,7 @@ const LoginPage = () => {
             {/* Footer Link */}
             <p className="text-center mt-6 text-sm text-gray-600">
               Don't have an account?{" "}
-              <button className="font-bold text-[#2e7d32] hover:underline">
+              <button className="font-bold text-[#6c63ff] hover:underline">
                 Sign Up
               </button>
             </p>
