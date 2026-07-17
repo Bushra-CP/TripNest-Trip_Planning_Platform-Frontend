@@ -1,8 +1,10 @@
 export const ROUTES = {
   AUTH: {
     LOGIN: "/login",
+    LOGOUT: "/logout",
     REGISTER: "/register",
-    LOGOUT:'/logout',
-    REFRESH:'/auth/refresh'
+    VERIFYREGISTRATION: "/verify-registration",
+    RESEND_OTP: "/resend-otp",
+    REFRESH_TOKEN: "/refresh",
   },
-}as const;
+} as const;

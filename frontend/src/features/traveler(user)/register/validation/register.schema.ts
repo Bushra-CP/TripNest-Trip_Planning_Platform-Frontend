@@ -18,10 +18,7 @@ export const registerSchema = z.object({
     .string()
     .trim()
     .min(1, "Phone number is required")
-    .regex(
-      /^(\+91[\s-]?)?[6-9]\d{9}$/,
-      "Please enter a valid Indian phone number",
-    ),
+    .regex(/^[6-9]\d{9}$/, "Please enter a valid Indian mobile number"),
 
   password: z
     .string()

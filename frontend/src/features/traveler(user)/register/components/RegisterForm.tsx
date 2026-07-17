@@ -1,8 +1,17 @@
-import { Mail, Lock, Phone, User, Hash, ArrowRight } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  Phone,
+  User,
+  Hash,
+  ArrowRight,
+  LoaderCircle,
+} from "lucide-react";
 import { useRegisterForm } from "../hooks/useRegister";
 
 const RegisterForm = () => {
-  const { register, handleSubmit, errors, onSubmit } = useRegisterForm();
+  const { register, handleSubmit, errors, onSubmit, isLoading } =
+    useRegisterForm();
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -162,10 +171,20 @@ const RegisterForm = () => {
       {/* Create Account Button */}
       <button
         type="submit"
-        className="w-full h-14 bg-[#6c63ff] hover:bg-[#534afe] active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#6c63ff]/20 transition-all flex items-center justify-center gap-2 mt-6"
+        disabled={isLoading}
+        className="w-full h-14 bg-[#6c63ff] hover:bg-[#534afe] disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold rounded-2xl shadow-lg shadow-[#6c63ff]/20 transition-all flex items-center justify-center gap-2 mt-6"
       >
-        Create Account
-        <ArrowRight size={20} />
+        {isLoading ? (
+          <>
+            <LoaderCircle size={20} className="animate-spin" />
+            Creating Account...
+          </>
+        ) : (
+          <>
+            Create Account
+            <ArrowRight size={20} />
+          </>
+        )}
       </button>
     </form>
   );

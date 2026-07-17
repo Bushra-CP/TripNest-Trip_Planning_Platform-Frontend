@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         //Refresh access token
-        const response = await refreshClient.post(ROUTES.AUTH.REFRESH);
+        const response = await refreshClient.post(ROUTES.AUTH.REFRESH_TOKEN);
 
         const newAccessToken = response.data.accessToken;
 

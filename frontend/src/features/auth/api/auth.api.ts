@@ -1,23 +1,12 @@
 import { axiosInstance } from "../../../shared/api/axios";
 import { ROUTES } from "../../../shared/constants/routes.constants";
-import type { AuthResponseDto } from "../dto/auth.response.dto";
-import type { RegisterRequestDto } from "../dto/login.request.dto";
-import type { LoginRequestDto } from "../dto/register.request.dto";
+import type { LoginRequestDto } from "../dto/login-request.dto";
+import type { LoginResponseDto } from "../dto/login-response.dto";
 
 export const authApi = {
-  //register api
-  async register(payload: RegisterRequestDto): Promise<AuthResponseDto> {
-    const response = await axiosInstance.post<AuthResponseDto>(
-      ROUTES.AUTH.REGISTER,
-      payload,
-    );
-
-    return response.data;
-  },
-
-  //login api
-  async login(payload: LoginRequestDto): Promise<AuthResponseDto> {
-    const response = await axiosInstance.post<AuthResponseDto>(
+  //login
+  async login(payload: LoginRequestDto): Promise<LoginResponseDto> {
+    const response = await axiosInstance.post<LoginResponseDto>(
       ROUTES.AUTH.LOGIN,
       payload,
     );
@@ -25,7 +14,7 @@ export const authApi = {
     return response.data;
   },
 
-  //logout api
+  //logout
   async logout(): Promise<void> {
     await axiosInstance.post(ROUTES.AUTH.LOGOUT);
   },
