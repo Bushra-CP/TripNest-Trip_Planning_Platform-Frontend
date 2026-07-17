@@ -1,10 +1,9 @@
-export type UserRole = 'traveler' | 'admin';
+export type UserRole = "TRAVELER" | "ADMIN";
 
 export interface UserResponseDto {
   id: string;
   name: string;
   email: string;
-  phone?: string;
-  isActive?:boolean;
+  isActive?: boolean;
   role: UserRole;
 }

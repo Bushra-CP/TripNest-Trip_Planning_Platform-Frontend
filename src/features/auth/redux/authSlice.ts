@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { UserResponseDto } from "../dto/user.response.dto";
-import { loginThunk, logoutThunk, registerThunk } from "./authThunk";
+import type { UserResponseDto } from "../../traveler(user)/register/dto/user.response.dto";
+import { loginThunk, logoutThunk } from "./authThunk";
 
 interface AuthState {
   user: UserResponseDto | null;
@@ -59,24 +59,6 @@ const authSlice = createSlice({
       .addCase(loginThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = (action.payload as string) ?? "Login failed";
-      })
-
-      //REGISTER
-      .addCase(registerThunk.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-
-      .addCase(registerThunk.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
-        state.isAuthenticated = true;
-      })
-
-      .addCase(registerThunk.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = (action.payload as string) ?? "Registration failed";
       })
 
       //LOGOUT
