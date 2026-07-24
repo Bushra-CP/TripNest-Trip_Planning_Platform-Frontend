@@ -34,7 +34,7 @@ export const useForgotPassword = () => {
         }),
       ).unwrap();
 
-      navigate("/otp-verification");
+      navigate("/otp-verify");
     } catch (error) {
       toast.error(error as string);
     }

@@ -112,6 +112,8 @@ export const useResetOtp = ({ email }: UseResetOtpProps) => {
         }),
       ).unwrap();
 
+      
+
       sessionStorage.removeItem("pendingPasswordReset");
 
       navigate("/reset-password", {

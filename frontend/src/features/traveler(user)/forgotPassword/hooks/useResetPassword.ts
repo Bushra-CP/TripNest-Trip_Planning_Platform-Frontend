@@ -61,6 +61,8 @@ export const useResetPassword = () => {
       return;
     }
 
+    console.log(`resetToken:${resetToken}`);
+
     if (!resetToken) {
       toast.error("Reset session has expired.");
       navigate("/forgot-password", { replace: true });
