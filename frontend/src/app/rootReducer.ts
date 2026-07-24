@@ -3,12 +3,7 @@ import registerReducer from "../features/traveler(user)/register/redux/registerS
 import authReducer from "../features/traveler(user)/auth/redux/authSlice";
 import storage from "redux-persist/es/storage";
 import { persistReducer } from "redux-persist";
-
-const registerPersistConfig = {
-  key: "register",
-  storage,
-  blacklist: ["accessToken", "isLoading", "error"],
-};
+import forgotPasswordSlice from "../features/traveler(user)/forgotPassword/redux/forgot-password.slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -17,6 +12,7 @@ const authPersistConfig = {
 };
 
 export const rootReducer = combineReducers({
-  register: persistReducer(registerPersistConfig, registerReducer),
   auth: persistReducer(authPersistConfig, authReducer),
+  register: registerReducer,
+  forgotPassword: forgotPasswordSlice,
 });
