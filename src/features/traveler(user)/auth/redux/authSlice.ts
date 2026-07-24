@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { googleAuthThunk, loginThunk, logoutThunk } from "./authThunk";
 import type { UserResponse } from "../../register/types/user.response";
+import { verifyRegistrationThunk } from "../../register/redux/registerThunk";
 
 interface AuthState {
   user: UserResponse | null;
@@ -59,6 +60,24 @@ const authSlice = createSlice({
       .addCase(loginThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = (action.payload as string) ?? "Login failed";
+      })
+
+      ////////////VERIFY REGISTRATION////////////
+      .addCase(verifyRegistrationThunk.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+
+      .addCase(verifyRegistrationThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.data.user;
+        state.accessToken = action.payload.data.accessToken;
+        state.isAuthenticated = true;
+      })
+
+      .addCase(verifyRegistrationThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       })
 
       ////////////GOOGLE AUTH////////////

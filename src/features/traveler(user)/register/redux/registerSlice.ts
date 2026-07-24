@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { UserResponse } from "../types/user.response";
 import {
   registerThunk,
   resendOtpThunk,
@@ -7,10 +6,6 @@ import {
 } from "./registerThunk";
 
 interface AuthState {
-  user: UserResponse | null;
-  accessToken: string | null;
-  isAuthenticated: boolean;
-
   registerLoading: boolean;
   verifyLoading: boolean;
   resendOtpLoading: boolean;
@@ -19,10 +14,6 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
-  accessToken: null,
-  isAuthenticated: false,
-
   registerLoading: false,
   verifyLoading: false,
   resendOtpLoading: false,
@@ -61,11 +52,8 @@ const registerSlice = createSlice({
         state.error = null;
       })
 
-      .addCase(verifyRegistrationThunk.fulfilled, (state, action) => {
+      .addCase(verifyRegistrationThunk.fulfilled, (state) => {
         state.verifyLoading = false;
-        state.user = action.payload.data.user;
-        state.accessToken = action.payload.data.accessToken;
-        state.isAuthenticated = true;
       })
 
       .addCase(verifyRegistrationThunk.rejected, (state, action) => {
