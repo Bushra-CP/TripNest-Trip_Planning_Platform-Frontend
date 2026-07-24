@@ -26,7 +26,7 @@ export const forgotPasswordThunk = createAsyncThunk(
         }),
       );
 
-      return response.data;
+      return response;
     } catch (error) {
       const err = error as AxiosError<ApiError>;
 
@@ -47,7 +47,7 @@ export const verifyResetOtpThunk = createAsyncThunk(
 
       sessionStorage.removeItem("pendingPasswordReset");
 
-      return response.data;
+      return response;
     } catch (error) {
       const err = error as AxiosError<ApiError>;
 
@@ -66,7 +66,7 @@ export const resetPasswordThunk = createAsyncThunk(
     try {
       const response = await forgotPasswordApi.resetPassword(payload);
 
-      return response.data;
+      return response;
     } catch (error) {
       const err = error as AxiosError<ApiError>;
 
@@ -99,7 +99,7 @@ export const resendResetOtpThunk = createAsyncThunk(
         sessionStorage.setItem("pendingPasswordReset", JSON.stringify(reset));
       }
 
-      return response.data;
+      return response;
     } catch (error) {
       const err = error as AxiosError<ApiError>;
 

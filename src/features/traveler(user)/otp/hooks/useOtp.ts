@@ -93,7 +93,7 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
     if (otpValue.length !== 6) return;
 
     try {
-      await dispatch(
+      const data = await dispatch(
         verifyRegistrationThunk({
           userId,
           otp: otpValue,
@@ -101,6 +101,8 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
       ).unwrap();
 
       sessionStorage.removeItem("pendingRegistration");
+
+      toast.success(data.data.message);
 
       navigate("/");
     } catch (error) {
