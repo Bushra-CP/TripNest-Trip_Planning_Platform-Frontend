@@ -1,6 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import registerReducer from "../features/traveler(user)/register/redux/registerSlice";
-import authReducer from "../features/auth/redux/authSlice";
+import authReducer from "../features/traveler(user)/auth/redux/authSlice";
 import storage from "redux-persist/es/storage";
 import { persistReducer } from "redux-persist";
 

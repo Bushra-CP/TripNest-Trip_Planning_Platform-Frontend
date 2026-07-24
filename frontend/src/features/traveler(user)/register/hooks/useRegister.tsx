@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { AppDispatch } from "../../../../app/store";
 import { registerThunk } from "../redux/registerThunk";
-import { selectIsLoading } from "../redux/registerSelectors";
+import { selectRegisterLoading } from "../redux/registerSelectors";
 import { toast } from "sonner";
 
 export const useRegisterForm = () => {
@@ -16,7 +16,7 @@ export const useRegisterForm = () => {
 
   const navigate = useNavigate();
 
-  const isLoading = useSelector(selectIsLoading);
+  const isLoading = useSelector(selectRegisterLoading);
 
   const {
     register,

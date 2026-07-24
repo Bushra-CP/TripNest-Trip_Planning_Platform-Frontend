@@ -6,5 +6,6 @@ export const ROUTES = {
     VERIFYREGISTRATION: "/verify-registration",
     RESEND_OTP: "/resend-otp",
     REFRESH_TOKEN: "/refresh",
+    GOOGLE: "/google",
   },
 } as const;

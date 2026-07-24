@@ -30,7 +30,7 @@ const OtpPage: React.FC = () => {
     <div className="min-h-screen bg-[#f4faff] flex flex-col items-center justify-center p-6 font-sans">
       {/* Brand Header */}
       <div className="flex flex-col items-center gap-2 mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
-        <h1 className="text-3xl font-black text-[#2e7d32] tracking-tighter">
+        <h1 className="text-3xl font-black text-[#6c63ff] tracking-tighter">
           TripNest
         </h1>
 

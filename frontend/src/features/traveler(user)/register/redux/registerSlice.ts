@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { UserResponseDto } from "../dto/user.response.dto";
+import type { UserResponse } from "../types/user.response";
 import {
   registerThunk,
   resendOtpThunk,
@@ -7,10 +7,14 @@ import {
 } from "./registerThunk";
 
 interface AuthState {
-  user: UserResponseDto | null;
+  user: UserResponse | null;
   accessToken: string | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
+
+  registerLoading: boolean;
+  verifyLoading: boolean;
+  resendOtpLoading: boolean;
+
   error: string | null;
 }
 
@@ -18,7 +22,11 @@ const initialState: AuthState = {
   user: null,
   accessToken: null,
   isAuthenticated: false,
-  isLoading: false,
+
+  registerLoading: false,
+  verifyLoading: false,
+  resendOtpLoading: false,
+
   error: null,
 };
 
@@ -34,48 +42,48 @@ const registerSlice = createSlice({
 
       //REGISTER
       .addCase(registerThunk.pending, (state) => {
-        state.isLoading = true;
+        state.registerLoading = true;
         state.error = null;
       })
 
       .addCase(registerThunk.fulfilled, (state) => {
-        state.isLoading = false;
+        state.registerLoading = false;
       })
 
       .addCase(registerThunk.rejected, (state, action) => {
-        state.isLoading = false;
+        state.registerLoading = false;
         state.error = action.payload as string;
       })
 
       //VERIFY REGISTRATION
       .addCase(verifyRegistrationThunk.pending, (state) => {
-        state.isLoading = true;
+        state.verifyLoading = true;
         state.error = null;
       })
 
       .addCase(verifyRegistrationThunk.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
+        state.verifyLoading = false;
+        state.user = action.payload.data.user;
+        state.accessToken = action.payload.data.accessToken;
         state.isAuthenticated = true;
       })
 
       .addCase(verifyRegistrationThunk.rejected, (state, action) => {
-        state.isLoading = false;
+        state.verifyLoading = false;
         state.error = action.payload as string;
       })
 
       //RESEND OTP
       .addCase(resendOtpThunk.pending, (state) => {
-        state.isLoading = true;
+        state.resendOtpLoading = true;
       })
 
       .addCase(resendOtpThunk.fulfilled, (state) => {
-        state.isLoading = false;
+        state.resendOtpLoading = false;
       })
 
       .addCase(resendOtpThunk.rejected, (state, action) => {
-        state.isLoading = false;
+        state.resendOtpLoading = false;
         state.error = action.payload as string;
       });
   },

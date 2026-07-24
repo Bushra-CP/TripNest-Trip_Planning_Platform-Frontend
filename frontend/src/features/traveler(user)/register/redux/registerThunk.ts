@@ -1,22 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { RegisterRequestDto } from "../dto/register.request.dto";
-import { registerRepository } from "../repository/register.repository";
+import type { RegisterRequest } from "../types/register.request";
 import type { AxiosError } from "axios";
-import type { VerifyRegistrationRequestDto } from "../dto/verify-registration-request.dto";
-import type { ResendOtpRequestDto } from "../dto/resend-otp-request.dto";
+import type { VerifyRegistrationRequest } from "../types/verify-registration-request";
+import type { ResendOtpRequest } from "../types/resend-otp-request";
+import { registerApi } from "../api/register.api";
 
 //ERROR OBJECT INTERFACE
 interface ApiError {
   message: string;
 }
 
-//REGISTER THUNK
+/*-----------------------
+  REGISTER THUNK
+------------------------*/
 export const registerThunk = createAsyncThunk(
   "/register",
 
-  async (payload: RegisterRequestDto, { rejectWithValue }) => {
+  async (payload: RegisterRequest, { rejectWithValue }) => {
     try {
-      const response = await registerRepository.register(payload);
+      const response = await registerApi.register(payload);
 
       // console.log(response);
 
@@ -40,13 +42,18 @@ export const registerThunk = createAsyncThunk(
   },
 );
 
-//VERIFY REGISTRATION
+/*-----------------------
+  VERIFY REGISTRATION
+------------------------*/
 export const verifyRegistrationThunk = createAsyncThunk(
   "/verifyRegistration",
 
-  async (payload: VerifyRegistrationRequestDto, { rejectWithValue }) => {
+  async (payload: VerifyRegistrationRequest, { rejectWithValue }) => {
     try {
-      const response = await registerRepository.verifyRegistration(payload);
+      const response = await registerApi.verifyRegistration(payload);
+
+      console.log(response);
+      
 
       sessionStorage.removeItem("pendingRegistration");
 
@@ -61,12 +68,15 @@ export const verifyRegistrationThunk = createAsyncThunk(
   },
 );
 
+/*-----------------------
+  RESEND OTP THUNK
+------------------------*/
 export const resendOtpThunk = createAsyncThunk(
   "/resendOtp",
 
-  async (payload: ResendOtpRequestDto, { rejectWithValue }) => {
+  async (payload: ResendOtpRequest, { rejectWithValue }) => {
     try {
-      const response = await registerRepository.resendOtp(payload);
+      const response = await registerApi.resendOtp(payload);
 
       const pendingRegistration = sessionStorage.getItem("pendingRegistration");
 

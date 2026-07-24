@@ -1,17 +1,21 @@
 import {
   Mail,
-  Lock,
   Phone,
   User,
   Hash,
   ArrowRight,
   LoaderCircle,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { useRegisterForm } from "../hooks/useRegister";
+import { useState } from "react";
 
 const RegisterForm = () => {
   const { register, handleSubmit, errors, onSubmit, isLoading } =
     useRegisterForm();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -94,15 +98,18 @@ const RegisterForm = () => {
         </label>
         <div className="relative group">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             {...register("password")}
             // placeholder="Create Password"
             className="w-full h-12 pl-4 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#6c63ff]/10 transition-all outline-none text-gray-900 placeholder:text-gray-400 font-medium"
           />
-          <Lock
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#6c63ff] transition-colors"
-            size={18}
-          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-4 top-1/2 -translate-y-1/2"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
         </div>
         {errors.password ? (
           <p className="text-[11px] text-red-500 ml-1">
