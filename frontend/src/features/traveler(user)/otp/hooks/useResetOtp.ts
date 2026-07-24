@@ -1,28 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "../../../../app/store";
-import {
-  resendOtpThunk,
-  verifyRegistrationThunk,
-} from "../../register/redux/registerThunk";
 import { useNavigate } from "react-router-dom";
-import {
-  selectResendOtpLoading,
-  selectVerifyLoading,
-} from "../../register/redux/registerSelectors";
 import { toast } from "sonner";
 
-interface UseOtpProps {
+import type { AppDispatch } from "../../../../app/store";
+import {
+  selectResendResetOtpLoading,
+  selectVerifyResetOtpLoading,
+} from "../../forgotPassword/redux/forgot-password.selector";
+import {
+  resendResetOtpThunk,
+  verifyResetOtpThunk,
+} from "../../forgotPassword/redux/forgot-password.thunk";
+
+interface UseResetOtpProps {
   userId: string;
   email: string;
 }
 
-export const useOtp = ({ userId, email }: UseOtpProps) => {
+export const useResetOtp = ({ email }: UseResetOtpProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const isVerifyLoading = useSelector(selectVerifyLoading);
-  const isResendOtpLoading = useSelector(selectResendOtpLoading);
+  const isVerifyLoading = useSelector(selectVerifyResetOtpLoading);
+
+  const isResendOtpLoading = useSelector(selectResendResetOtpLoading);
 
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
 
@@ -30,21 +32,25 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  //TIMER
+  /* ----------------------------
+      TIMER
+  ----------------------------- */
   useEffect(() => {
     const updateTimer = () => {
-      const pendingRegistration = sessionStorage.getItem("pendingRegistration");
+      const pendingPasswordReset = sessionStorage.getItem(
+        "pendingPasswordReset",
+      );
 
-      if (!pendingRegistration) {
+      if (!pendingPasswordReset) {
         setTimer(0);
         return;
       }
 
-      const registration = JSON.parse(pendingRegistration);
+      const resetData = JSON.parse(pendingPasswordReset);
 
       const remaining = Math.max(
         0,
-        Math.floor((registration.expiresAt - Date.now()) / 1000),
+        Math.floor((resetData.expiresAt - Date.now()) / 1000),
       );
 
       setTimer(remaining);
@@ -57,7 +63,9 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
     return () => clearInterval(interval);
   }, []);
 
-  //OTP INPUT
+  /* ----------------------------
+      OTP INPUT
+  ----------------------------- */
   const handleChange = (index: number, value: string): void => {
     if (!/^\d?$/.test(value)) return;
 
@@ -72,7 +80,9 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
     }
   };
 
-  //BACKSPACE
+  /* ----------------------------
+      BACKSPACE
+  ----------------------------- */
   const handleKeyDown = (
     index: number,
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -82,7 +92,9 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
     }
   };
 
-  //VERIFY OTP
+  /* ----------------------------
+      VERIFY OTP
+  ----------------------------- */
   const handleVerify = async (
     e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>,
   ): Promise<void> => {
@@ -93,31 +105,35 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
     if (otpValue.length !== 6) return;
 
     try {
-      const data = await dispatch(
-        verifyRegistrationThunk({
-          userId,
+      const response = await dispatch(
+        verifyResetOtpThunk({
+          email,
           otp: otpValue,
         }),
       ).unwrap();
 
-      sessionStorage.removeItem("pendingRegistration");
+      
 
-      toast.success(data.data.message);
+      sessionStorage.removeItem("pendingPasswordReset");
 
-      navigate("/");
+      navigate("/reset-password", {
+        state: {
+          resetToken: response.resetToken,
+        },
+      });
     } catch (error) {
       toast.error(error as string);
-
-      console.error(error);
     }
   };
 
-  //RESEND OTP
+  /* ----------------------------
+      RESEND OTP
+  ----------------------------- */
   const handleResend = async (): Promise<void> => {
     try {
       await dispatch(
-        resendOtpThunk({
-          userId,
+        resendResetOtpThunk({
+          email,
         }),
       ).unwrap();
 
@@ -125,11 +141,13 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
 
       inputRefs.current[0]?.focus();
     } catch (error) {
-      console.error(error);
+      toast.error(error as string);
     }
   };
 
-  //FORMAT TIMER
+  /* ----------------------------
+      FORMAT TIMER
+  ----------------------------- */
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
 
@@ -147,7 +165,6 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
     otp,
     timer,
     inputRefs,
-    setOtp,
     handleChange,
     handleKeyDown,
     handleVerify,

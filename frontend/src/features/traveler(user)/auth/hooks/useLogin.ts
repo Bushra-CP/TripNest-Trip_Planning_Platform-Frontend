@@ -4,9 +4,13 @@ import { loginSchema, type LoginFormData } from "../validation/login.schema";
 import { useDispatch } from "react-redux";
 import { loginThunk } from "../redux/authThunk";
 import type { AppDispatch } from "@/app/store";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -24,9 +28,12 @@ export const useLogin = () => {
   });
 
   const onSubmit = async (values: LoginFormData) => {
-    console.log(values);
+    // console.log(values);
 
-    await dispatch(loginThunk(values));
+    const response = await dispatch(loginThunk(values)).unwrap();
+
+    toast.success(response.data.message);
+    navigate("/");
   };
 
   return {
