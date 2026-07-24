@@ -1,0 +1,92 @@
+import { createSlice } from "@reduxjs/toolkit";
+import type { UserResponse } from "../types/user.response";
+import {
+  registerThunk,
+  resendOtpThunk,
+  verifyRegistrationThunk,
+} from "./registerThunk";
+
+interface AuthState {
+  user: UserResponse | null;
+  accessToken: string | null;
+  isAuthenticated: boolean;
+
+  registerLoading: boolean;
+  verifyLoading: boolean;
+  resendOtpLoading: boolean;
+
+  error: string | null;
+}
+
+const initialState: AuthState = {
+  user: null,
+  accessToken: null,
+  isAuthenticated: false,
+
+  registerLoading: false,
+  verifyLoading: false,
+  resendOtpLoading: false,
+
+  error: null,
+};
+
+const registerSlice = createSlice({
+  name: "register",
+
+  initialState,
+
+  reducers: {},
+
+  extraReducers: (builder) => {
+    builder
+
+      //REGISTER
+      .addCase(registerThunk.pending, (state) => {
+        state.registerLoading = true;
+        state.error = null;
+      })
+
+      .addCase(registerThunk.fulfilled, (state) => {
+        state.registerLoading = false;
+      })
+
+      .addCase(registerThunk.rejected, (state, action) => {
+        state.registerLoading = false;
+        state.error = action.payload as string;
+      })
+
+      //VERIFY REGISTRATION
+      .addCase(verifyRegistrationThunk.pending, (state) => {
+        state.verifyLoading = true;
+        state.error = null;
+      })
+
+      .addCase(verifyRegistrationThunk.fulfilled, (state, action) => {
+        state.verifyLoading = false;
+        state.user = action.payload.data.user;
+        state.accessToken = action.payload.data.accessToken;
+        state.isAuthenticated = true;
+      })
+
+      .addCase(verifyRegistrationThunk.rejected, (state, action) => {
+        state.verifyLoading = false;
+        state.error = action.payload as string;
+      })
+
+      //RESEND OTP
+      .addCase(resendOtpThunk.pending, (state) => {
+        state.resendOtpLoading = true;
+      })
+
+      .addCase(resendOtpThunk.fulfilled, (state) => {
+        state.resendOtpLoading = false;
+      })
+
+      .addCase(resendOtpThunk.rejected, (state, action) => {
+        state.resendOtpLoading = false;
+        state.error = action.payload as string;
+      });
+  },
+});
+
+export default registerSlice.reducer;
