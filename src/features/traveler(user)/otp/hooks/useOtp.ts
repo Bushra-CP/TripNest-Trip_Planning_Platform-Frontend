@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../../../app/store";
 import {
   resendOtpThunk,
   verifyRegistrationThunk,
 } from "../../register/redux/registerThunk";
 import { useNavigate } from "react-router-dom";
+import {
+  selectResendOtpLoading,
+  selectVerifyLoading,
+} from "../../register/redux/registerSelectors";
+import { toast } from "sonner";
 
 interface UseOtpProps {
   userId: string;
@@ -15,6 +20,9 @@ interface UseOtpProps {
 export const useOtp = ({ userId, email }: UseOtpProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  const isVerifyLoading = useSelector(selectVerifyLoading);
+  const isResendOtpLoading = useSelector(selectResendOtpLoading);
 
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
 
@@ -96,6 +104,8 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
 
       navigate("/");
     } catch (error) {
+      toast.error(error as string);
+
       console.error(error);
     }
   };
@@ -129,6 +139,8 @@ export const useOtp = ({ userId, email }: UseOtpProps) => {
   };
 
   return {
+    isVerifyLoading,
+    isResendOtpLoading,
     email,
     otp,
     timer,

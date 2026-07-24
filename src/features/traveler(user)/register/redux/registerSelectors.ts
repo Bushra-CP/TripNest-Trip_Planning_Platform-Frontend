@@ -1,10 +1,18 @@
-import type { RootState } from "../../../../app/store";
+import type { RootState } from "@/app/store";
 
 export const selectUser = (state: RootState) => state.register.user;
 
-export const selectAccessToken = (state: RootState) => state.register.accessToken;
+export const selectAccessToken = (state: RootState) =>
+  state.register.accessToken;
 
-export const selectIsLoading = (state: RootState) => state.register.isLoading;
+export const selectRegisterLoading = (state: RootState) =>
+  state.register.registerLoading;
+
+export const selectVerifyLoading = (state: RootState) =>
+  state.register.verifyLoading;
+
+export const selectResendOtpLoading = (state: RootState) =>
+  state.register.resendOtpLoading;
 
 export const selectRegisterError = (state: RootState) => state.register.error;
 
