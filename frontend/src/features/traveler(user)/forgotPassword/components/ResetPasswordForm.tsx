@@ -49,12 +49,12 @@ const ResetPasswordForm: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-400"
+              className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-400"
               required
             />
 
             <Lock
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2e7d32] transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#6c63ff] transition-colors"
               size={20}
             />
 
@@ -84,12 +84,12 @@ const ResetPasswordForm: React.FC = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-400"
+              className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-400"
               required
             />
 
             <Lock
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2e7d32] transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#6c63ff] transition-colors"
               size={20}
             />
 
@@ -108,7 +108,7 @@ const ResetPasswordForm: React.FC = () => {
           {requirements.map((req, index) => (
             <div key={index} className="flex items-center gap-2">
               {req.valid ? (
-                <CheckCircle2 size={16} className="text-[#2e7d32]" />
+                <CheckCircle2 size={16} className="text-[#6c63ff]" />
               ) : (
                 <Circle size={16} className="text-gray-300" />
               )}
@@ -128,7 +128,7 @@ const ResetPasswordForm: React.FC = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full h-14 bg-[#2e7d32] hover:bg-[#256628] disabled:opacity-50 disabled:hover:bg-[#2e7d32] active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#2e7d32]/20 transition-all flex items-center justify-center gap-2 mt-4"
+          className="w-full h-14 bg-[#6c63ff] hover:bg-[#534afe] disabled:opacity-50 disabled:hover:bg-[#6c63ff] active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#2e7d32]/20 transition-all flex items-center justify-center gap-2 mt-4"
         >
           {isLoading ? (
             <>
