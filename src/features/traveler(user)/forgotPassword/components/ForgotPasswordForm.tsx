@@ -38,12 +38,12 @@ const ForgotPasswordForm = () => {
               type="email"
               placeholder="name@example.com"
               {...register("email")}
-              className="w-full h-14 pl-12 pr-4 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-400"
+              className="w-full h-14 pl-12 pr-4 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-400"
             />
 
             <Mail
               size={20}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2e7d32] transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#6c63ff] transition-colors"
             />
           </div>
 
@@ -55,7 +55,7 @@ const ForgotPasswordForm = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full h-14 bg-[#2e7d32] hover:bg-[#256628] disabled:opacity-60 active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#2e7d32]/20 transition-all flex items-center justify-center gap-2"
+          className="w-full h-14 bg-[#6c63ff] hover:bg-[#534afe] disabled:opacity-60 active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#2e7d32]/20 transition-all flex items-center justify-center gap-2"
         >
           {isLoading ? (
             <>
@@ -75,7 +75,7 @@ const ForgotPasswordForm = () => {
         <button
           type="button"
           onClick={handleBackToLogin}
-          className="flex items-center gap-2 text-sm font-bold text-[#b45309] hover:text-[#92400e] transition-colors"
+          className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-[#6c63ff] transition-colors"
         >
           <ArrowLeft size={16} />
           Back to Login

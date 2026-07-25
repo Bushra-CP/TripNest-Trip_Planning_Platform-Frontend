@@ -1,10 +1,10 @@
-import { Eye, EyeOff, ArrowRight, User } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, User, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import GoogleButton from "./GoogleButton";
 
 const LoginForm = () => {
-  const { register, handleSubmit, errors, onSubmit } = useLogin();
+  const { register, handleSubmit, errors, onSubmit, isLoading } = useLogin();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -83,8 +83,17 @@ const LoginForm = () => {
           type="submit"
           className="w-full h-14 bg-[#6c63ff] text-white rounded-2xl flex justify-center items-center gap-2 hover:bg-[#534afe]"
         >
-          Sign In
-          <ArrowRight size={20} />
+          {isLoading ? (
+            <>
+              <LoaderCircle size={20} className="animate-spin" />
+              Signing In...
+            </>
+          ) : (
+            <>
+              Sign In
+              <ArrowRight size={20} />
+            </>
+          )}
         </button>
       </form>
 
