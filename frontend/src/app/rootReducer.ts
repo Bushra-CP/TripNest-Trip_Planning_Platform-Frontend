@@ -4,6 +4,7 @@ import authReducer from "../features/traveler(user)/auth/redux/authSlice";
 import storage from "redux-persist/es/storage";
 import { persistReducer } from "redux-persist";
 import forgotPasswordSlice from "../features/traveler(user)/forgotPassword/redux/forgot-password.slice";
+import otpSlice from "../features/traveler(user)/otp/redux/otpSlice";
 
 const authPersistConfig = {
   key: "auth",
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   register: registerReducer,
   forgotPassword: forgotPasswordSlice,
+  otp: otpSlice,
 });

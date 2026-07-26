@@ -18,9 +18,12 @@ export const forgotPasswordThunk = createAsyncThunk(
     try {
       const response = await forgotPasswordApi.forgotPassword(payload);
 
+      console.log(response.data.userId);
+
       sessionStorage.setItem(
         "pendingPasswordReset",
         JSON.stringify({
+          userId: response.data.userId,
           email: payload.email,
           expiresAt: Date.now() + 60 * 1000,
         }),
