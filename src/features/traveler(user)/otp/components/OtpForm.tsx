@@ -1,20 +1,11 @@
 import React from "react";
 import { Smartphone, ArrowRight, ArrowLeft, LoaderCircle } from "lucide-react";
 
-import { useNavigate } from "react-router-dom";
+import { useOtp, type OtpProps } from "../hooks/useOtp";
 
-import { useOtp } from "../hooks/useOtp";
-
-interface OtpFormProps {
-  userId: string;
-  email: string;
-}
-
-const OtpForm: React.FC<OtpFormProps> = ({ userId, email }) => {
-  const navigate = useNavigate();
-
+const OtpForm: React.FC<OtpProps> = ({ userId, email }) => {
   const {
-    isVerifyLoading,
+    isVerifyOtpLoading,
     isResendOtpLoading,
     otp,
     timer,
@@ -24,6 +15,8 @@ const OtpForm: React.FC<OtpFormProps> = ({ userId, email }) => {
     handleVerify,
     handleResend,
     formatTime,
+    handleBackToLogin,
+    maskEmail,
   } = useOtp({
     userId,
     email,
@@ -43,7 +36,7 @@ const OtpForm: React.FC<OtpFormProps> = ({ userId, email }) => {
         <p className="text-gray-500 text-sm leading-relaxed max-w-70 mx-auto font-medium">
           Enter the 6-digit code sent to
           <br />
-          <span className="text-gray-900 font-bold">{email}</span>
+          <span className="text-gray-900 font-bold">{maskEmail(email)}</span>
         </p>
       </header>
 
@@ -71,11 +64,13 @@ const OtpForm: React.FC<OtpFormProps> = ({ userId, email }) => {
           <button
             type="submit"
             disabled={
-              otp.join("").length < 6 || isVerifyLoading || isResendOtpLoading
+              otp.join("").length < 6 ||
+              isVerifyOtpLoading ||
+              isResendOtpLoading
             }
             className="w-full h-14 bg-[#6c63ff] hover:bg-[#534afe] disabled:opacity-50 disabled:hover:bg-[#6c63ff] active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#2e7d32]/20 transition-all flex items-center justify-center gap-2"
           >
-            {isVerifyLoading ? (
+            {isVerifyOtpLoading ? (
               <>
                 <LoaderCircle size={20} className="animate-spin" />
                 Verifying OTP...
@@ -120,7 +115,7 @@ const OtpForm: React.FC<OtpFormProps> = ({ userId, email }) => {
 
       <div className="mt-8 pt-8 border-t border-gray-100 flex justify-center">
         <button
-          onClick={() => navigate("/login")}
+          onClick={handleBackToLogin}
           className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-[#6c63ff] transition-colors"
         >
           <ArrowLeft size={16} />

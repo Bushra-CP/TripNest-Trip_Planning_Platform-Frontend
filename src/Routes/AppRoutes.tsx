@@ -10,23 +10,24 @@ import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "@/features/traveler(user)/errorPages/pages/UnauthorizedPage";
 import NotFoundPage from "@/features/traveler(user)/errorPages/pages/NotFoundPage";
 import ResetPasswordPage from "@/features/traveler(user)/forgotPassword/pages/ResetPasswordPage";
-import ResetOtpPage from "@/features/traveler(user)/otp/pages/ResetOtpPage";
+import PublicRoute from "./PublicRoute";
 
 export default function AppRoutes() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
 
+          {/* Public Routes */}
+          {/* <Route element={<PublicRoute />}> */}
           <Route path="/" element={<HomePage />} />
           <Route path={ROUTES.AUTH.LOGIN} element={<LoginPage />} />
           <Route path={ROUTES.AUTH.REGISTER} element={<RegisterPage />} />
           <Route path="/otp-verification" element={<OtpPage />} />
-          <Route path="/otp-verify" element={<ResetOtpPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-
+          {/* </Route> */}
           {/* Traveler Routes */}
           <Route
             element={<ProtectedRoute allowedRoles={["TRAVELER"]} />}
