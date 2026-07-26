@@ -2,29 +2,29 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import OtpForm from "../components/OtpForm";
-
-interface PendingRegistration {
-  userId: string;
-  email: string;
-  expiresAt: number;
-}
+import type { PendingOtpData } from "../hooks/useOtp";
 
 const OtpPage: React.FC = () => {
   const navigate = useNavigate();
 
   const pendingRegistration = sessionStorage.getItem("pendingRegistration");
+  const pendingPasswordReset = sessionStorage.getItem("pendingPasswordReset");
+
+  const pendingData: PendingOtpData | null = pendingRegistration
+    ? JSON.parse(pendingRegistration)
+    : pendingPasswordReset
+      ? JSON.parse(pendingPasswordReset)
+      : null;
 
   useEffect(() => {
-    if (!pendingRegistration) {
-      navigate("/register", { replace: true });
+    if (!pendingData) {
+      navigate("/login", { replace: true });
     }
-  }, [navigate, pendingRegistration]);
+  }, [navigate, pendingData]);
 
-  if (!pendingRegistration) {
+  if (!pendingData) {
     return null;
   }
-
-  const registration: PendingRegistration = JSON.parse(pendingRegistration);
 
   return (
     <div className="min-h-screen bg-[#f4faff] flex flex-col items-center justify-center p-6 font-sans">
@@ -39,7 +39,7 @@ const OtpPage: React.FC = () => {
         </p>
       </div>
 
-      <OtpForm userId={registration.userId} email={registration.email} />
+      <OtpForm userId={pendingData.userId} email={pendingData.email} />
     </div>
   );
 };
