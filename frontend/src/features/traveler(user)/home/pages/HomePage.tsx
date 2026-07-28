@@ -1,71 +1,11 @@
-import {
-  Search,
-  Bell,
-  Map,
-  ArrowRight,
-  Globe,
-} from "lucide-react";
-import {
-  FaInstagram,
-} from "react-icons/fa";
+import { Map, ArrowRight, Globe } from "lucide-react";
+import { FaInstagram } from "react-icons/fa";
 
 import { FaXTwitter } from "react-icons/fa6"; // X (Twitter)
-
 
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-[#f8f9fa] font-inter text-slate-900">
-      {/* Navigation Header */}
-      <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <div className="text-2xl font-black text-[#6c63ff] tracking-tight">
-              TripNest
-            </div>
-            <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
-              <a
-                href="#"
-                className="text-[#6c63ff] border-b-2 border-[#6c63ff] pb-1"
-              >
-                Plan
-              </a>
-              <a href="#" className="hover:text-[#6c63ff] transition-colors">
-                Connect
-              </a>
-              
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-4 flex-1 max-w-md mx-8">
-            <div className="relative w-full hidden sm:block">
-              <input
-                type="text"
-                placeholder="Search experiences..."
-                className="w-full h-10 pl-10 pr-4 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-[#6c63ff]/20 transition-all outline-none"
-              />
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                size={16}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button className="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
-              <Bell size={20} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-            </button>
-            <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border border-slate-200">
-              <img
-                src="https://i.pravatar.cc/150?u=tripper"
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </header>
-
       <main className="pt-24 pb-12 space-y-20">
         {/* Hero Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -194,8 +134,6 @@ const HomePage = () => {
             </div>
           </div>
         </section>
-
-
       </main>
 
       {/* Footer */}
