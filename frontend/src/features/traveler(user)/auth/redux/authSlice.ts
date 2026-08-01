@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { googleAuthThunk, loginThunk, logoutThunk } from "./authThunk";
 import type { UserResponse } from "../../register/types/user.response";
 import { verifyRegistrationThunk } from "../../register/redux/registerThunk";
+import { UpdateProfilePictureThunk } from "../../dashboard/profile/redux/profile.thunk";
 
 interface AuthState {
   user: UserResponse | null;
@@ -104,6 +105,13 @@ const authSlice = createSlice({
         state.accessToken = null;
         state.isAuthenticated = false;
         state.error = null;
+      })
+
+      //UPDATE PROFILE IMAGE
+      .addCase(UpdateProfilePictureThunk.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user.profileImage = action.payload.profileImage;
+        }
       });
   },
 });
