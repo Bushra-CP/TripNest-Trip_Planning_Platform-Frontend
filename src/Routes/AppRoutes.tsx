@@ -10,9 +10,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "@/features/traveler(user)/errorPages/pages/UnauthorizedPage";
 import NotFoundPage from "@/features/traveler(user)/errorPages/pages/NotFoundPage";
 import ResetPasswordPage from "@/features/traveler(user)/forgotPassword/pages/ResetPasswordPage";
-import MainLayout from "@/shared/layouts/MainLayout";
-import New from "@/features/traveler(user)/dashboard/profile/pages/New";
-import { UserProfile } from "@/shared/layouts/page";
+import UserProfile from "@/features/traveler(user)/dashboard/profile/pages/UserProfile";
+import UserLayout from "@/layouts/UserLayout";
+import { Page } from "@/shared/layouts/page";
 // import PublicRoute from "./PublicRoute";
 // import { UserProfile } from "@/features/traveler(user)/dashboard/profile/pages/UserProfile";
 
@@ -30,22 +30,17 @@ export default function AppRoutes() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           {/* </Route> */}
 
-          <Route element={<MainLayout />}>
+          <Route element={<UserLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/page" element={<Page />} />
           </Route>
 
           {/* Traveler Routes */}
           {/* <Route
             element={<ProtectedRoute allowedRoles={["TRAVELER"]} />} */}
-          {/* <Route path="/profile" element={<UserProfile />} /> */}
 
           {/* ></Route> */}
-
-          <Route element={<MainLayout />}>
-            <Route path="/new" element={<New />} />
-          </Route>
-
-          <Route path="/page" element={<UserProfile />} />
 
           {/* Admin Routes */}
           <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}></Route>

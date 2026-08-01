@@ -6,9 +6,11 @@ import { useHeader } from "../hooks/useHeader";
 
 const UserHeaderActions = () => {
   const user = useSelector(selectUser);
-  // const hasProfileImage = Boolean(user?.profileImage);
 
-  const { dropdownRef, isDropdownOpen, toggleDropdown } = useHeader();
+  const hasProfileImage = Boolean(user?.profileImage);
+
+  const { dropdownRef, isDropdownOpen, toggleDropdown, closeDropdown } =
+    useHeader();
 
   return (
     <div className="flex items-center gap-5">
@@ -51,20 +53,17 @@ const UserHeaderActions = () => {
             transition
           "
         >
-          {/* {hasProfileImage ? (
+          {hasProfileImage ? (
             <img
               src={user!.profileImage}
-              alt={user!.name}
+              alt="profile"
               className="h-10 w-10 rounded-full border-2 border-green-600 object-cover"
             />
           ) : (
             <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-green-600 bg-green-600 text-lg font-bold text-white">
-              {user?.name?.[0]?.toUpperCase() || "U"}
+              {user?.fullName?.[0]?.toUpperCase() || "U"}
             </div>
-          )} */}
-          <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-slate-500 text-lg font-bold text-slate-500 hover:border-[#6c63ff] hover:text-[#6c63ff]">
-            {user?.fullName?.[0]?.toUpperCase() || "U"}
-          </div>
+          )}
 
           <ChevronDown
             size={16}
@@ -72,7 +71,7 @@ const UserHeaderActions = () => {
           />
         </button>
 
-        {isDropdownOpen && <AccountDropdown />}
+        {isDropdownOpen && <AccountDropdown onClose={closeDropdown} />}
       </div>
     </div>
   );

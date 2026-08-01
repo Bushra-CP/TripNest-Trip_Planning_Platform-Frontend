@@ -22,6 +22,10 @@ interface MenuItem {
   danger?: boolean;
 }
 
+interface AccountDropdownProps {
+  onClose: () => void;
+}
+
 const menuItems: MenuItem[] = [
   {
     label: "My Profile",
@@ -61,13 +65,14 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-const AccountDropdown = () => {
+const AccountDropdown = ({ onClose }: AccountDropdownProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
 
   const user = useSelector(selectUser);
 
   const handleLogout = () => {
+    onClose();
     dispatch(clearAuth());
   };
 
@@ -94,9 +99,9 @@ const AccountDropdown = () => {
 
       <div className="border-b border-[#cfdce4]/30 bg-[#f8fbf4] p-4">
         <div className="flex items-center gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#6c63ff] text-lg font-bold text-[#6c63ff]">
-              {user?.fullName?.[0]?.toUpperCase() || "U"}
-            </div>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#6c63ff] text-lg font-bold text-[#6c63ff]">
+            {user?.fullName?.[0]?.toUpperCase() || "U"}
+          </div>
 
           <div>
             <p className="text-base font-black">{user?.fullName}</p>
@@ -118,6 +123,7 @@ const AccountDropdown = () => {
             <Link
               key={item.path}
               to={item.path!}
+              onClick={onClose}
               className={`
               mb-2
               flex

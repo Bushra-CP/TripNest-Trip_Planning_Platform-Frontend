@@ -7,6 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./app/store.ts";
 import { injectStore } from "./shared/api/injectStore.ts";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import "@/shared/api/interceptor.ts";
 
 injectStore(store);
 

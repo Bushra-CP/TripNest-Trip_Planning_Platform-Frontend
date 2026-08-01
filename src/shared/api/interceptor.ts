@@ -2,7 +2,10 @@ import axios from "axios";
 import { axiosInstance } from "./axios";
 import { getStore } from "./injectStore";
 import { ROUTES } from "../constants/routes.constants";
-import { clearAuth, setAccessToken } from "@/features/traveler(user)/auth/redux/authSlice";
+import {
+  clearAuth,
+  setAccessToken,
+} from "@/features/traveler(user)/auth/redux/authSlice";
 
 const refreshClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -37,9 +40,12 @@ axiosInstance.interceptors.response.use(
 
       try {
         //Refresh access token
+
         const response = await refreshClient.post(ROUTES.AUTH.REFRESH_TOKEN);
 
-        const newAccessToken = response.data.accessToken;
+        const newAccessToken = response.data.data.accessToken;
+
+        console.log(`new token:${newAccessToken}`);
 
         // Update Redux
         getStore().dispatch(setAccessToken(newAccessToken));

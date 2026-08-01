@@ -3,8 +3,6 @@ import {
   Map,
   Sparkles,
   Edit3,
-  Calendar,
-  Mail,
   TrendingUp,
 } from "lucide-react";
 
@@ -27,7 +25,7 @@ interface StatItem {
   icon: React.ReactNode;
 }
 
-export const UserProfile: React.FC = () => {
+export const Page: React.FC = () => {
   const stats: StatItem[] = [
     {
       label: "Trips Planned",
@@ -58,52 +56,6 @@ export const UserProfile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#f4faff] font-['Plus_Jakarta_Sans',sans-serif] text-[#1a1c1e]">
-      {/* Hero Banner */}
-      <section className="relative">
-        <div className="h-[400px] w-full overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=2069"
-            alt="Munnar Tea Gardens"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-        </div>
-
-        <div className="max-w-6xl mx-auto px-10 relative">
-          <div className="flex flex-col md:flex-row items-end gap-8 -mt-28">
-            <div className="w-56 h-56 rounded-full border-[10px] border-white overflow-hidden shadow-2xl bg-white relative">
-              <img
-                src="https://i.pravatar.cc/400?u=arjun"
-                alt="Arjun Sharma"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <div className="flex-1 pb-4">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                  <h1 className="text-6xl font-black tracking-tight text-white drop-shadow-lg mb-2">
-                    Arjun Sharma
-                  </h1>
-                  <div className="flex flex-wrap items-center gap-6 text-slate-100/90 font-semibold text-sm">
-                    <span className="flex items-center gap-2">
-                      <Mail size={16} /> arjun.s@travelmail.com
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <Calendar size={16} /> Member since: Oct 2023
-                    </span>
-                  </div>
-                </div>
-                <button className="px-10 h-14 bg-[#2e7d32] hover:bg-[#256628] text-white font-black rounded-2xl shadow-xl shadow-[#2e7d32]/30 transition-all flex items-center justify-center gap-3 active:scale-95">
-                  <Edit3 size={20} />
-                  Edit Profile
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Main Content Dashboard */}
       <main className="max-w-7xl mx-auto px-6 md:px-12 py-16 space-y-12">
         {/* Statistics Cards */}
@@ -126,7 +78,7 @@ export const UserProfile: React.FC = () => {
           ))}
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start"> */}
           {/* Personal Information Form */}
           <section className="lg:col-span-2 bg-white rounded-[40px] border border-[#cfdce4]/40 shadow-sm p-8 md:p-12 space-y-10">
             <header className="flex items-center gap-4 border-b border-[#cfdce4]/30 pb-8">
@@ -195,41 +147,7 @@ export const UserProfile: React.FC = () => {
 
           {/* Right Sidebar Widgets */}
           <aside className="space-y-10">
-            {/* Travel Persona Card */}
-            <section className="bg-white rounded-[40px] border border-[#cfdce4]/40 shadow-sm p-10 space-y-8 overflow-hidden relative group">
-              <div className="absolute -top-16 -right-16 w-40 h-40 bg-[#2e7d32]/5 rounded-full blur-3xl group-hover:bg-[#2e7d32]/10 transition-colors" />
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#2e7d32]/10 text-[#2e7d32] flex items-center justify-center">
-                  <Sparkles size={24} />
-                </div>
-                <h3 className="text-2xl font-black tracking-tight">
-                  Travel Persona
-                </h3>
-              </div>
-
-              <p className="text-slate-600 text-base leading-relaxed font-medium">
-                Based on your recent trips to{" "}
-                <span className="font-bold text-[#1a1c1e]">Spiti Valley</span>{" "}
-                and <span className="font-bold text-[#1a1c1e]">Coorg</span>, you
-                are a{" "}
-                <span className="text-[#2e7d32] font-black uppercase tracking-tighter">
-                  Resilient Explorer
-                </span>
-                .
-              </p>
-
-              <div className="space-y-4 pt-2">
-                <div className="flex justify-between items-center text-[12px] font-black text-slate-400 uppercase tracking-widest">
-                  <span>Profile Completion</span>
-                  <span className="text-[#2e7d32] font-black">85%</span>
-                </div>
-                <div className="h-4 w-full bg-[#f8fbf4] rounded-full overflow-hidden border border-[#cfdce4]/20 shadow-inner p-1">
-                  <div className="h-full bg-[#2e7d32] w-[85%] rounded-full relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/30 animate-pulse" />
-                  </div>
-                </div>
-              </div>
-            </section>
+          
 
             {/* AI Call-to-Action Bar */}
             <section className="bg-[#1a1c1e] rounded-[32px] p-8 shadow-2xl relative group overflow-hidden border border-white/5">
@@ -255,7 +173,7 @@ export const UserProfile: React.FC = () => {
               </div>
             </section>
           </aside>
-        </div>
+        {/* </div> */}
       </main>
 
       {/* Site Footer */}
