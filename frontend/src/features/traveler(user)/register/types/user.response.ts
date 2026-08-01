@@ -6,4 +6,5 @@ export interface UserResponse {
   email: string;
   isActive?: boolean;
   role: UserRole;
+  profileImage: string;
 }
