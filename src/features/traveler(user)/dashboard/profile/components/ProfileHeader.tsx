@@ -1,4 +1,4 @@
-import { Camera, Edit3, Mail } from "lucide-react";
+import { Camera, Mail } from "lucide-react";
 import { useSelector } from "react-redux";
 
 import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
@@ -87,27 +87,6 @@ const ProfileHeader = () => {
                 <Calendar size={14} />
                 <span>Member since: Oct 2023</span>
               </div> */}
-
-              <button
-                className="
-          mt-4
-          flex
-          items-center
-          gap-2
-          rounded-lg
-          bg-[#2e7d32]
-          px-4
-          py-2
-          text-sm
-          font-semibold
-          text-white
-          transition
-          hover:bg-[#256628]
-        "
-              >
-                <Edit3 size={15} />
-                Edit Profile
-              </button>
             </div>
           </div>
         </div>
@@ -197,11 +176,6 @@ const ProfileHeader = () => {
                     </span> */}
                   </div>
                 </div>
-
-                <button className="flex h-14 items-center gap-3 rounded-2xl bg-[#2e7d32] px-10 font-black text-white shadow-xl shadow-[#2e7d32]/30">
-                  <Edit3 size={20} />
-                  Edit Profile
-                </button>
               </div>
             </div>
           </div>
