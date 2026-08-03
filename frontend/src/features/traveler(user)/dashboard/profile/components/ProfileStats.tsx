@@ -36,7 +36,7 @@ const ProfileStats = () => {
   ];
 
   return (
-    <section className="hidden md:grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-8">
+    <section className="hidden md:grid grid-cols-5 lg:grid-cols-5 gap-4 md:gap-8">
       {stats.map((stat, index) => (
         <div
           key={index}
@@ -59,8 +59,9 @@ const ProfileStats = () => {
         >
           <div
             className="
+              hidden
+              lg:flex
               mb-4
-              flex
               h-12
               w-12
               items-center
