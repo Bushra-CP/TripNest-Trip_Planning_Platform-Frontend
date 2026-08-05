@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerThunk } from "./registerThunk";
+import { registerThunk } from "./register.thunk";
 
 interface AuthState {
   registerLoading: boolean;

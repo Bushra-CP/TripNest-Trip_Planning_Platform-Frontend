@@ -75,7 +75,7 @@ const ImageCropModal = ({ image, onClose, onCropComplete }: Props) => {
           <button
             disabled={isSaving}
             onClick={handleSave}
-            className="px-5 py-2 rounded-xl bg-green-600 text-white disabled:opacity-50"
+            className="px-5 py-2 rounded-xl bg-[#6c63ff] text-white disabled:opacity-50"
           >
             {isSaving ? "Saving..." : "Save"}
           </button>

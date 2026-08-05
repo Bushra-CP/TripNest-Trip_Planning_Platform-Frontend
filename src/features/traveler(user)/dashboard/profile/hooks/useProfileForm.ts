@@ -13,12 +13,12 @@ import {
   UpdateTravelerProfileThunk,
 } from "../redux/profile.thunk";
 
-import type { UpdateTravelerProfileRequestDto } from "../dto/UpdateTravelerProfileRequestDto";
 import { selectUser } from "../../../auth/redux/authSelectors";
-import type { TravelerProfileResponseDto } from "../dto/TravelerProfileResponseDto";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateTravelerProfileSchema } from "@/features/traveler(user)/auth/update-profile.schema";
+import { updateTravelerProfileSchema } from "@/features/traveler(user)/dashboard/profile/validation/update-profile.schema";
 import { toast } from "sonner";
+import type { TravelerProfileResponse } from "../types/traveler-profile.response";
+import type { UpdateTravelerProfileRequest } from "../types/update-traveler-profile.request";
 
 export const useProfileForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,9 +27,7 @@ export const useProfileForm = () => {
 
   const email = user?.email;
 
-  const [profile, setProfile] = useState<TravelerProfileResponseDto | null>(
-    null,
-  );
+  const [profile, setProfile] = useState<TravelerProfileResponse | null>(null);
 
   /////////////////////////////////////////////////////////////
 
@@ -40,7 +38,7 @@ export const useProfileForm = () => {
     control,
     watch,
     formState: { errors, isSubmitting, isDirty },
-  } = useForm<UpdateTravelerProfileRequestDto>({
+  } = useForm<UpdateTravelerProfileRequest>({
     resolver: zodResolver(updateTravelerProfileSchema),
 
     defaultValues: {
@@ -110,7 +108,7 @@ export const useProfileForm = () => {
 
   /////////////////////////////////////////////////////////////
 
-  const onSubmit = async (data: UpdateTravelerProfileRequestDto) => {
+  const onSubmit = async (data: UpdateTravelerProfileRequest) => {
     try {
       console.log(data);
 

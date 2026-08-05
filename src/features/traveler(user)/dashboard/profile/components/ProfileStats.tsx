@@ -11,27 +11,27 @@ const ProfileStats = () => {
     {
       label: "Trips Planned",
       value: "14",
-      icon: <Map className="text-[#2e7d32]" size={18} />,
+      icon: <Map className="text-[#6c63ff]" size={18} />,
     },
     {
       label: "Trips Completed",
       value: "10",
-      icon: <TrendingUp className="text-[#2e7d32]" size={18} />,
+      icon: <TrendingUp className="text-[#6c63ff]" size={18} />,
     },
     {
       label: "Posts Shared",
       value: "128",
-      icon: <Edit3 className="text-[#2e7d32]" size={18} />,
+      icon: <Edit3 className="text-[#6c63ff]" size={18} />,
     },
     {
       label: "Followers",
       value: "1.2k",
-      icon: <User className="text-[#2e7d32]" size={18} />,
+      icon: <User className="text-[#6c63ff]" size={18} />,
     },
     {
       label: "Following",
       value: "450",
-      icon: <User className="text-[#2e7d32]" size={18} />,
+      icon: <User className="text-[#6c63ff]" size={18} />,
     },
   ];
 
@@ -70,7 +70,7 @@ const ProfileStats = () => {
               bg-[#f8fbf4]
               transition-all
               group-hover:scale-110
-              group-hover:bg-[#2e7d32]/10
+              group-hover:bg-[#6c63ff]/10
             "
           >
             {stat.icon}

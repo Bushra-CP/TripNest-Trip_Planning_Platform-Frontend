@@ -16,8 +16,8 @@ export const loginThunk = createAsyncThunk(
   async (payload: LoginRequest, { rejectWithValue }) => {
     try {
       const response = await authApi.login(payload);
-      console.log(response);
-      console.log(response.data.user);
+      // console.log(response);
+      // console.log(response.data.user);
       return response;
     } catch (error) {
       const err = error as AxiosError<ApiError>;

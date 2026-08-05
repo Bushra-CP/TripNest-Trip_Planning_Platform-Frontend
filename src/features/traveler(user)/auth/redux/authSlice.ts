@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { googleAuthThunk, loginThunk, logoutThunk } from "./authThunk";
 import type { UserResponse } from "../../register/types/user.response";
-import { verifyRegistrationThunk } from "../../register/redux/registerThunk";
+import { verifyRegistrationThunk } from "../../register/redux/register.thunk";
 import { UpdateProfilePictureThunk } from "../../dashboard/profile/redux/profile.thunk";
 
 interface AuthState {

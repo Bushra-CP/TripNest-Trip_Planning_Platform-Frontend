@@ -1,213 +1,226 @@
+import React, { useState, useMemo } from "react";
 import {
-  User,
-  Map,
-  Sparkles,
-  Edit3,
-  Calendar,
-  Mail,
-  TrendingUp,
+  Lock,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  CheckCircle2,
+  Circle,
+  HelpCircle,
+  ShieldCheck,
 } from "lucide-react";
 
 /**
- * TripNest My Profile Page Component (.tsx)
+ * TripNest Reset Password Component
  *
- * A high-fidelity, responsive React component implementing the TripNest profile design.
+ * A high-fidelity reset password screen for a travel planning platform.
  * Features:
- * - Immersive hero profile header with overlapping avatar
- * - Responsive statistics dashboard cards
- * - Comprehensive personal information form
- * - Interactive account dropdown menu with outside-click handling
- * - Mobile-responsive layout (Desktop, Tablet, Mobile)
- * - Built with React, TypeScript, Tailwind CSS, and Lucide Icons
+ * - Clean, minimalist card-based layout with floating secondary card
+ * - Real-time password strength validation (Uppercase, Number, Special Char, Length)
+ * - Immersive background with a soft, misty aesthetic
+ * - Framework: React + Vite + Tailwind CSS + Lucide React
  */
 
-interface StatItem {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-}
+const Page: React.FC = () => {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-export const Page: React.FC = () => {
-  const stats: StatItem[] = [
-    {
-      label: "Trips Planned",
-      value: "14",
-      icon: <Map className="text-[#2e7d32]" size={20} />,
-    },
-    {
-      label: "Trips Completed",
-      value: "10",
-      icon: <TrendingUp className="text-[#2e7d32]" size={20} />,
-    },
-    {
-      label: "Posts Shared",
-      value: "128",
-      icon: <Edit3 className="text-[#2e7d32]" size={20} />,
-    },
-    {
-      label: "Followers",
-      value: "1.2k",
-      icon: <User className="text-[#2e7d32]" size={20} />,
-    },
-    {
-      label: "Following",
-      value: "450",
-      icon: <User className="text-[#2e7d32]" size={20} />,
-    },
-  ];
+  // Password validation requirements logic
+  const requirements = useMemo(
+    () => [
+      { label: "Uppercase", valid: /[A-Z]/.test(password) },
+      { label: "Number", valid: /[0-9]/.test(password) },
+      { label: "Special Char", valid: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
+      { label: "8+ Characters", valid: password.length >= 8 },
+    ],
+    [password],
+  );
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      requirements.every((req) => req.valid) &&
+      password === confirmPassword
+    ) {
+      console.log("Password successfully reset");
+      // API call to update password would go here
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#f4faff] font-['Plus_Jakarta_Sans',sans-serif] text-[#1a1c1e]">
-      {/* Main Content Dashboard */}
-      <main className="max-w-7xl mx-auto px-6 md:px-12 py-16 space-y-12">
-        {/* Statistics Cards */}
-        <section className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-8">
-          {stats.map((stat, i) => (
-            <div
-              key={i}
-              className="bg-white p-8 rounded-[32px] border border-[#cfdce4]/40 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col items-center text-center"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-[#f8fbf4] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#2e7d32]/10 transition-all">
-                {stat.icon}
-              </div>
-              <p className="text-3xl font-black tracking-tight text-[#1a1c1e]">
-                {stat.value}
-              </p>
-              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mt-2">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </section>
+    <div className="min-h-screen bg-gradient-to-br from-[#f4faff] to-[#e9f6fd] flex flex-col items-center justify-center p-6 font-['Plus_Jakarta_Sans',sans-serif] relative overflow-hidden">
+      {/* Background Decor / Gradients */}
+      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-[#2e7d32]/5 to-transparent rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-[#6c63ff]/5 to-transparent rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none" />
 
-        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start"> */}
-          {/* Personal Information Form */}
-          <section className="lg:col-span-2 bg-white rounded-[40px] border border-[#cfdce4]/40 shadow-sm p-8 md:p-12 space-y-10">
-            <header className="flex items-center gap-4 border-b border-[#cfdce4]/30 pb-8">
-              <div className="w-12 h-12 rounded-2xl bg-[#2e7d32]/10 text-[#2e7d32] flex items-center justify-center">
-                <User size={24} />
-              </div>
-              <div>
-                <h3 className="text-2xl font-black tracking-tight">
-                  Personal Information
-                </h3>
-                <p className="text-sm text-slate-400 font-medium">
-                  Update your account details and travel preferences
+      {/* Brand Header */}
+      <div className="flex flex-col items-center gap-2 mb-8 z-10 animate-in fade-in slide-in-from-top-4 duration-700">
+        <div className="w-12 h-12 bg-[#2e7d32] rounded-xl flex items-center justify-center shadow-lg shadow-[#2e7d32]/20">
+          <ShieldCheck className="text-white" size={24} />
+        </div>
+        <h1 className="text-3xl font-black text-[#2e7d32] tracking-tighter">
+          TripNest
+        </h1>
+        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">
+          Secure Your Identity
+        </p>
+      </div>
+
+      <div className="relative w-full max-w-[1100px] h-[600px] flex items-center justify-center z-10">
+        {/* Main Reset Card */}
+        <div className="relative z-20 w-full max-w-[480px] bg-white rounded-[32px] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white animate-in zoom-in-95 duration-500">
+          <header className="mb-8">
+            <h2 className="text-xl font-bold text-gray-900 mb-1">
+              New Password
+            </h2>
+            <p className="text-gray-500 text-xs font-medium">
+              Create a new secure password for your account.
+            </p>
+          </header>
+          <div className="relative z-20 w-full max-w-[480px]">
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {/* New Password Input */}
+              <div className="space-y-2">
+                <label className="text-[11px] font-bold text-gray-700 uppercase tracking-widest block ml-1">
+                  New Password
+                </label>
+                <div className="relative group">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-400"
+                    required
+                  />
+                  <Lock
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2e7d32] transition-colors"
+                    size={20}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+                <p className="text-[10px] text-gray-400 ml-1 italic">
+                  Must be at least 8 characters long.
                 </p>
               </div>
-            </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
-              <div className="space-y-3">
-                <label className="text-[12px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                  Full Name
+              {/* Confirm Password Input */}
+              <div className="space-y-2">
+                <label className="text-[11px] font-bold text-gray-700 uppercase tracking-widest block ml-1">
+                  Confirm New Password
                 </label>
-                <input
-                  type="text"
-                  defaultValue="Arjun Sharma"
-                  className="w-full h-16 px-6 bg-[#f8fbf4] border border-[#cfdce4]/40 rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none font-bold text-lg"
-                />
-              </div>
-              <div className="space-y-3">
-                <label className="text-[12px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  defaultValue="arjun_explorer"
-                  className="w-full h-16 px-6 bg-[#f8fbf4] border border-[#cfdce4]/40 rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none font-bold text-lg"
-                />
-              </div>
-              <div className="space-y-3">
-                <label className="text-[12px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  defaultValue="arjun.s@travelmail.com"
-                  className="w-full h-16 px-6 bg-[#f8fbf4] border border-[#cfdce4]/40 rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none font-bold text-lg"
-                />
-              </div>
-              <div className="space-y-3">
-                <label className="text-[12px] font-black text-slate-500 uppercase tracking-widest ml-1">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  defaultValue="+91 98765 43210"
-                  className="w-full h-16 px-6 bg-[#f8fbf4] border border-[#cfdce4]/40 rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none font-bold text-lg"
-                />
-              </div>
-            </div>
-
-            <div className="pt-6">
-              <button className="w-full h-16 bg-white border-2 border-[#2e7d32] text-[#2e7d32] font-black text-lg rounded-2xl hover:bg-[#2e7d32] hover:text-white transition-all active:scale-95 shadow-md">
-                Save Profile Changes
-              </button>
-            </div>
-          </section>
-
-          {/* Right Sidebar Widgets */}
-          <aside className="space-y-10">
-          
-
-            {/* AI Call-to-Action Bar */}
-            <section className="bg-[#1a1c1e] rounded-[32px] p-8 shadow-2xl relative group overflow-hidden border border-white/5">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#2e7d32]/20 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
-              <div className="flex items-center justify-between gap-6 relative z-10">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/10 group-hover:scale-110 transition-transform">
-                    <Sparkles className="text-white" size={28} />
-                  </div>
-                  <div>
-                    <p className="text-white font-black text-lg leading-tight">
-                      Ready for your next trip?
-                    </p>
-                    <p className="text-white/40 text-[11px] font-black uppercase tracking-widest mt-1.5 flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 bg-[#2e7d32] rounded-full animate-pulse" />
-                      AI Powered Planner
-                    </p>
-                  </div>
+                <div className="relative group">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-400"
+                    required
+                  />
+                  <Lock
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2e7d32] transition-colors"
+                    size={20}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff size={20} />
+                    ) : (
+                      <Eye size={20} />
+                    )}
+                  </button>
                 </div>
-                <button className="px-8 h-12 bg-[#2e7d32] hover:bg-[#256628] text-white text-xs font-black rounded-full transition-all active:scale-95 shadow-lg shadow-black/20 uppercase tracking-widest">
-                  Plan Now
-                </button>
               </div>
-            </section>
-          </aside>
-        {/* </div> */}
-      </main>
 
-      {/* Site Footer */}
-      <footer className="py-16 border-t border-[#cfdce4]/30 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-10">
-          <div className="flex flex-col items-center md:items-start gap-2">
-            <div className="text-2xl font-black text-[#2e7d32] tracking-tighter uppercase">
-              TripNest AI
-            </div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-              Exploring the heart of Bharat
-            </p>
+              {/* Requirements Grid */}
+              <div className="grid grid-cols-2 gap-y-3 pt-2">
+                {requirements.map((req, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    {req.valid ? (
+                      <CheckCircle2 size={16} className="text-[#2e7d32]" />
+                    ) : (
+                      <Circle size={16} className="text-gray-300" />
+                    )}
+                    <span
+                      className={`text-xs font-semibold ${req.valid ? "text-gray-900" : "text-gray-400"}`}
+                    >
+                      {req.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full h-14 bg-[#2e7d32] hover:bg-[#256628] active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-[#2e7d32]/20 transition-all flex items-center justify-center gap-2 mt-4"
+              >
+                Update Password
+                <ArrowRight size={20} />
+              </button>
+            </form>
           </div>
-
-          <div className="flex flex-wrap justify-center items-center gap-10 text-[12px] font-black text-slate-500 uppercase tracking-widest">
-            <button className="hover:text-[#2e7d32] transition-colors">
-              Privacy Policy
+          <div className="mt-8 pt-6 border-t border-gray-100 flex justify-center">
+            <button className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-[#2e7d32] transition-colors">
+              <HelpCircle size={18} />
+              Need help with your account?
             </button>
-            <button className="hover:text-[#2e7d32] transition-colors">
-              Terms of Service
-            </button>
-            <button className="hover:text-[#2e7d32] transition-colors">
-              Help Center
-            </button>
-            {/* <button className="hover:text-[#2e7d32] transition-colors">Safety Guidelines</button> */}
-          </div>
-
-          <div className="text-[11px] font-black text-slate-300 uppercase tracking-[0.4em] text-center">
-            &copy; 2024 Exploring Bharat
           </div>
         </div>
-      </footer>
+
+        {/* Floating Side Card */}
+        <div className="hidden lg:block absolute right-20 top-1/2 -translate-y-1/2 z-10">
+          <div className="w-[240px] h-[360px] rotate-9 hover:rotate-0 transition-transform duration-500">
+            <div className="absolute inset-0 bg-white rounded-[32px] shadow-2xl border border-white">
+              <div className="h-full w-full rounded-2xl overflow-hidden relative group">
+                <img
+                  src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=600"
+                  alt="Kerala Tea Gardens"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                <div className="absolute bottom-6 left-6 right-6">
+                  <h3 className="text-white font-black text-xl leading-tight mb-2">
+                    Security at every step.
+                  </h3>
+
+                  <p className="text-white/80 text-xs">
+                    Explore Kerala with peace of mind knowing your data is
+                    protected.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer Branding */}
+      <div className="mt-auto pt-12 pb-6 z-10 text-center">
+        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-2">
+          Secure Your Journey <span className="text-gray-300">•</span> TripNest
+          AI
+        </p>
+        <p className="text-[9px] text-gray-300 mt-2">
+          © 2024 TripNest Travel Technologies. All rights reserved.
+        </p>
+      </div>
     </div>
   );
 };
+
+export default Page;

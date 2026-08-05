@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { AppDispatch } from "../../../../app/store";
-import { registerThunk } from "../redux/registerThunk";
-import { selectRegisterLoading } from "../redux/registerSelectors";
+import { registerThunk } from "../redux/register.thunk";
+import { selectRegisterLoading } from "../redux/register.selectors";
 import { toast } from "sonner";
 
 export const useRegisterForm = () => {

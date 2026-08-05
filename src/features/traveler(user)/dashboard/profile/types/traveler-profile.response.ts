@@ -2,7 +2,7 @@ export interface ISocialPresence {
   url: string;
 }
 
-export interface TravelerProfileResponseDto {
+export interface TravelerProfileResponse {
   data: {
     fullName: string;
 

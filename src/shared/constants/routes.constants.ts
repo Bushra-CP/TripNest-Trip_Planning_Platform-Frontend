@@ -21,4 +21,5 @@ export const SERVER_ROUTES = {
   UPDATE_PROFILE_IMAGE: "/update-profile-image",
   GET_PROFILE: "/get-profile",
   UPDATE_PROFILE: "/update-profile",
+  CHANGE_PASSWORD: "/change-password",
 } as const;
