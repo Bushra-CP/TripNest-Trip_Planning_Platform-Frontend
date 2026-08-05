@@ -57,7 +57,7 @@ const ProfileHeader = () => {
           items-center
           justify-center
           rounded-full
-          bg-[#2e7d32]
+          bg-[#6c63ff]
           text-white
           shadow-lg
         "
@@ -138,10 +138,10 @@ const ProfileHeader = () => {
               items-center
               justify-center
               rounded-full
-              bg-[#2e7d32]
+              bg-[#6c63ff]
               text-white
               shadow-xl
-              hover:bg-[#256628]
+              hover:bg-[#5a52d5]
             "
                 >
                   <Camera size={20} />

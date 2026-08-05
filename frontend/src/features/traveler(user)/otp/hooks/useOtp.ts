@@ -4,18 +4,18 @@ import type { AppDispatch } from "../../../../app/store";
 import {
   resendOtpThunk,
   verifyRegistrationThunk,
-} from "../../register/redux/registerThunk";
+} from "../../register/redux/register.thunk";
 import { useNavigate } from "react-router-dom";
 
 import { toast } from "sonner";
 import {
   selectResendOtpLoading,
   selectVerifyOtpLoading,
-} from "../redux/otpSelectors";
+} from "../redux/otp.selectors";
 import {
   resendResetOtpThunk,
   verifyResetOtpThunk,
-} from "../../forgotPassword/redux/forgot-password.thunk";
+} from "../../forgot-password/redux/forgot-password.thunk";
 
 export interface OtpProps {
   userId: string;

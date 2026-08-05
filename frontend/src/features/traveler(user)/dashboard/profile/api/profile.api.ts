@@ -1,26 +1,26 @@
 import { axiosInstance } from "@/shared/api/axios";
-import type { UpdateProfilePictureRequestDto } from "../dto/UpdateProfilePictureRequestDto";
-import type { UpdateProfilePictureResponseDto } from "../dto/UpdateProfilePictureResponseDto";
 import { SERVER_ROUTES } from "@/shared/constants/routes.constants";
-import type { TravelerProfileResponseDto } from "../dto/TravelerProfileResponseDto";
+import type { UpdateProfilePictureRequest } from "../types/update-profilePicture.request";
+import type { UpdateProfilePictureResponse } from "../types/update-profilePicture.response";
+import type { TravelerProfileResponse } from "../types/traveler-profile.response";
 import type {
-  UpdateTravelerProfileRequestDto,
-  UpdateTravelerProfileResponseDto,
-} from "../dto/UpdateTravelerProfileRequestDto";
+  UpdateTravelerProfileRequest,
+  UpdateTravelerProfileResponse,
+} from "../types/update-traveler-profile.request";
 
 export const profileApi = {
   /////////////////////////////////////////////////////////////
   //UPDATE PROFILE IMAGE
   async updateProfileImage(
-    payload: UpdateProfilePictureRequestDto,
-  ): Promise<UpdateProfilePictureResponseDto> {
+    payload: UpdateProfilePictureRequest,
+  ): Promise<UpdateProfilePictureResponse> {
     const formData = new FormData();
 
     if (payload.profileImage) {
       formData.append("profileImage", payload.profileImage);
     }
 
-    const response = await axiosInstance.patch<UpdateProfilePictureResponseDto>(
+    const response = await axiosInstance.patch<UpdateProfilePictureResponse>(
       SERVER_ROUTES.UPDATE_PROFILE_IMAGE,
       formData,
     );
@@ -32,8 +32,8 @@ export const profileApi = {
 
   /////////////////////////////////////////////////////////////
   //GET USER PROFILE TO SHOW ON PROFILE PAGE
-  async getProfile(): Promise<TravelerProfileResponseDto> {
-    const response = await axiosInstance.get<TravelerProfileResponseDto>(
+  async getProfile(): Promise<TravelerProfileResponse> {
+    const response = await axiosInstance.get<TravelerProfileResponse>(
       SERVER_ROUTES.GET_PROFILE,
     );
 
@@ -45,13 +45,12 @@ export const profileApi = {
   /////////////////////////////////////////////////////////////
   //UPDATE PROFILE
   async updateProfile(
-    payload: UpdateTravelerProfileRequestDto,
-  ): Promise<UpdateTravelerProfileResponseDto> {
-    const response =
-      await axiosInstance.patch<UpdateTravelerProfileResponseDto>(
-        SERVER_ROUTES.UPDATE_PROFILE,
-        payload,
-      );
+    payload: UpdateTravelerProfileRequest,
+  ): Promise<UpdateTravelerProfileResponse> {
+    const response = await axiosInstance.patch<UpdateTravelerProfileResponse>(
+      SERVER_ROUTES.UPDATE_PROFILE,
+      payload,
+    );
 
     return response.data;
   },

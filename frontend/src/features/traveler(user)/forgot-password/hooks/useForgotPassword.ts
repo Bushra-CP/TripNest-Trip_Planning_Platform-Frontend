@@ -8,7 +8,7 @@ import type { AppDispatch } from "../../../../app/store";
 import {
   forgotPasswordSchema,
   type ForgotPasswordFormData,
-} from "../validations/forgotPassword.schema";
+} from "../validations/forgot-password.schema";
 import { forgotPasswordThunk } from "../redux/forgot-password.thunk";
 import { selectForgotPasswordLoading } from "../redux/forgot-password.selector";
 

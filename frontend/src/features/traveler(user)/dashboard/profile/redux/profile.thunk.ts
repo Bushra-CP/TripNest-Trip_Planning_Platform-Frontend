@@ -1,14 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { UpdateProfilePictureRequestDto } from "../dto/UpdateProfilePictureRequestDto";
 import { profileApi } from "../api/profile.api";
-import type { UpdateTravelerProfileRequestDto } from "../dto/UpdateTravelerProfileRequestDto";
+import type { UpdateProfilePictureRequest } from "../types/update-profilePicture.request";
+import type { UpdateTravelerProfileRequest } from "../types/update-traveler-profile.request";
 
 /////////////////////////////////////////////////////////////
 //UPDATE PROFILE IMAGE
 export const UpdateProfilePictureThunk = createAsyncThunk(
   "traveler/updateProfile",
 
-  async (payload: UpdateProfilePictureRequestDto, { rejectWithValue }) => {
+  async (payload: UpdateProfilePictureRequest, { rejectWithValue }) => {
     try {
       const res = await profileApi.updateProfileImage(payload);
 
@@ -41,7 +41,7 @@ export const GetTravelerProfileThunk = createAsyncThunk(
 export const UpdateTravelerProfileThunk = createAsyncThunk(
   "profile/update",
 
-  async (payload: UpdateTravelerProfileRequestDto, { rejectWithValue }) => {
+  async (payload: UpdateTravelerProfileRequest, { rejectWithValue }) => {
     try {
       const res = await profileApi.updateProfile(payload);
       // console.log(res.data.message);
