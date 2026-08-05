@@ -57,10 +57,10 @@ const UserHeaderActions = () => {
             <img
               src={user!.profileImage}
               alt="profile"
-              className="h-10 w-10 rounded-full border-2 border-green-600 object-cover"
+              className="h-10 w-10 rounded-full border-2 border-[#6c63ff] object-cover"
             />
           ) : (
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-green-600 bg-green-600 text-lg font-bold text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#6c63ff] bg-[#6c63ff] text-lg font-bold text-white">
               {user?.fullName?.[0]?.toUpperCase() || "U"}
             </div>
           )}

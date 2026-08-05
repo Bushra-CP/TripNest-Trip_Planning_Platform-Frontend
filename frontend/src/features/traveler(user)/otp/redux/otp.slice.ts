@@ -2,11 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   resendOtpThunk,
   verifyRegistrationThunk,
-} from "../../register/redux/registerThunk";
+} from "../../register/redux/register.thunk";
 import {
   resendResetOtpThunk,
   verifyResetOtpThunk,
-} from "../../forgotPassword/redux/forgot-password.thunk";
+} from "../../forgot-password/redux/forgot-password.thunk";
 
 interface OtpState {
   verifyOtpLoading: boolean;
