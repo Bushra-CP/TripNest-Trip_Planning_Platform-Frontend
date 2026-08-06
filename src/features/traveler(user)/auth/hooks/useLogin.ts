@@ -7,6 +7,7 @@ import type { AppDispatch } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { selectAuthLoading } from "../redux/authSelectors";
+import { useState } from "react";
 
 export const useLogin = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,6 +15,8 @@ export const useLogin = () => {
   const isLoading = useSelector(selectAuthLoading);
 
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -29,6 +32,10 @@ export const useLogin = () => {
 
     mode: "all",
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const onSubmit = async (values: LoginFormData) => {
     try {
@@ -49,5 +56,7 @@ export const useLogin = () => {
     errors,
     onSubmit,
     isLoading,
+    showPassword,
+    togglePasswordVisibility,
   };
 };

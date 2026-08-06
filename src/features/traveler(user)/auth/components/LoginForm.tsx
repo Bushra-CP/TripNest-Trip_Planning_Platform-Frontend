@@ -1,12 +1,17 @@
 import { Eye, EyeOff, ArrowRight, User, LoaderCircle } from "lucide-react";
-import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import GoogleButton from "./GoogleButton";
 
 const LoginForm = () => {
-  const { register, handleSubmit, errors, onSubmit, isLoading } = useLogin();
-
-  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    errors,
+    onSubmit,
+    isLoading,
+    showPassword,
+    togglePasswordVisibility,
+  } = useLogin();
 
   return (
     <>
@@ -29,7 +34,7 @@ const LoginForm = () => {
           <div className="relative group">
             <input
               {...register("email")}
-              placeholder="Enter your email or phone"
+              placeholder="Enter your email"
               className="w-full h-14 pl-4 pr-12 bg-[#f8fbf4] border rounded-2xl border-[#cfdce4] focus:border-[#6c63ff] focus:ring-4 focus:ring-[#6c63ff]/10 outline-none"
             />
 
@@ -67,7 +72,7 @@ const LoginForm = () => {
 
             <button
               type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
+              onClick={togglePasswordVisibility}
               className="absolute right-4 top-1/2 -translate-y-1/2"
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}

@@ -6,7 +6,7 @@ import RegisterPage from "@/features/traveler(user)/register/pages/RegisterPage"
 import LoginPage from "@/features/traveler(user)/auth/pages/LoginPage";
 import HomePage from "@/features/traveler(user)/home/pages/HomePage";
 import ForgotPasswordPage from "@/features/traveler(user)/forgot-password/pages/ForgotPasswordPage";
-import ProtectedRoute from "./ProtectedRoute";
+// import ProtectedRoute from "./ProtectedRoute";
 import UnauthorizedPage from "@/features/traveler(user)/error-pages/pages/UnauthorizedPage";
 import NotFoundPage from "@/features/traveler(user)/error-pages/pages/NotFoundPage";
 import ResetPasswordPage from "@/features/traveler(user)/forgot-password/pages/ResetPasswordPage";
@@ -16,6 +16,7 @@ import PrivacySettingsPage from "@/features/traveler(user)/dashboard/privacy-set
 import Page from "@/shared/layouts/page";
 import ChangePasswordPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/ChangePasswordPage";
 import ChangeEmailPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/ChangeEmailPage";
+import AdminLoginPage from "@/features/admin/login/pages/AdminLoginPage";
 // import PublicRoute from "./PublicRoute";
 // import { UserProfile } from "@/features/traveler(user)/dashboard/profile/pages/UserProfile";
 
@@ -50,7 +51,8 @@ export default function AppRoutes() {
           {/* ></Route> */}
 
           {/* Admin Routes */}
-          <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}></Route>
+          {/* <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}></Route> */}
+          <Route path="/admin/login" element={<AdminLoginPage />} />
 
           {/* Forbidden */}
           <Route path="/403" element={<UnauthorizedPage />} />
