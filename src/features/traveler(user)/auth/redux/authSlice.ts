@@ -3,6 +3,7 @@ import { googleAuthThunk, loginThunk, logoutThunk } from "./authThunk";
 import type { UserResponse } from "../../register/types/user.response";
 import { verifyRegistrationThunk } from "../../register/redux/register.thunk";
 import { UpdateProfilePictureThunk } from "../../dashboard/profile/redux/profile.thunk";
+import { verifyChangeEmailOtpThunk } from "../../dashboard/privacy-settings/redux/privacy-settings.thunk";
 
 interface AuthState {
   user: UserResponse | null;
@@ -111,6 +112,13 @@ const authSlice = createSlice({
       .addCase(UpdateProfilePictureThunk.fulfilled, (state, action) => {
         if (state.user) {
           state.user.profileImage = action.payload.profileImage;
+        }
+      })
+
+      //UPDATE EMAIL AFTER - CHANGE EMAIL
+      .addCase(verifyChangeEmailOtpThunk.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user.email = action.payload.email;
         }
       });
   },

@@ -1,18 +1,20 @@
-import { useCallback } from "react";
+import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const usePrivacySettings = () => {
-  // Replace with Redux selector/API response
-  const email = "arjun.malhotra@travelmail.com";
+  const user = useSelector(selectUser);
+  const email = user?.email;
 
-  const onChangeEmail = useCallback(() => {
-    // navigate("/settings/change-email");
-    console.log("Change Email");
-  }, []);
+  const navigate = useNavigate();
 
-  const onChangePassword = useCallback(() => {
-    // navigate("/settings/change-password");
-    console.log("Change Password");
-  }, []);
+  const onChangeEmail = () => {
+    navigate("/change-email");
+  };
+
+  const onChangePassword = () => {
+    navigate("/change-password");
+  };
 
   return {
     email,

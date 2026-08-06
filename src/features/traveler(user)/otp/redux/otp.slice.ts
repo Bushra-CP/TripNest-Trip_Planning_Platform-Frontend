@@ -7,6 +7,10 @@ import {
   resendResetOtpThunk,
   verifyResetOtpThunk,
 } from "../../forgot-password/redux/forgot-password.thunk";
+import {
+  resendChangeEmailOtpThunk,
+  verifyChangeEmailOtpThunk,
+} from "../../dashboard/privacy-settings/redux/privacy-settings.thunk";
 
 interface OtpState {
   verifyOtpLoading: boolean;
@@ -81,6 +85,34 @@ const otpSlice = createSlice({
         state.resendOtpLoading = false;
       })
       .addCase(resendResetOtpThunk.rejected, (state, action) => {
+        state.resendOtpLoading = false;
+        state.error = (action.payload as string) ?? "Unable to resend OTP";
+      })
+
+      // VERIFY CHANGE EMAIL OTP
+
+      .addCase(verifyChangeEmailOtpThunk.pending, (state) => {
+        state.verifyOtpLoading = true;
+        state.error = null;
+      })
+      .addCase(verifyChangeEmailOtpThunk.fulfilled, (state) => {
+        state.verifyOtpLoading = false;
+      })
+      .addCase(verifyChangeEmailOtpThunk.rejected, (state, action) => {
+        state.verifyOtpLoading = false;
+        state.error = (action.payload as string) ?? "OTP verification failed";
+      })
+
+      // RESEND CHANGE EMAIL OTP
+
+      .addCase(resendChangeEmailOtpThunk.pending, (state) => {
+        state.resendOtpLoading = true;
+        state.error = null;
+      })
+      .addCase(resendChangeEmailOtpThunk.fulfilled, (state) => {
+        state.resendOtpLoading = false;
+      })
+      .addCase(resendChangeEmailOtpThunk.rejected, (state, action) => {
         state.resendOtpLoading = false;
         state.error = (action.payload as string) ?? "Unable to resend OTP";
       });

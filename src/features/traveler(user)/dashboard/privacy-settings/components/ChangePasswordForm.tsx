@@ -1,9 +1,4 @@
-import {
-  ArrowLeft,
-  Eye,
-  EyeOff,
-  Lock,
-} from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Lock } from "lucide-react";
 import { useChangePassword } from "../hooks/useChangePassword";
 
 const ChangePasswordForm = () => {
@@ -22,14 +17,13 @@ const ChangePasswordForm = () => {
     toggleNewPassword,
     toggleConfirmPassword,
 
-
     handleBack,
   } = useChangePassword();
 
   return (
-    <div className="max-w-[1000px] w-full flex flex-col lg:flex-row items-center justify-center gap-12 z-10">
+    <div className="max-w-250 w-full flex flex-col lg:flex-row items-center justify-center gap-12 z-10">
       {/* Main Card */}
-      <div className="max-w-[480px] w-full bg-white rounded-[32px] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white animate-in zoom-in-95 duration-500">
+      <div className="max-w-120 w-full bg-white rounded-4xl p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white animate-in zoom-in-95 duration-500">
         <header className="mb-8 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-1 tracking-tight">
             Change Password
@@ -52,7 +46,7 @@ const ChangePasswordForm = () => {
                 type={showCurrent ? "text" : "password"}
                 placeholder="Enter current password"
                 {...register("currentPassword")}
-                className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none"
+                className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none"
               />
 
               <Lock
@@ -87,7 +81,7 @@ const ChangePasswordForm = () => {
                 type={showNew ? "text" : "password"}
                 placeholder="Enter new password"
                 {...register("newPassword")}
-                className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none"
+                className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none"
               />
 
               <Lock
@@ -122,7 +116,7 @@ const ChangePasswordForm = () => {
                 type={showConfirm ? "text" : "password"}
                 placeholder="Confirm new password"
                 {...register("confirmPassword")}
-                className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#2e7d32] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none"
+                className="w-full h-14 pl-12 pr-12 bg-[#f8fbf4] border border-[#cfdce4] rounded-2xl focus:border-[#6c63ff] focus:ring-4 focus:ring-[#2e7d32]/10 transition-all outline-none"
               />
 
               <Lock
@@ -146,13 +140,11 @@ const ChangePasswordForm = () => {
             )}
           </div>
 
-
-
           {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full h-14 bg-[#2e7d32] hover:bg-[#256628] disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg transition-all"
+            className="w-full h-14 bg-[#6c63ff] hover:bg-[#534afe] disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg transition-all"
           >
             {isSubmitting ? "Updating..." : "Update Password"}
           </button>
@@ -163,41 +155,12 @@ const ChangePasswordForm = () => {
           <button
             type="button"
             onClick={handleBack}
-            className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-[#2e7d32] transition-colors"
+            className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-[#6c63ff] transition-colors"
           >
             <ArrowLeft size={18} />
             Back to Account Settings
           </button>
         </div>
-      </div>
-
-      {/* Image Card */}
-      <div className="hidden lg:block relative w-[320px] h-[440px] rotate-3 hover:rotate-0 transition-transform duration-500">
-        <div className="absolute inset-0 bg-white rounded-[32px] p-4 shadow-2xl border border-white">
-          <div className="h-full w-full rounded-2xl overflow-hidden relative group">
-            <img
-              src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=600"
-              alt="Kerala Tea Gardens"
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-            <div className="absolute bottom-6 left-6 right-6">
-              <h3 className="text-white font-black text-xl leading-tight mb-2 uppercase tracking-tight">
-                Security at every step.
-              </h3>
-
-              <p className="text-white/80 text-xs font-medium">
-                Explore Kerala with peace of mind knowing your data is
-                protected.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute -top-6 -right-6 w-12 h-12 bg-amber-400/20 rounded-full blur-xl" />
-        <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-[#2e7d32]/10 rounded-full blur-2xl" />
       </div>
     </div>
   );

@@ -22,4 +22,7 @@ export const SERVER_ROUTES = {
   GET_PROFILE: "/get-profile",
   UPDATE_PROFILE: "/update-profile",
   CHANGE_PASSWORD: "/change-password",
+  CHANGE_EMAIL: "/change-email",
+  VERIFY_CHANGE_EMAIL_OTP: "/verify-change-email-otp",
+  RESEND_CHANGE_EMAIL_OTP: "/resend-change-email-otp",
 } as const;

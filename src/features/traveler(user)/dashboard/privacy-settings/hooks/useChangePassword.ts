@@ -8,7 +8,7 @@ import {
 } from "../validation/change-password.schema";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/app/store";
-import { changePasswordThunk } from "../redux/change-password.thunk";
+import { changePasswordThunk } from "../redux/privacy-settings.thunk";
 import { toast } from "sonner";
 
 export const useChangePassword = () => {
@@ -56,7 +56,7 @@ export const useChangePassword = () => {
   };
 
   const handleBack = () => {
-    navigate(-1);
+    navigate("/settings");
   };
 
   return {

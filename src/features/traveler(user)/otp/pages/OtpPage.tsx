@@ -9,12 +9,15 @@ const OtpPage: React.FC = () => {
 
   const pendingRegistration = sessionStorage.getItem("pendingRegistration");
   const pendingPasswordReset = sessionStorage.getItem("pendingPasswordReset");
+  const pendingChangeEmail = sessionStorage.getItem("pendingChangeEmail");
 
   const pendingData: PendingOtpData | null = pendingRegistration
     ? JSON.parse(pendingRegistration)
     : pendingPasswordReset
       ? JSON.parse(pendingPasswordReset)
-      : null;
+      : pendingChangeEmail
+        ? JSON.parse(pendingChangeEmail)
+        : null;
 
   useEffect(() => {
     if (!pendingData) {
