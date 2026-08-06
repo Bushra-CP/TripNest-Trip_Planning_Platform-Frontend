@@ -15,6 +15,7 @@ import UserLayout from "@/layouts/UserLayout";
 import PrivacySettingsPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/PrivacySettingsPage";
 import Page from "@/shared/layouts/page";
 import ChangePasswordPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/ChangePasswordPage";
+import ChangeEmailPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/ChangeEmailPage";
 // import PublicRoute from "./PublicRoute";
 // import { UserProfile } from "@/features/traveler(user)/dashboard/profile/pages/UserProfile";
 
@@ -39,7 +40,8 @@ export default function AppRoutes() {
             <Route path="/settings" element={<PrivacySettingsPage />} />
           </Route>
 
-          <Route path="/change-password" element={<ChangePasswordPage/>}/>
+          <Route path="/change-password" element={<ChangePasswordPage />} />
+          <Route path="/change-email" element={<ChangeEmailPage />} />
 
           {/* Traveler Routes */}
           {/* <Route

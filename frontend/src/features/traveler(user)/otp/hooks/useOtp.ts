@@ -16,6 +16,10 @@ import {
   resendResetOtpThunk,
   verifyResetOtpThunk,
 } from "../../forgot-password/redux/forgot-password.thunk";
+import {
+  resendChangeEmailOtpThunk,
+  verifyChangeEmailOtpThunk,
+} from "../../dashboard/privacy-settings/redux/privacy-settings.thunk";
 
 export interface OtpProps {
   userId: string;
@@ -43,14 +47,23 @@ export const useOtp = ({ userId, email }: OtpProps) => {
 
   const registration = sessionStorage.getItem("pendingRegistration");
   const passwordReset = sessionStorage.getItem("pendingPasswordReset");
+  const changeEmail = sessionStorage.getItem("pendingChangeEmail");
 
-  const isRegisterFlow = Boolean(registration);
+  const flow = registration
+    ? "register"
+    : passwordReset
+      ? "resetPassword"
+      : changeEmail
+        ? "changeEmail"
+        : null;
 
   const pendingData: PendingOtpData | null = registration
     ? JSON.parse(registration)
     : passwordReset
       ? JSON.parse(passwordReset)
-      : null;
+      : changeEmail
+        ? JSON.parse(changeEmail)
+        : null;
 
   /* ----------------------------
       TIMER
@@ -120,34 +133,59 @@ export const useOtp = ({ userId, email }: OtpProps) => {
     if (otpValue.length !== 6) return;
 
     try {
-      if (isRegisterFlow) {
-        const data = await dispatch(
-          verifyRegistrationThunk({
-            userId,
-            otp: otpValue,
-          }),
-        ).unwrap();
+      switch (flow) {
+        case "register": {
+          const data = await dispatch(
+            verifyRegistrationThunk({
+              userId,
+              otp: otpValue,
+            }),
+          ).unwrap();
 
-        sessionStorage.removeItem("pendingRegistration");
+          sessionStorage.removeItem("pendingRegistration");
 
-        toast.success(data.data.message);
+          toast.success(data.data.message);
 
-        navigate("/");
-      } else {
-        const response = await dispatch(
-          verifyResetOtpThunk({
-            email,
-            otp: otpValue,
-          }),
-        ).unwrap();
+          navigate("/");
 
-        sessionStorage.removeItem("pendingPasswordReset");
+          break;
+        }
 
-        navigate("/reset-password", {
-          state: {
-            resetToken: response.resetToken,
-          },
-        });
+        case "resetPassword": {
+          const response = await dispatch(
+            verifyResetOtpThunk({
+              email,
+              otp: otpValue,
+            }),
+          ).unwrap();
+
+          sessionStorage.removeItem("pendingPasswordReset");
+
+          navigate("/reset-password", {
+            state: {
+              resetToken: response.resetToken,
+            },
+          });
+
+          break;
+        }
+
+        case "changeEmail": {
+          await dispatch(
+            verifyChangeEmailOtpThunk({
+              email,
+              otp: otpValue,
+            }),
+          ).unwrap();
+
+          sessionStorage.removeItem("pendingChangeEmail");
+
+          toast.success("Email updated successfully.");
+
+          navigate("/settings");
+
+          break;
+        }
       }
     } catch (error) {
       toast.error(error as string);
@@ -161,18 +199,25 @@ export const useOtp = ({ userId, email }: OtpProps) => {
   ----------------------------- */
   const handleResend = async (): Promise<void> => {
     try {
-      if (isRegisterFlow) {
-        await dispatch(
-          resendOtpThunk({
-            userId,
-          }),
-        ).unwrap();
-      } else {
-        await dispatch(
-          resendResetOtpThunk({
-            email,
-          }),
-        ).unwrap();
+      switch (flow) {
+        case "register":
+          await dispatch(resendOtpThunk({ userId })).unwrap();
+
+          break;
+
+        case "resetPassword":
+          await dispatch(resendResetOtpThunk({ email })).unwrap();
+
+          break;
+
+        case "changeEmail":
+          await dispatch(
+            resendChangeEmailOtpThunk({
+              email,
+            }),
+          ).unwrap();
+
+          break;
       }
 
       setOtp(["", "", "", "", "", ""]);
