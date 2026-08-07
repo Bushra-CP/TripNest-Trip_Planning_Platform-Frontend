@@ -1,10 +1,10 @@
+import { useSelector } from "react-redux";
+import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
 import SearchBar from "./SearchBar";
-import GuestHeaderActions from "./GuestHeaderActions";
 import UserHeaderActions from "./UserHeaderActions";
-import { useSelector } from "react-redux";
-import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
+import GuestHeaderActions from "./GuestHeaderActions";
 
 const AppHeader = () => {
   const user = useSelector(selectUser);

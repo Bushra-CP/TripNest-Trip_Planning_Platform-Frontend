@@ -10,17 +10,6 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-/**
- * TripNest Reset Password Component
- *
- * A high-fidelity reset password screen for a travel planning platform.
- * Features:
- * - Clean, minimalist card-based layout with floating secondary card
- * - Real-time password strength validation (Uppercase, Number, Special Char, Length)
- * - Immersive background with a soft, misty aesthetic
- * - Framework: React + Vite + Tailwind CSS + Lucide React
- */
-
 const Page: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
