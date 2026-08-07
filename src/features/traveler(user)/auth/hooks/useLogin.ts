@@ -42,7 +42,12 @@ export const useLogin = () => {
       const response = await dispatch(loginThunk(values)).unwrap();
 
       toast.success(response.data.message);
-      navigate("/");
+
+      if (response.data.user.role == "ADMIN") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
 

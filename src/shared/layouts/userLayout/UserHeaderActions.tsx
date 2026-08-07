@@ -1,8 +1,8 @@
 import { Bell, ChevronDown } from "lucide-react";
-import AccountDropdown from "./AccountDropdown";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
-import { useHeader } from "../hooks/useHeader";
+import { useHeader } from "@/shared/hooks/useHeader";
+import AccountDropdown from "./AccountDropdown";
 
 const UserHeaderActions = () => {
   const user = useSelector(selectUser);
