@@ -13,10 +13,12 @@ import ResetPasswordPage from "@/features/traveler(user)/forgot-password/pages/R
 import UserProfile from "@/features/traveler(user)/dashboard/profile/pages/UserProfile";
 import UserLayout from "@/layouts/UserLayout";
 import PrivacySettingsPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/PrivacySettingsPage";
-import Page from "@/shared/layouts/page";
+import Page from "@/shared/layouts/userLayout/page";
 import ChangePasswordPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/ChangePasswordPage";
 import ChangeEmailPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/ChangeEmailPage";
 import AdminLoginPage from "@/features/admin/login/pages/AdminLoginPage";
+import AdminDashboardPage from "@/features/admin/dashboard/pages/AdminDashboardPage";
+import AdminLayout from "@/layouts/AdminLayout";
 // import PublicRoute from "./PublicRoute";
 // import { UserProfile } from "@/features/traveler(user)/dashboard/profile/pages/UserProfile";
 
@@ -37,13 +39,13 @@ export default function AppRoutes() {
           <Route element={<UserLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/profile" element={<UserProfile />} />
-            <Route path="/page" element={<Page />} />
+
             <Route path="/settings" element={<PrivacySettingsPage />} />
           </Route>
 
           <Route path="/change-password" element={<ChangePasswordPage />} />
           <Route path="/change-email" element={<ChangeEmailPage />} />
-
+          <Route path="/page" element={<Page />} />
           {/* Traveler Routes */}
           {/* <Route
             element={<ProtectedRoute allowedRoles={["TRAVELER"]} />} */}
@@ -53,6 +55,10 @@ export default function AppRoutes() {
           {/* Admin Routes */}
           {/* <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}></Route> */}
           <Route path="/admin/login" element={<AdminLoginPage />} />
+
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+          </Route>
 
           {/* Forbidden */}
           <Route path="/403" element={<UnauthorizedPage />} />

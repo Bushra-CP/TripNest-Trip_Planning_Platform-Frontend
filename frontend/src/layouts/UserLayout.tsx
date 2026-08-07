@@ -1,4 +1,4 @@
-import AppHeader from "@/shared/layouts/AppHeader";
+import AppHeader from "@/shared/layouts/userLayout/AppHeader";
 import { Outlet } from "react-router-dom";
 
 const UserLayout = () => {
