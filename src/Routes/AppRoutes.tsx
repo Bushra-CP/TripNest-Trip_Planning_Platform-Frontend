@@ -19,6 +19,7 @@ import ChangeEmailPage from "@/features/traveler(user)/dashboard/privacy-setting
 import AdminLoginPage from "@/features/admin/login/pages/AdminLoginPage";
 import AdminDashboardPage from "@/features/admin/dashboard/pages/AdminDashboardPage";
 import AdminLayout from "@/layouts/AdminLayout";
+import UserManagement from "@/features/admin/user-management/pages/UserManagement";
 // import PublicRoute from "./PublicRoute";
 // import { UserProfile } from "@/features/traveler(user)/dashboard/profile/pages/UserProfile";
 
@@ -58,6 +59,7 @@ export default function AppRoutes() {
 
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+            <Route path="/admin/users" element={<UserManagement />} />
           </Route>
 
           {/* Forbidden */}

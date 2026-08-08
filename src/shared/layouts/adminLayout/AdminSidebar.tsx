@@ -5,8 +5,14 @@ import {
   LayoutDashboard,
   Settings,
   Users,
+  X,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+
+interface AdminSidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
 const menuItems = [
   {
@@ -41,44 +47,97 @@ const menuItems = [
   },
 ];
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ isOpen, onClose }: AdminSidebarProps) => {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[260px] bg-white border-r border-slate-200 flex flex-col">
-      <div className="p-8">
-        <h1 className="text-2xl font-black text-[#2e7d32] tracking-tighter uppercase mb-1">
-          TripNest Admin
-        </h1>
+    <>
+      {/* Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
 
-        <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mt-1">
-          Super Admin Console
-        </p>
-      </div>
+      <aside
+        className={`
+          fixed top-0 left-0 z-50
+          h-screen w-[260px]
+          bg-white border-r border-slate-200
+          flex flex-col
+          transition-transform duration-300 ease-in-out
 
-      <nav className="flex-1 px-4 space-y-1">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
 
-          return (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all
-                ${
-                  isActive
-                    ? "bg-[#2e7d32]/10 text-[#2e7d32]"
-                    : "text-slate-500 hover:bg-slate-100"
-                }`
-              }
-            >
-              <Icon size={20} />
+          lg:translate-x-0
+        `}
+      >
+        {/* Mobile Close Button */}
+        <div className="lg:hidden flex justify-end p-4">
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
 
-              <span className="text-sm">{item.label}</span>
-            </NavLink>
-          );
-        })}
-      </nav>
-    </aside>
+        {/* Logo */}
+        <div className="px-8 pb-8">
+          <h1 className="text-2xl font-black text-[#2e7d32] tracking-tighter uppercase mb-1">
+            TripNest Admin
+          </h1>
+
+          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mt-1">
+            Super Admin Console
+          </p>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 px-4 space-y-1">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${
+                    isActive
+                      ? "bg-[#2e7d32]/10 text-[#2e7d32]"
+                      : "text-slate-500 hover:bg-slate-100"
+                  }`
+                }
+              >
+                <Icon size={20} />
+
+                <span className="text-sm">{item.label}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
+
+        {/* Footer */}
+        <div className="p-6 mt-auto border-t border-slate-100">
+          <div className="flex items-center gap-3">
+            <img
+              src="https://i.pravatar.cc/150?u=admin"
+              alt="Admin"
+              className="w-10 h-10 rounded-lg object-cover border-2 border-white ring-1 ring-slate-100"
+            />
+
+            <div>
+              <p className="text-xs font-bold">Admin User</p>
+
+              <p className="text-[10px] text-slate-400 font-medium truncate w-[140px]">
+                admin@tripnest.com
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </>
   );
 };
 
