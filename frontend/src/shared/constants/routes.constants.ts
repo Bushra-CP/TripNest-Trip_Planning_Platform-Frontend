@@ -25,4 +25,7 @@ export const SERVER_ROUTES = {
   CHANGE_EMAIL: "/change-email",
   VERIFY_CHANGE_EMAIL_OTP: "/verify-change-email-otp",
   RESEND_CHANGE_EMAIL_OTP: "/resend-change-email-otp",
+  ADMIN_USERS: "/admin/users",
+  UPDATE_USER_STATUS: "/admin/user/:id",
+  GET_USER: "/admin/user/:id",
 } as const;
