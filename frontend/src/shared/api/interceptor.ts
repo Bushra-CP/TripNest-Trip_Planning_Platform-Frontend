@@ -12,7 +12,9 @@ const refreshClient = axios.create({
   withCredentials: true,
 });
 
-//REQUEST INTERCEPTOR
+/* -----------------------
+   REQUEST INTERCEPTOR
+-------------------------- */
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = getStore().getState().auth.accessToken;
@@ -27,12 +29,23 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-//RESPONSE INTERCEPTOR
+/* -----------------------
+   RESPONSE INTERCEPTOR
+-------------------------- */
 axiosInstance.interceptors.response.use(
   (response) => response,
 
   async (error) => {
     const originalRequest = error.config;
+
+    //Account blocked by admin
+    if (error.response.status === 403) {
+      getStore().dispatch(clearAuth());
+
+      window.location.href = ROUTES.AUTH.LOGIN;
+
+      return Promise.reject(error);
+    }
 
     //Token expired
     if (error.response.status == 401 && !originalRequest._retry) {
