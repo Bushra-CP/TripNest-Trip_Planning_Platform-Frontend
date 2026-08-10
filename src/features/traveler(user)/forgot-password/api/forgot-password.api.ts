@@ -2,11 +2,15 @@ import { axiosInstance } from "@/shared/api/axios";
 import type { ForgotPasswordRequest } from "../types/forgot-password.request";
 import type { VerifyResetOtpRequest } from "../types/verify-reset-otp.request";
 import type { ResetPasswordRequest } from "../types/reset-password.request";
+import { SERVER_ROUTES } from "@/shared/constants/routes.constants";
 
 export const forgotPasswordApi = {
   ////////////Forgot Password////////////
   async forgotPassword(payload: ForgotPasswordRequest) {
-    const response = await axiosInstance.post("/forgot-password", payload);
+    const response = await axiosInstance.post(
+      SERVER_ROUTES.FORGOT_PASSWORD,
+      payload,
+    );
 
     console.log(response.data);
 
@@ -15,7 +19,10 @@ export const forgotPasswordApi = {
 
   ////////////Verify Reset OTP////////////
   async verifyResetOtp(payload: VerifyResetOtpRequest) {
-    const response = await axiosInstance.post("/verify-reset-otp", payload);
+    const response = await axiosInstance.post(
+      SERVER_ROUTES.VERIFY_RESET_OTP,
+      payload,
+    );
 
     console.log(response.data.data.resetToken);
 
@@ -24,7 +31,10 @@ export const forgotPasswordApi = {
 
   ////////////Resend Reset OTP////////////
   async resendResetOtp(payload: ForgotPasswordRequest) {
-    const response = await axiosInstance.post("/resend-reset-otp", payload);
+    const response = await axiosInstance.post(
+      SERVER_ROUTES.RESEND_RESET_OTP,
+      payload,
+    );
 
     console.log(response.data);
 
@@ -33,7 +43,10 @@ export const forgotPasswordApi = {
 
   ////////////Reset Password////////////
   async resetPassword(payload: ResetPasswordRequest) {
-    const response = await axiosInstance.post("/reset-password", payload);
+    const response = await axiosInstance.post(
+      SERVER_ROUTES.RESET_PASSWORD,
+      payload,
+    );
 
     console.log(response.data);
 

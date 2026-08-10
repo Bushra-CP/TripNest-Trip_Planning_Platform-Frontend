@@ -1,11 +1,11 @@
 import axios from "axios";
 import { axiosInstance } from "./axios";
 import { getStore } from "./injectStore";
-import { ROUTES } from "../constants/routes.constants";
 import {
   clearAuth,
   setAccessToken,
 } from "@/features/traveler(user)/auth/redux/authSlice";
+import { SERVER_ROUTES } from "../constants/routes.constants";
 
 const refreshClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 403) {
       getStore().dispatch(clearAuth());
 
-      window.location.href = ROUTES.AUTH.LOGIN;
+      window.location.href = SERVER_ROUTES.LOGIN;
 
       return Promise.reject(error);
     }
@@ -54,7 +54,7 @@ axiosInstance.interceptors.response.use(
       try {
         //Refresh access token
 
-        const response = await refreshClient.post(ROUTES.AUTH.REFRESH_TOKEN);
+        const response = await refreshClient.post(SERVER_ROUTES.REFRESH_TOKEN);
 
         const newAccessToken = response.data.data.accessToken;
 
