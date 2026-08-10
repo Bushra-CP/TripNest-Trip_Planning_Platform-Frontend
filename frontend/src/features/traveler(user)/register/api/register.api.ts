@@ -1,11 +1,11 @@
 import { axiosInstance } from "../../../../shared/api/axios";
-import { ROUTES } from "../../../../shared/constants/routes.constants";
 import type { RegisterResponse } from "../types/register-response";
 import type { RegisterRequest } from "../types/register.request";
 import type { ResendOtpRequest } from "../types/resend-otp-request";
 import type { ResendOtpResponse } from "../types/resend-otp-response";
 import type { VerifyRegistrationRequest } from "../types/verify-registration-request";
 import type { VerifyRegistrationResponse } from "../types/verify-registration-response";
+import { SERVER_ROUTES } from "../../../../shared/constants/routes.constants";
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -18,7 +18,7 @@ export const registerApi = {
     // console.log("Sending payload:", payload);
 
     const response = await axiosInstance.post<ApiResponse<RegisterResponse>>(
-      ROUTES.AUTH.REGISTER,
+      SERVER_ROUTES.REGISTER,
       payload,
     );
 
@@ -32,7 +32,7 @@ export const registerApi = {
     // console.log(payload);
 
     const response = await axiosInstance.post<VerifyRegistrationResponse>(
-      ROUTES.AUTH.VERIFYREGISTRATION,
+      SERVER_ROUTES.VERIFY_REGISTRATION,
       payload,
     );
 
@@ -42,7 +42,7 @@ export const registerApi = {
   //resend otp
   async resendOtp(payload: ResendOtpRequest): Promise<ResendOtpResponse> {
     const response = await axiosInstance.post<ResendOtpResponse>(
-      ROUTES.AUTH.RESEND_OTP,
+      SERVER_ROUTES.RESEND_OTP,
       payload,
     );
 

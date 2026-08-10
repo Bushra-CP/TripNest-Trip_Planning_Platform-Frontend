@@ -14,12 +14,8 @@ export const getUsersThunk = createAsyncThunk(
 
   async (params: GetUsersQuery, { rejectWithValue }) => {
     try {
-      console.log("Thunk called", params);
-
       const res = await usersApi.getUsers(params);
 
-      console.log(res);
-      console.log(res.data);
       return res;
     } catch (error) {
       const err = error as AxiosError<ApiError>;

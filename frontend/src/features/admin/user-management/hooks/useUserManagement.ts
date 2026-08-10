@@ -48,7 +48,7 @@ const useUserManagement = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(query.search ?? "");
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [query.search]);
@@ -66,15 +66,15 @@ const useUserManagement = () => {
   ----------------------------------------- */
 
   useEffect(() => {
-    console.log("Dispatching getUsersThunk", query);
-
     dispatch(
       getUsersThunk({
-        ...query,
+        page: query.page,
+        limit: query.limit,
+        status: query.status,
         search: debouncedSearch || undefined,
       }) as never,
     );
-  }, [dispatch, query, debouncedSearch]);
+  }, [dispatch, query.page, query.limit, query.status, debouncedSearch]);
 
   /* ----------------------------------------
       Query Handlers

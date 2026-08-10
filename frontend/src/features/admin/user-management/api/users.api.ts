@@ -11,7 +11,6 @@ export const usersApi = {
   /////////////////////////////////////////////////////////////
   //GET USERS
   async getUsers(params: GetUsersQuery): Promise<GetUsersResponse> {
-    console.log("Calling API...");
     const response = await axiosInstance.get<GetUsersResponse>(
       SERVER_ROUTES.ADMIN_USERS,
 
