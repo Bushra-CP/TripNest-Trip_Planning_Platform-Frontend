@@ -8,17 +8,20 @@ import { persistor, store } from "./app/store.ts";
 import { injectStore } from "./shared/api/injectStore.ts";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "@/shared/api/interceptor.ts";
+import ErrorBoundary from "./shared/components/error-boundary/ErrorBoundary.tsx";
 
 injectStore(store);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <App />
-        </GoogleOAuthProvider>
-      </PersistGate>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <App />
+          </GoogleOAuthProvider>
+        </PersistGate>
+      </Provider>
+    </ErrorBoundary>
   </StrictMode>,
 );

@@ -33,7 +33,7 @@ export const getUserTableColumns = ({
       <div className="flex items-center gap-4">
         <div className="w-11 h-11 overflow-hidden rounded-full ring-1 ring-slate-200">
           <img
-            src={user.profileImage ?? "/images/default-avatar.png"}
+            src={user.profileImage || "/images/default-avatar.png"}
             alt={user.fullName}
             className="h-full w-full object-cover"
           />
