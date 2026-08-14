@@ -20,6 +20,8 @@ import AdminLayout from "@/layouts/AdminLayout";
 import UserManagement from "@/features/admin/user-management/pages/UserManagement";
 import PublicRoute from "./PublicRoute";
 import { APP_ROUTES } from "@/shared/constants/routes.constants";
+import RightSidebar from "@/features/traveler(user)/trip-planning/components/rightSidebar/RightSidebar";
+import TripPlanningPage from "@/features/traveler(user)/trip-planning/pages/TripPlanningPage";
 
 export default function AppRoutes() {
   return (
@@ -74,6 +76,7 @@ export default function AppRoutes() {
               />
             </Route>
           </Route>
+          <Route path="/trip-plan" element={<TripPlanningPage />} />
           /*----------------------- ERROR ROUTES ------------------------*/
           {/* Forbidden */}
           <Route
@@ -82,7 +85,7 @@ export default function AppRoutes() {
           />
           {/* Not Found */}
           <Route path={APP_ROUTES.NOT_FOUND_PAGE} element={<NotFoundPage />} />
-          
+          <Route path="/plan" element={<RightSidebar />} />
         </Routes>
       </BrowserRouter>
     </>
