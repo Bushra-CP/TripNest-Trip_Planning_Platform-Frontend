@@ -1,13 +1,14 @@
 import { Clock, Navigation, Plus, Send } from "lucide-react";
 
 interface ThemeProps {
-  surface: string;
-  border: string;
-  divider: string;
-  primaryText: string;
-  secondaryText: string;
-  mutedText: string;
-  input: string;
+  surface?: string;
+  border?: string;
+  input?: string;
+  iconButton?: string;
+  divider?: string;
+  primaryText?: string;
+  secondaryText?: string;
+  mutedText?: string;
 }
 
 interface ItineraryTabProps {

@@ -10,13 +10,14 @@ import {
 } from "lucide-react";
 
 interface ThemeProps {
-  surface: string;
-  border: string;
-  divider: string;
-  primaryText: string;
-  secondaryText: string;
-  mutedText: string;
-  input: string;
+  surface?: string;
+  border?: string;
+  input?: string;
+  iconButton?: string;
+  divider?: string;
+  primaryText?: string;
+  secondaryText?: string;
+  mutedText?: string;
 }
 
 interface LedgerTabProps {
@@ -52,11 +53,7 @@ const recentExpenses = [
   },
 ];
 
-const LedgerTab = ({
-  mobile = false,
-  isDarkMode,
-  theme,
-}: LedgerTabProps) => {
+const LedgerTab = ({ mobile = false, isDarkMode, theme }: LedgerTabProps) => {
   return (
     <>
       <div
@@ -140,24 +137,16 @@ const LedgerTab = ({
 
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <p
-                      className={`text-sm font-bold ${theme.primaryText}`}
-                    >
+                    <p className={`text-sm font-bold ${theme.primaryText}`}>
                       {expense.title}
                     </p>
 
                     {expense.status === "verified" && (
-                      <CheckCircle2
-                        size={12}
-                        className="text-[#10b981]"
-                      />
+                      <CheckCircle2 size={12} className="text-[#10b981]" />
                     )}
 
                     {expense.status === "pending" && (
-                      <AlertCircle
-                        size={12}
-                        className="text-amber-500"
-                      />
+                      <AlertCircle size={12} className="text-amber-500" />
                     )}
                   </div>
 
@@ -199,10 +188,7 @@ const LedgerTab = ({
               </div>
             </div>
 
-            <ChevronRight
-              size={16}
-              className={theme.mutedText}
-            />
+            <ChevronRight size={16} className={theme.mutedText} />
           </div>
         </div>
       </div>

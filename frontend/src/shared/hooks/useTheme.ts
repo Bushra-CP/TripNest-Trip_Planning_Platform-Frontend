@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 const useTheme = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleTheme = () => {
     setIsDarkMode((prev) => !prev);
