@@ -13,10 +13,14 @@ interface RightSidebarProps {
   mobile?: boolean;
   isDarkMode: boolean;
   theme: {
-    surface: string;
-    border: string;
-    input: string;
-    iconButton: string;
+    surface?: string;
+    border?: string;
+    input?: string;
+    iconButton?: string;
+    divider?: string;
+    primaryText?: string;
+    secondaryText?: string;
+    mutedText?: string;
   };
 }
 
