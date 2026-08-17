@@ -3,9 +3,13 @@ import type { Dispatch, SetStateAction } from "react";
 import type { TabType } from "./RightSidebar";
 
 interface ThemeProps {
-  surface: string;
-  border: string;
+  surface?: string;
+  border?: string;
+  input?: string;
+  iconButton?: string;
+  divider?: string;
   primaryText?: string;
+  secondaryText?: string;
   mutedText?: string;
 }
 
