@@ -43,15 +43,15 @@ export const useLogin = () => {
 
       toast.success(response.data.message);
 
-      if (response.data.user.role == "ADMIN") {
+      if (response.data.user.role === "ADMIN") {
         navigate("/admin/dashboard");
       } else {
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Login error:", error);
 
-      toast.error(error as string);
+      toast.error(typeof error === "string" ? error : "Login failed");
     }
   };
 

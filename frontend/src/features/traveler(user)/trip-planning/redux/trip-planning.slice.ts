@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type {
   TripPlanningMode,
   TripPlanningState,
-} from "../types/trip-planning.types";
+} from "../interfaces/trip-planning.interfaces";
 
 const initialState: TripPlanningState = {
   mode: "solo",
