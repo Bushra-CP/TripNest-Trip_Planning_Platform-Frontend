@@ -22,6 +22,8 @@ export const loginThunk = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError<ApiError>;
 
+      // console.log(err);
+
       return rejectWithValue(err.response?.data?.message ?? "Login failed");
     }
   },
