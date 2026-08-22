@@ -38,11 +38,15 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    //Account blocked by admin
-    if (error.response.status === 403) {
-      getStore().dispatch(clearAuth());
+    //Account blocked by admin or account not verified
+    if (error.response?.status === 403) {
+      const requestUrl = error.config?.url;
 
-      window.location.href = SERVER_ROUTES.LOGIN;
+      if (!requestUrl?.includes("/login")) {
+        getStore().dispatch(clearAuth());
+
+        window.location.href = SERVER_ROUTES.LOGIN;
+      }
 
       return Promise.reject(error);
     }

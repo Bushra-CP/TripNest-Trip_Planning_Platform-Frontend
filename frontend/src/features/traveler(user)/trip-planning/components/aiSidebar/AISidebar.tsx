@@ -3,15 +3,6 @@ import { MoreHorizontal, Navigation } from "lucide-react";
 import AIConversation from "./AIConversation";
 import AIInput from "./AIInput";
 
-// interface ThemeProps {
-//   card: string;
-//   divider: string;
-//   input: string;
-//   primaryText: string;
-//   secondaryText: string;
-//   secondaryButton: string;
-//   iconButton: string;
-// }
 
 interface AIContentProps {
   theme: {
@@ -32,10 +23,6 @@ interface AIContentProps {
   mobile?: boolean;
 }
 
-// interface AISidebarProps {
-//   theme: ThemeProps;
-//   mobile?: boolean;
-// }
 
 const AISidebar = ({ theme, mobile = false }: AIContentProps) => {
   return (
