@@ -7,6 +7,7 @@ import forgotPasswordSlice from "../features/traveler(user)/forgot-password/redu
 import otpSlice from "../features/traveler(user)/otp/redux/otp.slice";
 import userSlice from "../features/admin/user-management/redux/users.slice";
 import tripPlanningSlice from "../features/traveler(user)/trip-planning/redux/trip-planning.slice";
+import chatSlice from '../features/traveler(user)/trip-planning/redux/chat/chat.slice';
 
 const authPersistConfig = {
   key: "auth",
@@ -21,4 +22,5 @@ export const rootReducer = combineReducers({
   otp: otpSlice,
   user: userSlice,
   tripPlanning: tripPlanningSlice,
+  chat:chatSlice,
 });
