@@ -1,6 +1,15 @@
-import { Car, Clock, CreditCard, MessageSquare, Users } from "lucide-react";
+import {
+  Car,
+  Clock,
+  CreditCard,
+  MessageSquare,
+  Users,
+} from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
+import { useSelector } from "react-redux";
+
 import type { TabType } from "./RightSidebar";
+import { selectMode } from "@/features/traveler(user)/trip-planning/redux/trip-planning.selectors";
 
 interface ThemeProps {
   surface?: string;
@@ -25,26 +34,31 @@ const tabs = [
     id: "CHAT" as const,
     label: "CHAT",
     icon: MessageSquare,
+    groupOnly: true,
   },
   {
     id: "PEOPLE" as const,
     label: "PEOPLE",
     icon: Users,
+    groupOnly: true,
   },
   {
     id: "VEHICLES" as const,
     label: "VEHICLES",
     icon: Car,
+    groupOnly: false,
   },
   {
     id: "ITINERARY" as const,
     label: "ITINERARY",
     icon: Clock,
+    groupOnly: false,
   },
   {
     id: "LEDGER" as const,
     label: "LEDGER",
     icon: CreditCard,
+    groupOnly: false,
   },
 ];
 
@@ -54,16 +68,28 @@ const SidebarTabs = ({
   isDarkMode,
   theme,
 }: SidebarTabsProps) => {
+  const tripMode = useSelector(selectMode);
+
+  /*
+   * Show CHAT and PEOPLE only for group trips
+   */
+  const visibleTabs = tabs.filter(
+    (tab) => !tab.groupOnly || tripMode === "group",
+  );
+
   return (
-    <div className={`h-[80px] border-b ${theme.surface} ${theme.border}`}>
+    <div
+      className={`h-[80px] border-b ${theme.surface} ${theme.border}`}
+    >
       <div className="flex h-full">
-        {tabs.map((tab) => {
+        {visibleTabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
 
           return (
             <button
               key={tab.id}
+              type="button"
               onClick={() => setActiveTab(tab.id)}
               className={`
                 relative
