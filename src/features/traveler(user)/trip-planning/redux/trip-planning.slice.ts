@@ -4,11 +4,12 @@ import type {
   TripPlanningMode,
   TripPlanningState,
 } from "../interfaces/trip-planning.interfaces";
+import { createRoomThunk, getRoomThunk } from "./chat/chat.thunk";
 
 const initialState: TripPlanningState = {
   mode: "solo",
   roomId: null,
-  role: null,
+  isRoomLoading: false,
 };
 
 const tripPlanningSlice = createSlice({
@@ -21,33 +22,51 @@ const tripPlanningSlice = createSlice({
       state.mode = action.payload;
     },
 
-    createGroup: (state, action: PayloadAction<string>) => {
-      state.mode = "group";
-
-      state.role = "admin";
-
-      state.roomId = action.payload;
-    },
-
-    joinGroup: (state, action: PayloadAction<string>) => {
-      state.mode = "group";
-
-      state.role = "member";
-
-      state.roomId = action.payload;
-    },
-
     leaveGroup: (state) => {
       state.mode = "solo";
-
-      state.role = null;
-
       state.roomId = null;
     },
   },
+
+  extraReducers: (builder) => {
+    /*-----------------------
+      CREATE ROOM
+    ------------------------*/
+    builder
+      .addCase(createRoomThunk.pending, (state) => {
+        state.isRoomLoading = true;
+      })
+
+      .addCase(createRoomThunk.fulfilled, (state, action) => {
+        state.mode = "group";
+        state.roomId = action.payload.roomId;
+        state.isRoomLoading = false;
+      })
+
+      .addCase(createRoomThunk.rejected, (state) => {
+        state.isRoomLoading = false;
+      });
+
+    /*-----------------------
+      GET ROOM
+    ------------------------*/
+    builder
+      .addCase(getRoomThunk.pending, (state) => {
+        state.isRoomLoading = true;
+      })
+
+      .addCase(getRoomThunk.fulfilled, (state, action) => {
+        state.mode = "group";
+        state.roomId = action.payload.roomId;
+        state.isRoomLoading = false;
+      })
+
+      .addCase(getRoomThunk.rejected, (state) => {
+        state.isRoomLoading = false;
+      });
+  },
 });
 
-export const { setMode, createGroup, joinGroup, leaveGroup } =
-  tripPlanningSlice.actions;
+export const { setMode, leaveGroup } = tripPlanningSlice.actions;
 
 export default tripPlanningSlice.reducer;

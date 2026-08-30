@@ -42,6 +42,9 @@ export const SERVER_ROUTES = {
   CHANGE_EMAIL: "/change-email",
   VERIFY_CHANGE_EMAIL_OTP: "/verify-change-email-otp",
   RESEND_CHANGE_EMAIL_OTP: "/resend-change-email-otp",
+  CREATE_ROOM: "/trip-planning/room",
+  JOIN_ROOM: "/trip-planning/room/:roomId",
+  GET_MESSAGES: "/trip-planning/room/:roomId/messages",
 
   //ADMIN RELATED
   ADMIN_USERS: "/admin/users",
