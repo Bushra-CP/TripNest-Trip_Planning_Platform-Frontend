@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Plus, Send, Settings, UserPlus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 interface ThemeProps {
   surface?: string;
@@ -18,45 +17,43 @@ interface PeopleTabProps {
   theme: ThemeProps;
 }
 
-interface Participant {
-  id: string;
-  name: string;
-  role: string;
-  avatar: string;
-  status: "online" | "idle";
-  canRemove?: boolean;
-  isInvite?: boolean;
-}
+// interface Participant {
+//   id: string;
+//   name: string;
+//   role: string;
+//   avatar: string;
+//   status: "online" | "idle";
+//   canRemove?: boolean;
+//   isInvite?: boolean;
+// }
 
-const participants: Participant[] = [
-  {
-    id: "rahul-s",
-    name: "Rahul S.",
-    role: "Admin • Active",
-    avatar: "https://i.pravatar.cc/100?u=rahul",
-    status: "online",
-  },
-  {
-    id: "priya-k",
-    name: "Priya K.",
-    role: "Contributor • Active",
-    avatar: "https://i.pravatar.cc/100?u=priya",
-    status: "online",
-    canRemove: true,
-  },
-  {
-    id: "amit-m",
-    name: "Amit M.",
-    role: "Member • Available",
-    avatar: "https://i.pravatar.cc/100?u=amit",
-    status: "idle",
-    isInvite: true,
-  },
-];
+// const participants: Participant[] = [
+//   {
+//     id: "rahul-s",
+//     name: "Rahul S.",
+//     role: "Admin • Active",
+//     avatar: "https://i.pravatar.cc/100?u=rahul",
+//     status: "online",
+//   },
+//   {
+//     id: "priya-k",
+//     name: "Priya K.",
+//     role: "Contributor • Active",
+//     avatar: "https://i.pravatar.cc/100?u=priya",
+//     status: "online",
+//     canRemove: true,
+//   },
+//   {
+//     id: "amit-m",
+//     name: "Amit M.",
+//     role: "Member • Available",
+//     avatar: "https://i.pravatar.cc/100?u=amit",
+//     status: "idle",
+//     isInvite: true,
+//   },
+// ];
 
-const PeopleTab = ({ mobile = false, isDarkMode, theme }: PeopleTabProps) => {
-  const [roomId] = useState("TRP-9081-NX");
-
+const PeopleTab = ({ mobile = false, isDarkMode }: PeopleTabProps) => {
   return (
     <div className="flex h-full flex-col">
       <div
@@ -79,7 +76,7 @@ const PeopleTab = ({ mobile = false, isDarkMode, theme }: PeopleTabProps) => {
           </button>
         </div>
 
-        <div className="space-y-3">
+        {/* <div className="space-y-3">
           {participants.map((person) => (
             <div
               key={person.id}
@@ -149,9 +146,9 @@ const PeopleTab = ({ mobile = false, isDarkMode, theme }: PeopleTabProps) => {
               )}
             </div>
           ))}
-        </div>
+        </div> */}
 
-        <div
+        {/* <div
           className={`rounded-2xl border p-5 ${
             isDarkMode
               ? "border-[#10b981]/10 bg-[#10b981]/5"
@@ -197,10 +194,10 @@ const PeopleTab = ({ mobile = false, isDarkMode, theme }: PeopleTabProps) => {
               <Send size={16} />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
 
-      <div
+      {/* <div
         className={`border-t p-4 ${
           isDarkMode
             ? "border-white/5 bg-[#0b1326]/50"
@@ -218,7 +215,7 @@ const PeopleTab = ({ mobile = false, isDarkMode, theme }: PeopleTabProps) => {
             }`}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

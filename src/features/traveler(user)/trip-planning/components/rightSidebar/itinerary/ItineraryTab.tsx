@@ -1,4 +1,7 @@
-import { Clock, Navigation, Plus, Send } from "lucide-react";
+import type { RootState } from "@/app/store";
+import { Plus } from "lucide-react";
+import { useSelector } from "react-redux";
+import RouteSummary from "./RouteSummary";
 
 interface ThemeProps {
   surface?: string;
@@ -17,51 +20,53 @@ interface ItineraryTabProps {
   theme: ThemeProps;
 }
 
-const itineraryItems = [
-  {
-    id: 1,
-    time: "06:00 AM",
-    type: "START",
-    title: "Departure Point",
-    location: "Sion Circle, Mumbai. Group assembly and luggage check.",
-    distance: "0 km",
-    status: "completed",
-  },
-  {
-    id: 2,
-    time: "10:30 AM",
-    type: "STOP 1",
-    title: "Fueling Stop",
-    location: "HP Petrol Pump, NH66. Quick refuel and tire pressure check.",
-    meta: "15 mins stop",
-    distance: "+180 km",
-    status: "active",
-  },
-  {
-    id: 3,
-    time: "01:30 PM",
-    type: "STOP 2",
-    title: "Lunch Break",
-    location: "Hotel Opal, Kolhapur. Authentic Maharashtrian thali.",
-    distance: "+140 km",
-    status: "upcoming",
-  },
-  {
-    id: 4,
-    time: "07:00 PM",
-    type: "END",
-    title: "Arrival at Destination",
-    location: "Colva Beach, South Goa. Check-in at Sea Breeze Resort.",
-    distance: "+132 km",
-    status: "upcoming",
-  },
-];
+// const itineraryItems = [
+//   {
+//     id: 1,
+//     time: "06:00 AM",
+//     type: "START",
+//     title: "Departure Point",
+//     location: "Sion Circle, Mumbai. Group assembly and luggage check.",
+//     distance: "0 km",
+//     status: "completed",
+//   },
+//   {
+//     id: 2,
+//     time: "10:30 AM",
+//     type: "STOP 1",
+//     title: "Fueling Stop",
+//     location: "HP Petrol Pump, NH66. Quick refuel and tire pressure check.",
+//     meta: "15 mins stop",
+//     distance: "+180 km",
+//     status: "active",
+//   },
+//   {
+//     id: 3,
+//     time: "01:30 PM",
+//     type: "STOP 2",
+//     title: "Lunch Break",
+//     location: "Hotel Opal, Kolhapur. Authentic Maharashtrian thali.",
+//     distance: "+140 km",
+//     status: "upcoming",
+//   },
+//   {
+//     id: 4,
+//     time: "07:00 PM",
+//     type: "END",
+//     title: "Arrival at Destination",
+//     location: "Colva Beach, South Goa. Check-in at Sea Breeze Resort.",
+//     distance: "+132 km",
+//     status: "upcoming",
+//   },
+// ];
 
 const ItineraryTab = ({
   mobile = false,
   isDarkMode,
   theme,
 }: ItineraryTabProps) => {
+  const route = useSelector((state: RootState) => state.aiPlanning.route);
+
   return (
     <>
       <div
@@ -82,7 +87,9 @@ const ItineraryTab = ({
           </button>
         </div>
 
-        <div className="relative space-y-12 pb-10">
+        <RouteSummary route={route} isDarkMode={isDarkMode} theme={theme} />
+
+        {/* <div className="relative space-y-12 pb-10">
           <div
             className={`absolute left-[39px] top-2 bottom-8 w-0.5 ${
               isDarkMode ? "bg-white/5" : "bg-slate-200"
@@ -160,9 +167,9 @@ const ItineraryTab = ({
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
 
-        <div className={`pt-6 border-t ${theme.divider}`}>
+        {/* <div className={`pt-6 border-t ${theme.divider}`}>
           <div
             className={`rounded-2xl p-5 border ${
               isDarkMode
@@ -192,10 +199,10 @@ const ItineraryTab = ({
               Sync Live Route
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
 
-      <div className={`p-6 border-t ${theme.divider}`}>
+      {/* <div className={`p-6 border-t ${theme.divider}`}>
         <div
           className={`rounded-[28px] p-2 flex items-center gap-3 border ${theme.input}`}
         >
@@ -211,7 +218,7 @@ const ItineraryTab = ({
             <Send size={18} className={theme.mutedText} />
           </button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
