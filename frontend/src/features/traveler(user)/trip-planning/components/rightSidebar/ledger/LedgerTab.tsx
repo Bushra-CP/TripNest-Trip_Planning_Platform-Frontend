@@ -1,13 +1,4 @@
-import {
-  AlertCircle,
-  CheckCircle2,
-  ChevronRight,
-  Navigation,
-  PlusCircle,
-  Send,
-  TrendingUp,
-  Wallet,
-} from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 interface ThemeProps {
   surface?: string;
@@ -26,34 +17,34 @@ interface LedgerTabProps {
   theme: ThemeProps;
 }
 
-const recentExpenses = [
-  {
-    id: 1,
-    title: "Fuel Refill - NH66",
-    meta: "Paid by Rahul • Split equally",
-    amount: "₹3,200",
-    icon: <Wallet size={18} />,
-    status: "verified",
-  },
-  {
-    id: 2,
-    title: "Beach Resort Booking",
-    meta: "Paid by Priya • Split 4 ways",
-    amount: "₹18,500",
-    icon: <Wallet size={18} />,
-    status: "pending",
-  },
-  {
-    id: 3,
-    title: "Dinner at Fisherman's",
-    meta: "Paid by Arjun • Split equally",
-    amount: "₹3,100",
-    icon: <Wallet size={18} />,
-    status: "verified",
-  },
-];
+// const recentExpenses = [
+//   {
+//     id: 1,
+//     title: "Fuel Refill - NH66",
+//     meta: "Paid by Rahul • Split equally",
+//     amount: "₹3,200",
+//     icon: <Wallet size={18} />,
+//     status: "verified",
+//   },
+//   {
+//     id: 2,
+//     title: "Beach Resort Booking",
+//     meta: "Paid by Priya • Split 4 ways",
+//     amount: "₹18,500",
+//     icon: <Wallet size={18} />,
+//     status: "pending",
+//   },
+//   {
+//     id: 3,
+//     title: "Dinner at Fisherman's",
+//     meta: "Paid by Arjun • Split equally",
+//     amount: "₹3,100",
+//     icon: <Wallet size={18} />,
+//     status: "verified",
+//   },
+// ];
 
-const LedgerTab = ({ mobile = false, isDarkMode, theme }: LedgerTabProps) => {
+const LedgerTab = ({ mobile = false, theme }: LedgerTabProps) => {
   return (
     <>
       <div
@@ -74,7 +65,7 @@ const LedgerTab = ({ mobile = false, isDarkMode, theme }: LedgerTabProps) => {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        {/* <div className="grid grid-cols-2 gap-4">
           <div
             className={`rounded-2xl p-5 border ${
               isDarkMode
@@ -110,9 +101,9 @@ const LedgerTab = ({ mobile = false, isDarkMode, theme }: LedgerTabProps) => {
               ₹1,000
             </h4>
           </div>
-        </div>
+        </div> */}
 
-        <div>
+        {/* <div>
           <p className={`text-[10px] font-black mb-4 ${theme.mutedText}`}>
             RECENT EXPENSES
           </p>
@@ -161,9 +152,9 @@ const LedgerTab = ({ mobile = false, isDarkMode, theme }: LedgerTabProps) => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
-        <div className={`pt-6 border-t ${theme.divider}`}>
+        {/* <div className={`pt-6 border-t ${theme.divider}`}>
           <button className="w-full py-4 bg-[#10b981] hover:bg-[#059669] text-white text-xs font-black rounded-2xl uppercase tracking-widest flex items-center justify-center gap-2 transition-colors">
             <Navigation size={16} />
             View Budget Breakdown
@@ -190,10 +181,10 @@ const LedgerTab = ({ mobile = false, isDarkMode, theme }: LedgerTabProps) => {
 
             <ChevronRight size={16} className={theme.mutedText} />
           </div>
-        </div>
+        </div> */}
       </div>
 
-      <div className={`p-6 border-t ${theme.divider}`}>
+      {/* <div className={`p-6 border-t ${theme.divider}`}>
         <div
           className={`rounded-[28px] p-2 flex items-center gap-3 border ${theme.input}`}
         >
@@ -209,7 +200,7 @@ const LedgerTab = ({ mobile = false, isDarkMode, theme }: LedgerTabProps) => {
             <Send size={18} className={theme.mutedText} />
           </button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

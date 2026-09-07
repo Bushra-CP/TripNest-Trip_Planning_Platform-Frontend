@@ -3,6 +3,7 @@ import { MoreHorizontal, Navigation } from "lucide-react";
 import AIConversation from "./AIConversation";
 import AIInput from "./AIInput";
 
+import { useAIPlanning } from "../../hooks/useAIPlanning";
 
 interface AIContentProps {
   theme: {
@@ -19,12 +20,14 @@ interface AIContentProps {
     secondaryButton: string;
     iconButton: string;
   };
+
   isDarkMode: boolean;
   mobile?: boolean;
 }
 
-
 const AISidebar = ({ theme, mobile = false }: AIContentProps) => {
+  const { messages, loading, handleSend } = useAIPlanning();
+
   return (
     <div className="flex min-h-0 flex-col">
       {!mobile && (
@@ -51,9 +54,15 @@ const AISidebar = ({ theme, mobile = false }: AIContentProps) => {
         </div>
       )}
 
-      <AIConversation theme={theme} mobile={mobile} />
+      <AIConversation theme={theme} messages={messages} mobile={mobile} />
 
-      <AIInput theme={theme} />
+      {loading && (
+        <div className={`px-4 pb-2 text-[9px] ${theme.mutedText}`}>
+          AI is typing...
+        </div>
+      )}
+
+      <AIInput theme={theme} onSend={handleSend} disabled={loading} />
     </div>
   );
 };
