@@ -6,8 +6,12 @@ import useTheme from "@/shared/hooks/useTheme";
 import RightSidebar from "../components/rightSidebar/RightSidebar";
 import AISidebar from "../components/aiSidebar/AISidebar";
 import CenterMap from "../components/centerMap/CenterMap";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/app/store";
 
 const TripPlanningPage: React.FC = () => {
+  const route = useSelector((state: RootState) => state.aiPlanning.route);
+
   const { isDarkMode, toggleTheme, theme } = useTheme();
 
   const [mobileSheet, setMobileSheet] = useState<"ai" | "group" | null>(null);
@@ -44,7 +48,7 @@ const TripPlanningPage: React.FC = () => {
           CENTER MAP
       ========================================================= */}
 
-      <CenterMap isDarkMode={isDarkMode} theme={theme} />
+      <CenterMap isDarkMode={isDarkMode} theme={theme} route={route} />
 
       {/* =========================================================
           DESKTOP RIGHT SIDEBAR
