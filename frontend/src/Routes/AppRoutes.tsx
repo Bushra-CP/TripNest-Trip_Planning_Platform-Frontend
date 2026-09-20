@@ -22,6 +22,7 @@ import PublicRoute from "./PublicRoute";
 import { APP_ROUTES } from "@/shared/constants/routes.constants";
 import RightSidebar from "@/features/traveler(user)/trip-planning/components/rightSidebar/RightSidebar";
 import TripPlanningPage from "@/features/traveler(user)/trip-planning/pages/TripPlanningPage";
+import AIKnowledgeBase from "@/features/admin/ai-knowledge-docs-management/pages/AIKnowledgeBase";
 
 export default function AppRoutes() {
   return (
@@ -74,7 +75,9 @@ export default function AppRoutes() {
                 path={APP_ROUTES.ADMIN_USER_MANAGEMENT}
                 element={<UserManagement />}
               />
+              <Route path="/admin/knowledge-base" element={<AIKnowledgeBase />} />
             </Route>
+            
           </Route>
           <Route path="/trip-plan" element={<TripPlanningPage />} />
           /*----------------------- ERROR ROUTES ------------------------*/

@@ -50,4 +50,6 @@ export const SERVER_ROUTES = {
   ADMIN_USERS: "/admin/users",
   UPDATE_USER_STATUS: "/admin/user/:id",
   GET_USER: "/admin/user/:id",
+  ADMIN_KNOWLEDGE_DOCUMENTS: "/admin/knowledge-documents",
+  ADMIN_KNOWLEDGE_DOCUMENT_BY_ID: "/admin/knowledge-documents/:id",
 } as const;
