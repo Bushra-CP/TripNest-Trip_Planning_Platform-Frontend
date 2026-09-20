@@ -9,6 +9,7 @@ import userSlice from "../features/admin/user-management/redux/users.slice";
 import tripPlanningSlice from "../features/traveler(user)/trip-planning/redux/trip-planning.slice";
 import chatSlice from '../features/traveler(user)/trip-planning/redux/chat/chat.slice';
 import aiPlanningSlice from '../features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice';
+import knowledgeDocumentSlice from '../features/admin/ai-knowledge-docs-management/redux/knowledge-document.slice';
 
 const authPersistConfig = {
   key: "auth",
@@ -25,4 +26,5 @@ export const rootReducer = combineReducers({
   tripPlanning: tripPlanningSlice,
   chat:chatSlice,
   aiPlanning: aiPlanningSlice,
+  knowledgeDocuments:knowledgeDocumentSlice
 });

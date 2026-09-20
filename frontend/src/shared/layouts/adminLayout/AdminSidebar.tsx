@@ -3,6 +3,7 @@ import {
   Flag,
   Gavel,
   LayoutDashboard,
+  LibraryBig,
   Settings,
   Users,
   X,
@@ -24,6 +25,11 @@ const menuItems = [
     label: "User Management",
     icon: Users,
     path: "/admin/users",
+  },
+    {
+    label: "Knowledge Base",
+    icon: LibraryBig,
+    path: "/admin/knowledge-base",
   },
   {
     label: "Moderation",

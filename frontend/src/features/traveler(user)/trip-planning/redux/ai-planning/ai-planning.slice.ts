@@ -8,6 +8,8 @@ interface AIPlanningState {
   messages: ChatMessage[];
   loading: boolean;
 
+  threadId: string | null;
+
   tripRequirements: TripRequirements | null;
   missingFields: string[];
 
@@ -28,6 +30,8 @@ const initialState: AIPlanningState = {
   ],
 
   loading: false,
+
+  threadId: null,
 
   tripRequirements: null,
   missingFields: [],
@@ -57,6 +61,13 @@ const aiPlanningSlice = createSlice({
     ) => {
       state.loading = action.payload;
     },
+
+      setThreadId: (
+    state,
+    action: PayloadAction<string>,
+  ) => {
+    state.threadId = action.payload;
+  },
 
     setTripRequirements: (
       state,
@@ -102,6 +113,7 @@ const aiPlanningSlice = createSlice({
 export const {
   addMessage,
   setLoading,
+  setThreadId,
   setTripRequirements,
   setMissingFields,
   setIsComplete,
