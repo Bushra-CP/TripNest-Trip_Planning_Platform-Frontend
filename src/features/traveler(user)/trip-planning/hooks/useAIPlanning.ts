@@ -10,6 +10,7 @@ import {
   setIsComplete,
   setCanGenerateDraft,
   setRoute,
+  setThreadId,
 } from "../redux/ai-planning/ai-planning.slice";
 
 import type { ChatMessage } from "../interfaces/ai-planning.interfaces";
@@ -22,6 +23,7 @@ export const useAIPlanning = () => {
   const {
     messages,
     loading,
+    threadId,
     tripRequirements,
     missingFields,
     isComplete,
@@ -48,7 +50,9 @@ export const useAIPlanning = () => {
        */
       const updatedMessages = [...messages, userMessage];
 
-      const data = await sendMessage(updatedMessages);
+      const data = await sendMessage(updatedMessages,threadId);
+
+      dispatch(setThreadId(data.threadId))
 
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
@@ -81,6 +85,7 @@ export const useAIPlanning = () => {
   return {
     messages,
     loading,
+    threadId,
     tripRequirements,
     missingFields,
     isComplete,
