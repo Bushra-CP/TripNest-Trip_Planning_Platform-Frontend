@@ -39,9 +39,9 @@ const AIInput = ({ theme, onSend, disabled = false }: AIInputProps) => {
           type="text"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          placeholder="Ask AI to plan, split, or find..."
+          placeholder="Ask AI to plan, or find..."
           disabled={disabled}
-          className={`min-w-0 flex-1 border-none bg-transparent text-[10px] outline-none placeholder:text-slate-500 ${theme.primaryText}`}
+          className={`min-w-0 flex-1 border-none bg-transparent text-[13px] text-slate-800 outline-none placeholder:text-slate-500 ${theme.primaryText}`}
         />
 
         <button
