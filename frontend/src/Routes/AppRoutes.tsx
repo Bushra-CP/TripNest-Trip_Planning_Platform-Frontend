@@ -23,6 +23,9 @@ import { APP_ROUTES } from "@/shared/constants/routes.constants";
 import RightSidebar from "@/features/traveler(user)/trip-planning/components/rightSidebar/RightSidebar";
 import TripPlanningPage from "@/features/traveler(user)/trip-planning/pages/TripPlanningPage";
 import AIKnowledgeBase from "@/features/admin/ai-knowledge-docs-management/pages/AIKnowledgeBase";
+import PostsFeedPage from "@/features/traveler(user)/tripTales/pages/PostsFeedPage";
+import PostDetailPage from "@/features/traveler(user)/tripTales/pages/PostDetailPage";
+import PostDetailPage2 from "@/features/traveler(user)/tripTales/pages/PostDetailPage2";
 
 export default function AppRoutes() {
   return (
@@ -47,9 +50,16 @@ export default function AppRoutes() {
           //
           <Route element={<UserLayout />}>
             <Route path={APP_ROUTES.HOME_PAGE} element={<HomePage />} />
+            <Route
+              path="/trip-tales/posts/:postId"
+              element={<PostDetailPage />}
+            />
+            <Route path="/post" element={<PostDetailPage2 />} />
+            <Route path="/trip-tales" element={<PostsFeedPage />} />
             /*----------------------- USER ROUTES ------------------------*/
             <Route element={<ProtectedRoute allowedRoles={["TRAVELER"]} />}>
               <Route path={APP_ROUTES.PROFILE} element={<UserProfile />} />
+
               <Route
                 path={APP_ROUTES.SETTINGS}
                 element={<PrivacySettingsPage />}
@@ -64,6 +74,7 @@ export default function AppRoutes() {
               />
             </Route>
           </Route>
+          <Route path="/trip-plan" element={<TripPlanningPage />} />
           // /*----------------------- ADMIN ROUTES ------------------------*/
           <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
             <Route element={<AdminLayout />}>
@@ -75,11 +86,12 @@ export default function AppRoutes() {
                 path={APP_ROUTES.ADMIN_USER_MANAGEMENT}
                 element={<UserManagement />}
               />
-              <Route path="/admin/knowledge-base" element={<AIKnowledgeBase />} />
+              <Route
+                path="/admin/knowledge-base"
+                element={<AIKnowledgeBase />}
+              />
             </Route>
-            
           </Route>
-          <Route path="/trip-plan" element={<TripPlanningPage />} />
           /*----------------------- ERROR ROUTES ------------------------*/
           {/* Forbidden */}
           <Route
