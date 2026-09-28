@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Logo from "../userLayout/Logo";
-import { Bell, Moon, Settings, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectMode,
@@ -14,6 +14,8 @@ import type { AppDispatch } from "@/app/store";
 import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import UserHeaderActions from "../userLayout/UserHeaderActions";
+import GuestHeaderActions from "../userLayout/GuestHeaderActions";
 
 interface HeaderProps {
   isDarkMode: boolean;
@@ -241,22 +243,28 @@ export default function Header({
         </button>
 
         {/* Notification */}
-        <button
+        {/* <button
           type="button"
           className={`transition-colors ${theme.iconButton}`}
           aria-label="Notifications"
         >
           <Bell size={18} />
-        </button>
+        </button> */}
 
         {/* Settings */}
-        <button
+        {/* <button
           type="button"
           className={`hidden sm:block transition-colors ${theme.iconButton}`}
           aria-label="Settings"
         >
           <Settings size={18} />
-        </button>
+        </button> */}
+
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-5">
+            {user ? <UserHeaderActions /> : <GuestHeaderActions />}
+          </div>
+        </div>
       </div>
     </header>
   );

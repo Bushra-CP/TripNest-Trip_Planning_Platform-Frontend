@@ -31,7 +31,7 @@ export const loginThunk = createAsyncThunk(
 
 ////////////google login thunk////////////
 export const googleAuthThunk = createAsyncThunk(
-  "auth/goole",
+  "auth/google",
 
   async (payload: GoogleAuthRequest, { rejectWithValue }) => {
     try {
@@ -47,8 +47,11 @@ export const googleAuthThunk = createAsyncThunk(
 ////////////logout thunk////////////
 export const logoutThunk = createAsyncThunk(
   "auth/logout",
-
   async () => {
+    console.log("5. logout thunk called");
+
     await authApi.logout();
+
+    console.log("6. logout API completed");
   },
 );

@@ -3,11 +3,11 @@ import { NavLink } from "react-router-dom";
 const navItems = [
   {
     name: "Plan",
-    path: "/",
+    path: "/trip-plan",
   },
   {
     name: "Connect",
-    path: "/explore",
+    path: "/trip-tales",
   },
 ];
 

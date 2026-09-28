@@ -1,3 +1,5 @@
+import type { RagSource } from "../types/ai-planning.types";
+
 export type MessageRole = "user" | "assistant";
 
 export interface ChatMessage {
@@ -6,4 +8,6 @@ export interface ChatMessage {
   role: MessageRole;
 
   content: string;
+
+  ragSources?: RagSource[];
 }

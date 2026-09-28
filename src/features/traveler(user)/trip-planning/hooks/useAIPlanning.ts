@@ -50,14 +50,18 @@ export const useAIPlanning = () => {
        */
       const updatedMessages = [...messages, userMessage];
 
-      const data = await sendMessage(updatedMessages,threadId);
+      const data = await sendMessage(updatedMessages, threadId);
 
-      dispatch(setThreadId(data.threadId))
+      console.log("AI response data:", data);
+      console.log("RAG sources:", data.ragSources);
+
+      dispatch(setThreadId(data.threadId));
 
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: "assistant",
         content: data.reply,
+        ragSources: data.ragSources,
       };
 
       dispatch(addMessage(assistantMessage));

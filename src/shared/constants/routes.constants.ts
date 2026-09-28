@@ -46,6 +46,11 @@ export const SERVER_ROUTES = {
   JOIN_ROOM: "/trip-planning/room/:roomId",
   GET_MESSAGES: "/trip-planning/room/:roomId/messages",
 
+  //TripTales RELATED
+  CREATE_POST: "/trip-tales/posts",
+  GET_POSTS: "/trip-tales/posts",
+  GET_POST_BY_ID: "/trip-tales/posts/:postId",
+
   //ADMIN RELATED
   ADMIN_USERS: "/admin/users",
   UPDATE_USER_STATUS: "/admin/user/:id",

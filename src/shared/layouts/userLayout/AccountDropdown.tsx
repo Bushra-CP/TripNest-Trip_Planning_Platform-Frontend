@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "@/app/store";
 import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
-import { clearAuth } from "@/features/traveler(user)/auth/redux/authSlice";
+import { logoutThunk } from "@/features/traveler(user)/auth/redux/authThunk";
 
 interface MenuItem {
   label: string;
@@ -71,10 +71,21 @@ const AccountDropdown = ({ onClose }: AccountDropdownProps) => {
 
   const user = useSelector(selectUser);
 
-  const handleLogout = () => {
-    onClose();
-    dispatch(clearAuth());
-  };
+const handleLogout = async () => {
+  console.log("1. logout button clicked");
+
+  onClose();
+
+  try {
+    console.log("2. dispatching logout thunk");
+
+    const result = await dispatch(logoutThunk()).unwrap();
+
+    console.log("3. logout successful", result);
+  } catch (error) {
+    console.error("4. Logout failed:", error);
+  }
+};
 
   return (
     <div

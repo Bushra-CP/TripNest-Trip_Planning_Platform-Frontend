@@ -22,7 +22,11 @@ export const authApi = {
   },
 
   ////////////logout////////////
-  async logout(): Promise<void> {
-    await axiosInstance.post(SERVER_ROUTES.LOGOUT);
-  },
+async logout(): Promise<void> {
+  console.log("7. calling logout API");
+
+  await axiosInstance.post(SERVER_ROUTES.LOGOUT);
+
+  console.log("8. logout API response received");
+},
 };

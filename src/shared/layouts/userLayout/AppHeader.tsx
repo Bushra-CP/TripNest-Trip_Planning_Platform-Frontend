@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
-import SearchBar from "./SearchBar";
+// import SearchBar from "./SearchBar";
 import UserHeaderActions from "./UserHeaderActions";
 import GuestHeaderActions from "./GuestHeaderActions";
 
@@ -17,7 +17,7 @@ const AppHeader = () => {
           <Navigation />
         </div>
 
-        <SearchBar />
+        {/* <SearchBar /> */}
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-5">
