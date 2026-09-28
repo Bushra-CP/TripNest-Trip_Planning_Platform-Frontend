@@ -3,7 +3,6 @@ import type { ChatMessage } from "../../interfaces/ai-planning.interfaces";
 import type { TripRequirements } from "../../interfaces/trip.interfaces";
 import type { RoutePlanningResult } from "../../interfaces/route.interfaces";
 
-
 interface AIPlanningState {
   messages: ChatMessage[];
   loading: boolean;
@@ -48,59 +47,35 @@ const aiPlanningSlice = createSlice({
   initialState,
 
   reducers: {
-    addMessage: (
-      state,
-      action: PayloadAction<ChatMessage>,
-    ) => {
+    addMessage: (state, action: PayloadAction<ChatMessage>) => {
       state.messages.push(action.payload);
     },
 
-    setLoading: (
-      state,
-      action: PayloadAction<boolean>,
-    ) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
 
-      setThreadId: (
-    state,
-    action: PayloadAction<string>,
-  ) => {
-    state.threadId = action.payload;
-  },
+    setThreadId: (state, action: PayloadAction<string>) => {
+      state.threadId = action.payload;
+    },
 
-    setTripRequirements: (
-      state,
-      action: PayloadAction<TripRequirements>,
-    ) => {
+    setTripRequirements: (state, action: PayloadAction<TripRequirements>) => {
       state.tripRequirements = action.payload;
     },
 
-    setMissingFields: (
-      state,
-      action: PayloadAction<string[]>,
-    ) => {
+    setMissingFields: (state, action: PayloadAction<string[]>) => {
       state.missingFields = action.payload;
     },
 
-    setIsComplete: (
-      state,
-      action: PayloadAction<boolean>,
-    ) => {
+    setIsComplete: (state, action: PayloadAction<boolean>) => {
       state.isComplete = action.payload;
     },
 
-    setCanGenerateDraft: (
-      state,
-      action: PayloadAction<boolean>,
-    ) => {
+    setCanGenerateDraft: (state, action: PayloadAction<boolean>) => {
       state.canGenerateDraft = action.payload;
     },
 
-    setRoute: (
-      state,
-      action: PayloadAction<RoutePlanningResult | null>,
-    ) => {
+    setRoute: (state, action: PayloadAction<RoutePlanningResult | null>) => {
       state.route = action.payload;
     },
 

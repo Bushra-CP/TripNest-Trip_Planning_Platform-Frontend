@@ -1,35 +1,13 @@
 import { axiosInstance } from "@/shared/api/axios";
 import type { ChatMessage } from "../interfaces/ai-planning.interfaces";
-import type { TripRequirements } from "../interfaces/trip.interfaces";
-import type { RoutePlanningResult } from "../interfaces/route.interfaces";
-
-export interface AIChatResponse {
-  threadId: string;
-  reply: string;
-  requirements: TripRequirements;
-  missingFields: string[];
-  isComplete: boolean;
-  canGenerateDraft: boolean;
-  route: RoutePlanningResult | null;
-}
-
-interface SendMessageResponse {
-  success: boolean;
-
-  data: {
-    threadId: string;
-    reply: string;
-    tripRequirements: TripRequirements;
-    missingFields: string[];
-    isComplete: boolean;
-    canGenerateDraft: boolean;
-    route: RoutePlanningResult | null;
-  };
-}
+import type {
+  AIChatResponse,
+  SendMessageResponse,
+} from "../types/ai-planning.types";
 
 export const sendMessage = async (
   messages: ChatMessage[],
-  threadId:string|null,
+  threadId: string | null,
 ): Promise<AIChatResponse> => {
   const latestMessage = messages[messages.length - 1];
 
@@ -41,17 +19,18 @@ export const sendMessage = async (
     "trip-planning/message",
     {
       message: latestMessage.content,
-      ...(threadId?{threadId}:{}),
+      ...(threadId ? { threadId } : {}),
     },
   );
 
   return {
     threadId: response.data.data.threadId,
     reply: response.data.data.reply,
-    requirements: response.data.data.tripRequirements,
+    requirements: response.data.data.requirements,
     missingFields: response.data.data.missingFields,
     isComplete: response.data.data.isComplete,
     canGenerateDraft: response.data.data.canGenerateDraft,
     route: response.data.data.route,
+    ragSources:response.data.data.ragSources,
   };
 };

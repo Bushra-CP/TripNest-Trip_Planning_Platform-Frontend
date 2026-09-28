@@ -7,9 +7,10 @@ import forgotPasswordSlice from "../features/traveler(user)/forgot-password/redu
 import otpSlice from "../features/traveler(user)/otp/redux/otp.slice";
 import userSlice from "../features/admin/user-management/redux/users.slice";
 import tripPlanningSlice from "../features/traveler(user)/trip-planning/redux/trip-planning.slice";
-import chatSlice from '../features/traveler(user)/trip-planning/redux/chat/chat.slice';
-import aiPlanningSlice from '../features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice';
-import knowledgeDocumentSlice from '../features/admin/ai-knowledge-docs-management/redux/knowledge-document.slice';
+import chatSlice from "../features/traveler(user)/trip-planning/redux/chat/chat.slice";
+import aiPlanningSlice from "../features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
+import knowledgeDocumentSlice from "../features/admin/ai-knowledge-docs-management/redux/knowledge-document.slice";
+import tripTalesSlice from "../features/traveler(user)/tripTales/redux/trip-tales.slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -24,7 +25,8 @@ export const rootReducer = combineReducers({
   otp: otpSlice,
   user: userSlice,
   tripPlanning: tripPlanningSlice,
-  chat:chatSlice,
+  chat: chatSlice,
   aiPlanning: aiPlanningSlice,
-  knowledgeDocuments:knowledgeDocumentSlice
+  knowledgeDocuments: knowledgeDocumentSlice,
+  tripTales: tripTalesSlice,
 });
