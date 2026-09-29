@@ -2,6 +2,7 @@ import { axiosInstance } from "@/shared/api/axios";
 import type { ChatMessage } from "../interfaces/ai-planning.interfaces";
 import type {
   AIChatResponse,
+  RestoreAIPlanningResponse,
   SendMessageResponse,
 } from "../types/ai-planning.types";
 
@@ -31,6 +32,18 @@ export const sendMessage = async (
     isComplete: response.data.data.isComplete,
     canGenerateDraft: response.data.data.canGenerateDraft,
     route: response.data.data.route,
-    ragSources:response.data.data.ragSources,
+    ragSources: response.data.data.ragSources,
   };
+};
+
+export const getPlanningState = async (
+  threadId: string,
+): Promise<RestoreAIPlanningResponse> => {
+  const response = await axiosInstance.get<{
+    success: boolean;
+    message: string;
+    data: RestoreAIPlanningResponse;
+  }>(`trip-planning/trip/${threadId}`);
+
+  return response.data.data;
 };

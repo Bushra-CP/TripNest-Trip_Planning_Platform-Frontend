@@ -26,6 +26,7 @@ import AIKnowledgeBase from "@/features/admin/ai-knowledge-docs-management/pages
 import PostsFeedPage from "@/features/traveler(user)/tripTales/pages/PostsFeedPage";
 import PostDetailPage from "@/features/traveler(user)/tripTales/pages/PostDetailPage";
 import PostDetailPage2 from "@/features/traveler(user)/tripTales/pages/PostDetailPage2";
+import MyTripsPage from "@/features/traveler(user)/dashboard/my-trips/pages/MyTripsPage";
 
 export default function AppRoutes() {
   return (
@@ -72,6 +73,7 @@ export default function AppRoutes() {
                 path={APP_ROUTES.CHANGE_EMAIL}
                 element={<ChangeEmailPage />}
               />
+              <Route path="/my-trips" element={<MyTripsPage />} />
             </Route>
           </Route>
           <Route path="/trip-plan" element={<TripPlanningPage />} />
