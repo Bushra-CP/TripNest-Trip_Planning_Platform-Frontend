@@ -11,11 +11,18 @@ import chatSlice from "../features/traveler(user)/trip-planning/redux/chat/chat.
 import aiPlanningSlice from "../features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
 import knowledgeDocumentSlice from "../features/admin/ai-knowledge-docs-management/redux/knowledge-document.slice";
 import tripTalesSlice from "../features/traveler(user)/tripTales/redux/trip-tales.slice";
+import myTripsSlice from "../features/traveler(user)/dashboard/my-trips/redux/my-trips.slice";
 
 const authPersistConfig = {
   key: "auth",
   storage,
   blacklist: ["accessToken", "isLoading", "error"],
+};
+
+const aiPlanningPersistConfig = {
+  key: "aiPlanning",
+  storage,
+  whitelist: ["threadId"],
 };
 
 export const rootReducer = combineReducers({
@@ -26,7 +33,8 @@ export const rootReducer = combineReducers({
   user: userSlice,
   tripPlanning: tripPlanningSlice,
   chat: chatSlice,
-  aiPlanning: aiPlanningSlice,
+  aiPlanning: persistReducer(aiPlanningPersistConfig, aiPlanningSlice),
   knowledgeDocuments: knowledgeDocumentSlice,
   tripTales: tripTalesSlice,
+  myTrips: myTripsSlice,
 });
