@@ -1,7 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+
 import type { ChatMessage } from "../../interfaces/ai-planning.interfaces";
 import type { TripRequirements } from "../../interfaces/trip.interfaces";
 import type { RoutePlanningResult } from "../../interfaces/route.interfaces";
+
+import { restorePlanningStateThunk } from "./ai-planning.thunk";
 
 interface AIPlanningState {
   messages: ChatMessage[];
@@ -16,6 +19,8 @@ interface AIPlanningState {
   canGenerateDraft: boolean;
 
   route: RoutePlanningResult | null;
+
+  error: string | null;
 }
 
 const initialState: AIPlanningState = {
@@ -39,6 +44,8 @@ const initialState: AIPlanningState = {
   canGenerateDraft: false,
 
   route: null,
+
+  error: null,
 };
 
 const aiPlanningSlice = createSlice({
@@ -49,6 +56,10 @@ const aiPlanningSlice = createSlice({
   reducers: {
     addMessage: (state, action: PayloadAction<ChatMessage>) => {
       state.messages.push(action.payload);
+    },
+
+    setMessages: (state, action: PayloadAction<ChatMessage[]>) => {
+      state.messages = action.payload;
     },
 
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -83,10 +94,44 @@ const aiPlanningSlice = createSlice({
       return initialState;
     },
   },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(restorePlanningStateThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(restorePlanningStateThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+
+        state.threadId = action.payload.threadId;
+
+        state.messages = action.payload.conversationHistory;
+
+        state.tripRequirements = action.payload.requirements;
+
+        state.missingFields = action.payload.missingFields;
+
+        state.isComplete = action.payload.isComplete;
+
+        state.canGenerateDraft = action.payload.canGenerateDraft;
+
+        state.route = action.payload.route;
+      })
+
+      .addCase(restorePlanningStateThunk.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error = action.payload ?? "Failed to restore trip planning state";
+      });
+  },
 });
 
 export const {
   addMessage,
+  setMessages,
   setLoading,
   setThreadId,
   setTripRequirements,

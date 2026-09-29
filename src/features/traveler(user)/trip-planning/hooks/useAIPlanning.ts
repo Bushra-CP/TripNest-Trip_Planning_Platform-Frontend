@@ -16,9 +16,13 @@ import {
 import type { ChatMessage } from "../interfaces/ai-planning.interfaces";
 
 import { sendMessage } from "../api/ai-planning.api";
+import { useEffect, useRef } from "react";
+import { restorePlanningStateThunk } from "../redux/ai-planning/ai-planning.thunk";
 
 export const useAIPlanning = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const hasRestoredRef = useRef(false);
 
   const {
     messages,
@@ -30,6 +34,18 @@ export const useAIPlanning = () => {
     canGenerateDraft,
     route,
   } = useSelector((state: RootState) => state.aiPlanning);
+
+  useEffect(() => {
+    if (!threadId || hasRestoredRef.current) {
+      return;
+    }
+
+    hasRestoredRef.current = true;
+
+    console.log("Restoring AI planning state:", threadId);
+
+    dispatch(restorePlanningStateThunk(threadId));
+  }, [threadId, dispatch]);
 
   const handleSend = async (message: string): Promise<void> => {
     const userMessage: ChatMessage = {
