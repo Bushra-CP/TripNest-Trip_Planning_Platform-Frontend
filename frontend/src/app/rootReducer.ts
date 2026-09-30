@@ -12,6 +12,7 @@ import aiPlanningSlice from "../features/traveler(user)/trip-planning/redux/ai-p
 import knowledgeDocumentSlice from "../features/admin/ai-knowledge-docs-management/redux/knowledge-document.slice";
 import tripTalesSlice from "../features/traveler(user)/tripTales/redux/trip-tales.slice";
 import myTripsSlice from "../features/traveler(user)/dashboard/my-trips/redux/my-trips.slice";
+import vehicleSlice from '../features/traveler(user)/trip-planning/redux/vehicle/vehicle.slice';
 
 const authPersistConfig = {
   key: "auth",
@@ -37,4 +38,5 @@ export const rootReducer = combineReducers({
   knowledgeDocuments: knowledgeDocumentSlice,
   tripTales: tripTalesSlice,
   myTrips: myTripsSlice,
+  vehicle:vehicleSlice,
 });
