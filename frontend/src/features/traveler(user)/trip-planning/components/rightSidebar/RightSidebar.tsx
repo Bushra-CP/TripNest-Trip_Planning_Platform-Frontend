@@ -8,7 +8,7 @@ import VehiclesTab from "./vehicles/VehiclesTab";
 import LedgerTab from "./ledger/LedgerTab";
 import ItineraryTab from "./itinerary/ItineraryTab";
 
-import { selectMode } from "@/features/traveler(user)/trip-planning/redux/trip-planning.selectors";
+import { selectMode } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.selectors";
 
 export type TabType =
   | "CHAT"
@@ -43,8 +43,22 @@ const RightSidebar = ({
     tripMode === "group" ? "CHAT" : "VEHICLES",
   );
 
+  /*
+   * CHAT and PEOPLE are only valid in group mode.
+   *
+   * If the user was previously on CHAT/PEOPLE
+   * and the trip changes to solo mode, don't render
+   * those tabs. Use VEHICLES as the effective tab.
+   */
+  const effectiveActiveTab: TabType =
+    tripMode === "solo" &&
+    (activeTab === "CHAT" ||
+      activeTab === "PEOPLE")
+      ? "VEHICLES"
+      : activeTab;
+
   const renderContent = () => {
-    switch (activeTab) {
+    switch (effectiveActiveTab) {
       case "CHAT":
         return (
           <ChatTab
@@ -98,7 +112,7 @@ const RightSidebar = ({
   return (
     <div className="flex h-full min-h-0 flex-col">
       <SidebarTabs
-        activeTab={activeTab}
+        activeTab={effectiveActiveTab}
         setActiveTab={setActiveTab}
         isDarkMode={isDarkMode}
         theme={theme}
