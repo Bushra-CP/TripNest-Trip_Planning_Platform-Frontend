@@ -9,29 +9,6 @@ interface ApiError {
 }
 
 /*-----------------------
-  CREATE ROOM THUNK
-------------------------*/
-export const createRoomThunk = createAsyncThunk(
-  "/chat/createRoom",
-
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await chatApi.createRoom();
-
-      console.log(response);
-
-      return response;
-    } catch (error) {
-      const err = error as AxiosError<ApiError>;
-
-      return rejectWithValue(
-        err.response?.data?.message ?? "Failed to create room",
-      );
-    }
-  },
-);
-
-/*-----------------------
   GET ROOM THUNK - JOIN ROOM
 ------------------------*/
 export const getRoomThunk = createAsyncThunk(
@@ -67,7 +44,7 @@ export const getMessagesThunk = createAsyncThunk<
     try {
       const response = await chatApi.getMessages(roomId);
 
-      return response;
+      return response.data;
     } catch (error) {
       const err = error as AxiosError<ApiError>;
 

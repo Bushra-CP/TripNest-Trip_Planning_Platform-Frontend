@@ -1,6 +1,8 @@
 import { Car, CheckCircle2, Plus } from "lucide-react";
 import useVehicleManagement from "../../../hooks/useVehicleManagement";
 import VehicleManagementModal from "./vehicle-management-modal/VehicleManagementModal";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/app/store";
 
 interface ThemeProps {
   surface?: string;
@@ -130,6 +132,8 @@ const VehiclesTab = ({
     handleSelectVehicle,
   } = useVehicleManagement();
 
+  const { threadId } = useSelector((state: RootState) => state.aiPlanning);
+
   return (
     <>
       <div className="flex h-full flex-col">
@@ -146,11 +150,15 @@ const VehiclesTab = ({
             >
               Vehicle Showdown
             </h3>
-
             <button
               type="button"
               onClick={openVehicleModal}
-              className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#10b981]"
+              disabled={!threadId}
+              className={`flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest ${
+                threadId
+                  ? "text-[#10b981]"
+                  : "text-slate-400 cursor-not-allowed"
+              }`}
             >
               <Plus size={14} />
               Add Vehicle

@@ -1,5 +1,7 @@
 import type { AppDispatch } from "@/app/store";
 import { logoutThunk } from "@/features/traveler(user)/auth/redux/authThunk";
+import { clearAIPlanning } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
+import { clearTripPlanning } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +23,12 @@ export const useAdminLayout = () => {
   const handleLogout = () => {
     console.log("Logout");
 
+    dispatch(clearAIPlanning());
+
+    dispatch(clearTripPlanning());
+
     dispatch(logoutThunk());
+
     navigate("/admin/login");
   };
 

@@ -6,6 +6,13 @@ import type { RoutePlanningResult } from "../../interfaces/route.interfaces";
 
 import { restorePlanningStateThunk } from "./ai-planning.thunk";
 
+const defaultAIMessage: ChatMessage = {
+  id: crypto.randomUUID(),
+  role: "assistant",
+  content:
+    "Hi! 👋 I'm your AI Trip Planner. Tell me where you'd like to travel, and I'll help you plan your trip.",
+};
+
 interface AIPlanningState {
   messages: ChatMessage[];
   loading: boolean;
@@ -24,14 +31,7 @@ interface AIPlanningState {
 }
 
 const initialState: AIPlanningState = {
-  messages: [
-    {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content:
-        "Hi! 👋 I'm your AI Trip Planner. Tell me where you'd like to travel, and I'll help you plan your trip.",
-    },
-  ],
+  messages: [defaultAIMessage],
 
   loading: false,
 
@@ -108,7 +108,9 @@ const aiPlanningSlice = createSlice({
 
         state.threadId = action.payload.threadId;
 
-        state.messages = action.payload.conversationHistory;
+        const conversationHistory = action.payload.conversationHistory ?? [];
+
+        state.messages = [defaultAIMessage, ...conversationHistory];
 
         state.tripRequirements = action.payload.requirements;
 
