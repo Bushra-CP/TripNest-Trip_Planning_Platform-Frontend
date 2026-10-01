@@ -12,9 +12,16 @@ import {
   createVehicleThunk,
   fetchVehiclesThunk,
 } from "../redux/vehicle/vehicle.thunk";
+import { selectUser } from "../../auth/redux/authSelectors";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const useVehicleManagement = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const navigate = useNavigate();
+
+  const user = useSelector(selectUser);
 
   //Redux Vehicle State
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
@@ -29,7 +36,12 @@ const useVehicleManagement = () => {
   const [selectedVehicleId, setSelectedVehicleId] = useState<string>("");
 
   const openVehicleModal = () => {
-    setIsVehicleModalOpen(true);
+    if (!user) {
+      toast.error("Please login to add vehicle!");
+      navigate("/login");
+    } else {
+      setIsVehicleModalOpen(true);
+    }
   };
 
   const closeVehicleModal = () => {

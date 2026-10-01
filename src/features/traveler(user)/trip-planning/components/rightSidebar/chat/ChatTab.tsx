@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectRoomId } from "../../../redux/trip-planning.selectors";
+import { selectRoomId } from "../../../redux/trip-planning/trip-planning.selectors";
 import { selectMessages } from "../../../redux/chat/chat.selectors";
 import { addMessage } from "../../../redux/chat/chat.slice";
 import { getMessagesThunk } from "../../../redux/chat/chat.thunk";

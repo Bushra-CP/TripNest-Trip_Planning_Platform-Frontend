@@ -42,7 +42,8 @@ export const SERVER_ROUTES = {
   CHANGE_EMAIL: "/change-email",
   VERIFY_CHANGE_EMAIL_OTP: "/verify-change-email-otp",
   RESEND_CHANGE_EMAIL_OTP: "/resend-change-email-otp",
-  CREATE_ROOM: "/trip-planning/room",
+  CONVERT_TO_GROUP_TRIP: "/trip-planning/trips/convert-to-group",
+  GET_TRIP_BY_THREAD_ID: "/trip-planning/trips/:threadId",
   JOIN_ROOM: "/trip-planning/room/:roomId",
   GET_MESSAGES: "/trip-planning/room/:roomId/messages",
 
@@ -52,6 +53,8 @@ export const SERVER_ROUTES = {
   GET_VEHICLE_BY_ID: "/trip-planning/vehicles/:vehicleId",
   UPDATE_VEHICLE: "/trip-planning/vehicles/:vehicleId",
   DELETE_VEHICLE: "/trip-planning/vehicles/:vehicleId",
+  MEMBERS: "/trip-planning/members",
+  GET_TRIP_MEMBERS: "/trip-planning/members/:threadId",
 
   //TripTales RELATED
   CREATE_POST: "/trip-tales/posts",

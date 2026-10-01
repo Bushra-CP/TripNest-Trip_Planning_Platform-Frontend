@@ -16,7 +16,7 @@ interface AIConversationProps {
 
 const AIConversation = ({
   theme,
-  messages,
+  messages=[],
   mobile = false,
 }: AIConversationProps) => {
   const navigate = useNavigate();

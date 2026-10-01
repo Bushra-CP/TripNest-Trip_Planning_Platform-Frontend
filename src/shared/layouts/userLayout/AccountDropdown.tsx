@@ -13,6 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "@/app/store";
 import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
 import { logoutThunk } from "@/features/traveler(user)/auth/redux/authThunk";
+import { clearAIPlanning } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
+import { clearTripPlanning } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
+import { clearChat } from "@/features/traveler(user)/trip-planning/redux/chat/chat.slice";
 
 interface MenuItem {
   label: string;
@@ -71,21 +74,23 @@ const AccountDropdown = ({ onClose }: AccountDropdownProps) => {
 
   const user = useSelector(selectUser);
 
-const handleLogout = async () => {
-  console.log("1. logout button clicked");
+  const handleLogout = async () => {
+    onClose();
 
-  onClose();
+    try {
+      dispatch(clearAIPlanning());
 
-  try {
-    console.log("2. dispatching logout thunk");
+      dispatch(clearTripPlanning());
 
-    const result = await dispatch(logoutThunk()).unwrap();
+      dispatch(clearChat());
 
-    console.log("3. logout successful", result);
-  } catch (error) {
-    console.error("4. Logout failed:", error);
-  }
-};
+      const result = await dispatch(logoutThunk()).unwrap();
+
+      console.log("logout successful", result);
+    } catch (error) {
+      console.error(" Logout failed:", error);
+    }
+  };
 
   return (
     <div

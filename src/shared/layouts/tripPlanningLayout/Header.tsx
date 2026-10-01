@@ -1,21 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import Logo from "../userLayout/Logo";
-import { Moon, Sun } from "lucide-react";
+
+import { Moon, Plus, Sun } from "lucide-react";
+
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   selectMode,
   selectRoomId,
-} from "@/features/traveler(user)/trip-planning/redux/trip-planning.selectors";
-import {
-  createRoomThunk,
-  getRoomThunk,
-} from "@/features/traveler(user)/trip-planning/redux/chat/chat.thunk";
-import type { AppDispatch } from "@/app/store";
+} from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.selectors";
+
+import type { AppDispatch, RootState } from "@/app/store";
+
 import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
+
 import { toast } from "sonner";
+
 import { useNavigate } from "react-router-dom";
+
 import UserHeaderActions from "../userLayout/UserHeaderActions";
 import GuestHeaderActions from "../userLayout/GuestHeaderActions";
+
+import {
+  clearAIPlanning,
+  setThreadId,
+} from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
+
+import {
+  convertToGroupTripThunk,
+  getTripByThreadIdThunk,
+} from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.thunk";
+
+import {
+  clearTripPlanning,
+  setTripState,
+} from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
+
+import {
+  getTripMembersThunk,
+  joinGroupThunk,
+} from "@/features/traveler(user)/trip-planning/redux/member/member.thunk";
+
 
 interface HeaderProps {
   isDarkMode: boolean;
@@ -38,7 +64,11 @@ export default function Header({
 
   const navigate = useNavigate();
 
-  const [groupIdInput, setGroupIdInput] = useState("");
+  // =====================================================
+  // REDUX STATE
+  // =====================================================
+
+  const { threadId } = useSelector((state: RootState) => state.aiPlanning);
 
   const user = useSelector(selectUser);
 
@@ -46,83 +76,195 @@ export default function Header({
 
   const roomId = useSelector(selectRoomId);
 
-  // ---------------------------------------------
+
+  // =====================================================
+  // LOCAL STATE
+  // =====================================================
+
+  const [groupIdInput, setGroupIdInput] = useState("");
+
+  // =====================================================
+  // RESTORE TRIP
+  // =====================================================
+
+  useEffect(() => {
+    if (!threadId) {
+      return;
+    }
+
+    dispatch(getTripByThreadIdThunk(threadId));
+  }, [dispatch, threadId]);
+
+  // =====================================================
+  // FETCH MEMBERS
+  // =====================================================
+
+  useEffect(() => {
+    if (!threadId) {
+      return;
+    }
+
+    dispatch(getTripMembersThunk(threadId));
+  }, [dispatch, threadId]);
+
+  // =====================================================
+  // CREATE NEW TRIP
+  // =====================================================
+
+  const handleCreateNewTrip = () => {
+    dispatch(clearAIPlanning());
+
+    dispatch(clearTripPlanning());
+
+    navigate("/trip-plan");
+  };
+
+  // =====================================================
   // CREATE GROUP
-  // ---------------------------------------------
+  // =====================================================
 
   const handleCreateGroup = async () => {
     try {
       if (!user) {
         toast.error("Please login first to create group!");
+
         navigate("/login");
+
+        return;
       }
-      const result = await dispatch(createRoomThunk()).unwrap();
+
+      const result = await dispatch(
+        convertToGroupTripThunk(threadId ?? undefined),
+      ).unwrap();
 
       console.log("Group created:", result);
+
+      dispatch(
+        setTripState({
+          tripId: result._id,
+          roomId: result.roomId ?? "",
+          mode: result.tripMode,
+        }),
+      );
+
+      dispatch(setThreadId(result.threadId));
+
+      // Fetch members after creating group
+      await dispatch(getTripMembersThunk(result.threadId));
     } catch (error) {
       console.error("Failed to create group:", error);
+
+      toast.error(typeof error === "string" ? error : "Failed to create group");
     }
   };
 
-  // ---------------------------------------------
+  // =====================================================
   // JOIN GROUP
-  // ---------------------------------------------
+  // =====================================================
 
   const handleJoinGroup = async () => {
-    const trimmedGroupId = groupIdInput.trim().toUpperCase();
+    const trimmedRoomId = groupIdInput.trim().toUpperCase();
 
-    if (!trimmedGroupId) {
+    if (!trimmedRoomId) {
       return;
     }
 
     try {
-      const result = await dispatch(getRoomThunk(trimmedGroupId)).unwrap();
+      const result = await dispatch(joinGroupThunk(trimmedRoomId)).unwrap();
 
       console.log("Joined group:", result);
 
+      // -----------------------------------------------
+      // SET TRIP STATE
+      // -----------------------------------------------
+
+      dispatch(
+        setTripState({
+          tripId: result.tripId,
+          roomId: result.roomId,
+          mode: result.tripMode,
+        }),
+      );
+
+      // -----------------------------------------------
+      // SET THREAD ID
+      // -----------------------------------------------
+
+      dispatch(setThreadId(result.threadId));
+
+      // -----------------------------------------------
+      // FETCH MEMBERS
+      // -----------------------------------------------
+
+      await dispatch(getTripMembersThunk(result.threadId));
+
+      // -----------------------------------------------
+      // CLEAR INPUT
+      // -----------------------------------------------
+
       setGroupIdInput("");
+
+      toast.success("Joined group successfully");
     } catch (error) {
-      console.error("Failed to join group:", error);
+      toast.error(typeof error === "string" ? error : "Failed to join group");
     }
   };
 
-  // ---------------------------------------------
+  // =====================================================
   // COPY GROUP ID
-  // ---------------------------------------------
+  // =====================================================
 
   const handleCopyGroupId = async () => {
     if (!roomId) {
       return;
     }
 
-    await navigator.clipboard.writeText(roomId);
+    try {
+      await navigator.clipboard.writeText(roomId);
+
+      toast.success("Room ID copied");
+    } catch {
+      toast.error("Failed to copy Room ID");
+    }
   };
+
+
+
+  // =====================================================
+  // UI
+  // =====================================================
 
   return (
     <header
-      className={`absolute top-0 left-0 right-0 h-16 flex items-center px-3 sm:px-5 z-100 border-b transition-colors duration-300 ${theme.surface} ${theme.border}`}
+      className={`absolute top-0 left-0 right-0 z-100 flex h-16 items-center border-b px-3 transition-colors duration-300 sm:px-5 ${theme.surface} ${theme.border}`}
     >
-      {/* Logo */}
-      <div className="flex items-center gap-2 w-auto lg:w-36.25 shrink-0">
+      {/* =================================================
+          LOGO
+      ================================================= */}
+
+      <div className="flex w-auto shrink-0 items-center gap-2 lg:w-36.25">
         <Logo />
       </div>
 
-      {/* Trip Mode */}
-      <div className="hidden sm:flex items-center gap-2 lg:ml-4">
-        {/* -----------------------------------------
+      {/* =================================================
+          TRIP MODE
+      ================================================= */}
+
+      <div className="hidden items-center gap-2 sm:flex lg:ml-4">
+        {/* =================================================
             GROUP TRIP
-        ------------------------------------------ */}
+        ================================================= */}
 
         {tripMode === "group" && (
           <div
-            className={`flex h-9 px-3 items-center gap-3 rounded-lg border transition-colors ${theme.input}`}
+            className={`flex h-9 items-center gap-3 rounded-lg border px-3 transition-colors ${theme.input}`}
           >
-            <span className="text-[8px] text-slate-500 uppercase tracking-widest">
+            <span className="text-[8px] uppercase tracking-widest text-slate-500">
               Room ID
             </span>
 
             <span className="text-[10px] font-bold text-[#3B82F6]">
-              {roomId}
+              {roomId ?? "N/A"}
             </span>
 
             {roomId && (
@@ -138,9 +280,9 @@ export default function Header({
           </div>
         )}
 
-        {/* -----------------------------------------
+        {/* =================================================
             SOLO TRIP
-        ------------------------------------------ */}
+        ================================================= */}
 
         {tripMode === "solo" && (
           <>
@@ -149,7 +291,7 @@ export default function Header({
             <button
               type="button"
               onClick={handleCreateGroup}
-              className="h-9 px-3 rounded-lg bg-[#3B82F6] text-white text-[10px] font-semibold hover:bg-[#2563EB] transition-colors"
+              className="h-9 rounded-lg bg-[#3B82F6] px-3 text-[10px] font-semibold text-white transition-colors hover:bg-[#2563EB]"
             >
               Convert to Group Trip
             </button>
@@ -169,14 +311,14 @@ export default function Header({
                   }
                 }}
                 placeholder="Enter Group ID"
-                className="w-32 h-full px-3 bg-transparent outline-none text-[10px]"
+                className="h-full w-32 bg-transparent px-3 text-[10px] outline-none"
               />
 
               <button
                 type="button"
                 onClick={handleJoinGroup}
                 disabled={!groupIdInput.trim()}
-                className="h-full px-3 text-[10px] font-semibold text-[#3B82F6] disabled:opacity-40 disabled:cursor-not-allowed"
+                className="h-full px-3 text-[10px] font-semibold text-[#3B82F6] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Join Group
               </button>
@@ -185,56 +327,39 @@ export default function Header({
         )}
       </div>
 
-      {/* Right Navigation */}
+      {/* =================================================
+          RIGHT NAVIGATION
+      ================================================= */}
+
       <div className="ml-auto flex items-center gap-2 sm:gap-4 lg:gap-5">
-        {/* Members */}
-        <div className="hidden md:flex items-center -space-x-2">
-          <img
-            src="https://i.pravatar.cc/100?u=arjun"
-            alt="Arjun"
-            className={`w-7 h-7 rounded-full border-2 object-cover ${
-              isDarkMode ? "border-[#101B2D]" : "border-white"
-            }`}
-          />
+        {/* =================================================
+            CREATE NEW TRIP
+        ================================================= */}
 
-          <img
-            src="https://i.pravatar.cc/100?u=rohan"
-            alt="Rohan"
-            className={`w-7 h-7 rounded-full border-2 object-cover ${
-              isDarkMode ? "border-[#101B2D]" : "border-white"
-            }`}
-          />
+        <button
+          type="button"
+          aria-label="Create New Trip"
+          title="Create New Trip"
+          onClick={handleCreateNewTrip}
+          className="flex h-9 items-center justify-center rounded-lg bg-[#3B82F6] px-3 text-[10px] font-semibold text-white transition-colors hover:bg-[#2563EB]"
+        >
+          <Plus size={20} />
+        </button>
 
-          <img
-            src="https://i.pravatar.cc/100?u=priya"
-            alt="Priya"
-            className={`w-7 h-7 rounded-full border-2 object-cover ${
-              isDarkMode ? "border-[#101B2D]" : "border-white"
-            }`}
-          />
+        {/* =================================================
+            MEMBERS
+        ================================================= */}
 
-          <div
-            className={`w-7 h-7 rounded-full border-2 flex items-center justify-center ${
-              isDarkMode
-                ? "border-[#101B2D] bg-[#1A2940]"
-                : "border-white bg-slate-200"
-            }`}
-          >
-            <span
-              className={`text-[8px] font-bold ${
-                isDarkMode ? "text-slate-200" : "text-slate-700"
-              }`}
-            >
-              +2
-            </span>
-          </div>
-        </div>
+        
 
-        {/* Theme */}
+        {/* =================================================
+            THEME
+        ================================================= */}
+
         <button
           type="button"
           onClick={toggleTheme}
-          className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center transition-colors ${theme.iconButton}`}
+          className={`flex h-8 w-8 items-center justify-center rounded-lg transition-colors sm:h-9 sm:w-9 ${theme.iconButton}`}
           aria-label={
             isDarkMode ? "Switch to light mode" : "Switch to dark mode"
           }
@@ -242,23 +367,9 @@ export default function Header({
           {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
         </button>
 
-        {/* Notification */}
-        {/* <button
-          type="button"
-          className={`transition-colors ${theme.iconButton}`}
-          aria-label="Notifications"
-        >
-          <Bell size={18} />
-        </button> */}
-
-        {/* Settings */}
-        {/* <button
-          type="button"
-          className={`hidden sm:block transition-colors ${theme.iconButton}`}
-          aria-label="Settings"
-        >
-          <Settings size={18} />
-        </button> */}
+        {/* =================================================
+            USER ACTIONS
+        ================================================= */}
 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-5">

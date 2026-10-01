@@ -6,13 +6,14 @@ import { persistReducer } from "redux-persist";
 import forgotPasswordSlice from "../features/traveler(user)/forgot-password/redux/forgot-password.slice";
 import otpSlice from "../features/traveler(user)/otp/redux/otp.slice";
 import userSlice from "../features/admin/user-management/redux/users.slice";
-import tripPlanningSlice from "../features/traveler(user)/trip-planning/redux/trip-planning.slice";
 import chatSlice from "../features/traveler(user)/trip-planning/redux/chat/chat.slice";
 import aiPlanningSlice from "../features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
 import knowledgeDocumentSlice from "../features/admin/ai-knowledge-docs-management/redux/knowledge-document.slice";
 import tripTalesSlice from "../features/traveler(user)/tripTales/redux/trip-tales.slice";
 import myTripsSlice from "../features/traveler(user)/dashboard/my-trips/redux/my-trips.slice";
-import vehicleSlice from '../features/traveler(user)/trip-planning/redux/vehicle/vehicle.slice';
+import vehicleSlice from "../features/traveler(user)/trip-planning/redux/vehicle/vehicle.slice";
+import tripPlanningSlice from "../features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
+import memberSlice from "../features/traveler(user)/trip-planning/redux/member/member.slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -38,5 +39,6 @@ export const rootReducer = combineReducers({
   knowledgeDocuments: knowledgeDocumentSlice,
   tripTales: tripTalesSlice,
   myTrips: myTripsSlice,
-  vehicle:vehicleSlice,
+  vehicle: vehicleSlice,
+  member: memberSlice,
 });

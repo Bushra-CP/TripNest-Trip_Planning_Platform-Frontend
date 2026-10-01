@@ -1,15 +1,9 @@
-import {
-  Car,
-  Clock,
-  CreditCard,
-  MessageSquare,
-  Users,
-} from "lucide-react";
+import { Car, Clock, CreditCard, MessageSquare, Users } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 import { useSelector } from "react-redux";
 
 import type { TabType } from "./RightSidebar";
-import { selectMode } from "@/features/traveler(user)/trip-planning/redux/trip-planning.selectors";
+import { selectMode } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.selectors";
 
 interface ThemeProps {
   surface?: string;
@@ -78,9 +72,7 @@ const SidebarTabs = ({
   );
 
   return (
-    <div
-      className={`h-[80px] border-b ${theme.surface} ${theme.border}`}
-    >
+    <div className={`h-[80px] border-b ${theme.surface} ${theme.border}`}>
       <div className="flex h-full">
         {visibleTabs.map((tab) => {
           const Icon = tab.icon;

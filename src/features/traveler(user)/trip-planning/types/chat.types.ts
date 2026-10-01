@@ -5,17 +5,37 @@ export interface MessageRequest {
 }
 
 export interface MessageResponse {
-  _id:string;
+  _id: string;
   roomId: string;
   senderId: string;
   senderName: string;
   senderPic: string;
   message: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
-export interface CreateRoomResponse {
-  roomId: string;
+export interface MessageResponseApiResponse {
+  success: boolean;
+  message: string;
+  data: MessageResponse[];
+}
+
+export interface TripResponse {
+  _id: string;
+  ownerId: string;
+  title: string | null;
+  tripMode: "solo" | "group";
+  status: "planning" | "ready" | "completed" | "cancelled";
+  threadId: string;
+  roomId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TripApiResponse {
+  success: boolean;
+  message: string;
+  data: TripResponse;
 }
 
 export interface RoomResponse {

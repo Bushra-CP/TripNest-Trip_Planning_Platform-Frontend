@@ -7,6 +7,7 @@ import type { AppDispatch, RootState } from "@/app/store";
 import { fetchMyTripsThunk } from "../redux/my-trips.thunk";
 import { restorePlanningStateThunk } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.thunk";
 import { clearAIPlanning } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
+import { clearChat } from "@/features/traveler(user)/trip-planning/redux/chat/chat.slice";
 
 export type TripType = "Solo" | "Group";
 
@@ -89,6 +90,8 @@ export const useMyTrips = () => {
    * dispatch restorePlanningStateThunk().
    */
   const handleSelectTrip = async (trip: TripItem) => {
+    dispatch(clearChat());
+
     dispatch(clearAIPlanning());
 
     const result = await dispatch(restorePlanningStateThunk(trip.threadId));
@@ -102,7 +105,9 @@ export const useMyTrips = () => {
    * Create a new trip.
    */
   const handleCreateNewTrip = () => {
+    dispatch(clearChat());
     dispatch(clearAIPlanning());
+
     navigate("/trip-plan");
   };
 
