@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Car,
-  Bike,
-  Gauge,
-  CheckCircle2,
-  Users,
-} from "lucide-react";
+import { Car, Bike, Gauge, CheckCircle2, Users } from "lucide-react";
 
 import type { VehicleResponse } from "@/features/traveler(user)/trip-planning/types/vehicle.types";
 
@@ -35,7 +29,7 @@ const VehicleList: React.FC<VehicleListProps> = ({
         </div>
 
         <p className="text-[11px] text-slate-400 font-medium">
-          Select one to apply live route rates
+          Select one to add to this trip
         </p>
       </div>
 
@@ -115,34 +109,28 @@ const VehicleList: React.FC<VehicleListProps> = ({
 
                     {/* Vehicle Tags */}
                     <div className="flex flex-wrap items-center gap-1.5">
-                      {/* Type */}
                       <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-bold">
                         {vehicle.type}
                       </span>
 
-                      {/* Fuel */}
                       <span className="px-2 py-0.5 rounded-md bg-orange-50 text-orange-700 text-[10px] font-bold">
                         {vehicle.fuelType}
                       </span>
 
-                      {/* Mileage */}
                       <span className="flex items-center gap-1 text-slate-600 text-[11px] font-bold ml-1">
                         <Gauge className="w-3 h-3 text-slate-400" />
-
-                        {vehicle.mileage}{" "}
+                        {vehicle.fuelEfficiency}{" "}
                         {vehicle.fuelType === "ELECTRIC"
                           ? "km/kWh"
-                          : "km/l"}
+                          : vehicle.fuelType === "CNG"
+                            ? "km/kg"
+                            : "km/l"}
                       </span>
 
-                      {/* Capacity */}
                       <span className="flex items-center gap-1 text-slate-600 text-[11px] font-bold ml-1">
                         <Users className="w-3 h-3 text-slate-400" />
-
                         {vehicle.seatingCapacity}{" "}
-                        {vehicle.seatingCapacity === 1
-                          ? "person"
-                          : "people"}
+                        {vehicle.seatingCapacity === 1 ? "person" : "people"}
                       </span>
                     </div>
 

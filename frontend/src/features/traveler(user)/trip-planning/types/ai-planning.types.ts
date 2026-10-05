@@ -19,6 +19,7 @@ export interface RagSource {
 
 export interface AIChatResponse {
   threadId: string;
+  tripId: string;
   reply: string;
   requirements: TripRequirements;
   missingFields: string[];
@@ -30,6 +31,7 @@ export interface AIChatResponse {
 
 export interface RestoreAIPlanningResponse {
   threadId: string;
+  tripId: string;
   title: string | null;
   conversationHistory: ChatMessage[];
   requirements: TripRequirements;
