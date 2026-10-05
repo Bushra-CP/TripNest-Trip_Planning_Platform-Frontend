@@ -4,7 +4,10 @@ import type { ChatMessage } from "../../interfaces/ai-planning.interfaces";
 import type { TripRequirements } from "../../interfaces/trip.interfaces";
 import type { RoutePlanningResult } from "../../interfaces/route.interfaces";
 
-import { restorePlanningStateThunk } from "./ai-planning.thunk";
+import {
+  restorePlanningStateThunk,
+  sendMessageThunk,
+} from "./ai-planning.thunk";
 
 const defaultAIMessage: ChatMessage = {
   id: crypto.randomUUID(),
@@ -18,6 +21,8 @@ interface AIPlanningState {
   loading: boolean;
 
   threadId: string | null;
+
+  tripId: string | null;
 
   tripRequirements: TripRequirements | null;
   missingFields: string[];
@@ -36,6 +41,7 @@ const initialState: AIPlanningState = {
   loading: false,
 
   threadId: null,
+  tripId: null,
 
   tripRequirements: null,
   missingFields: [],
@@ -70,26 +76,6 @@ const aiPlanningSlice = createSlice({
       state.threadId = action.payload;
     },
 
-    setTripRequirements: (state, action: PayloadAction<TripRequirements>) => {
-      state.tripRequirements = action.payload;
-    },
-
-    setMissingFields: (state, action: PayloadAction<string[]>) => {
-      state.missingFields = action.payload;
-    },
-
-    setIsComplete: (state, action: PayloadAction<boolean>) => {
-      state.isComplete = action.payload;
-    },
-
-    setCanGenerateDraft: (state, action: PayloadAction<boolean>) => {
-      state.canGenerateDraft = action.payload;
-    },
-
-    setRoute: (state, action: PayloadAction<RoutePlanningResult | null>) => {
-      state.route = action.payload;
-    },
-
     clearAIPlanning: () => {
       return initialState;
     },
@@ -97,6 +83,39 @@ const aiPlanningSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+
+      .addCase(sendMessageThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(sendMessageThunk.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.error = null;
+
+        state.threadId = action.payload.threadId;
+
+        state.tripId = action.payload.tripId;
+
+        state.tripRequirements = action.payload.requirements;
+
+        state.missingFields = action.payload.missingFields;
+
+        state.isComplete = action.payload.isComplete;
+
+        state.canGenerateDraft = action.payload.canGenerateDraft;
+
+        state.route = action.payload.route;
+      })
+
+      .addCase(sendMessageThunk.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error =
+          action.payload ?? "Failed to send message to AI assistant";
+      })
+
       .addCase(restorePlanningStateThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -107,6 +126,8 @@ const aiPlanningSlice = createSlice({
         state.error = null;
 
         state.threadId = action.payload.threadId;
+
+        state.tripId = action.payload.tripId;
 
         const conversationHistory = action.payload.conversationHistory ?? [];
 
@@ -136,11 +157,6 @@ export const {
   setMessages,
   setLoading,
   setThreadId,
-  setTripRequirements,
-  setMissingFields,
-  setIsComplete,
-  setCanGenerateDraft,
-  setRoute,
   clearAIPlanning,
 } = aiPlanningSlice.actions;
 

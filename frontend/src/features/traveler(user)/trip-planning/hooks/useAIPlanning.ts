@@ -5,19 +5,16 @@ import type { RootState, AppDispatch } from "@/app/store";
 import {
   addMessage,
   setLoading,
-  setTripRequirements,
-  setMissingFields,
-  setIsComplete,
-  setCanGenerateDraft,
-  setRoute,
   setThreadId,
 } from "../redux/ai-planning/ai-planning.slice";
 
 import type { ChatMessage } from "../interfaces/ai-planning.interfaces";
 
-import { sendMessage } from "../api/ai-planning.api";
 import { useEffect, useRef } from "react";
-import { restorePlanningStateThunk } from "../redux/ai-planning/ai-planning.thunk";
+import {
+  restorePlanningStateThunk,
+  sendMessageThunk,
+} from "../redux/ai-planning/ai-planning.thunk";
 
 export const useAIPlanning = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -66,7 +63,12 @@ export const useAIPlanning = () => {
        */
       const updatedMessages = [...messages, userMessage];
 
-      const data = await sendMessage(updatedMessages, threadId);
+      const data = await dispatch(
+        sendMessageThunk({
+          messages: updatedMessages,
+          threadId,
+        }),
+      ).unwrap();
 
       console.log("AI response data:", data);
       console.log("RAG sources:", data.ragSources);
@@ -81,12 +83,6 @@ export const useAIPlanning = () => {
       };
 
       dispatch(addMessage(assistantMessage));
-
-      dispatch(setTripRequirements(data.requirements));
-      dispatch(setMissingFields(data.missingFields));
-      dispatch(setIsComplete(data.isComplete));
-      dispatch(setCanGenerateDraft(data.canGenerateDraft));
-      dispatch(setRoute(data.route));
     } catch (error) {
       console.error("Failed to send AI message:", error);
 

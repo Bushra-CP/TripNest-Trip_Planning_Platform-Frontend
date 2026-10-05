@@ -15,7 +15,7 @@ export interface CreateVehicleData {
   name: string;
   type: VehicleType;
   fuelType: FuelType;
-  mileage: number;
+  fuelEfficiency: number;
   seatingCapacity: number;
   additionalDetails?: string;
 }
@@ -24,7 +24,7 @@ export interface UpdateVehicleData {
   name?: string;
   type?: VehicleType;
   fuelType?: FuelType;
-  mileage?: number;
+  fuelEfficiency?: number;
   seatingCapacity?: number;
   additionalDetails?: string;
 }
@@ -35,7 +35,7 @@ export interface VehicleResponse {
   name: string;
   type: VehicleType;
   fuelType: FuelType;
-  mileage: number;
+  fuelEfficiency: number;
   seatingCapacity: number;
   additionalDetails?: string;
   createdAt: string;

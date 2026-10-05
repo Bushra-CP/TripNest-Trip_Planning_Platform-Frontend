@@ -24,16 +24,7 @@ export const sendMessage = async (
     },
   );
 
-  return {
-    threadId: response.data.data.threadId,
-    reply: response.data.data.reply,
-    requirements: response.data.data.requirements,
-    missingFields: response.data.data.missingFields,
-    isComplete: response.data.data.isComplete,
-    canGenerateDraft: response.data.data.canGenerateDraft,
-    route: response.data.data.route,
-    ragSources: response.data.data.ragSources,
-  };
+  return response.data.data;
 };
 
 export const getPlanningState = async (
