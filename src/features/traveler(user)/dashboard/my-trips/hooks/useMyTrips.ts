@@ -8,6 +8,8 @@ import { fetchMyTripsThunk } from "../redux/my-trips.thunk";
 import { restorePlanningStateThunk } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.thunk";
 import { clearAIPlanning } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
 import { clearChat } from "@/features/traveler(user)/trip-planning/redux/chat/chat.slice";
+import { clearTripVehicles } from "@/features/traveler(user)/trip-planning/redux/trip-vehicle/trip-vehicle.slice";
+import { clearTripPlanning } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
 
 export type TripType = "Solo" | "Group";
 
@@ -94,6 +96,10 @@ export const useMyTrips = () => {
 
     dispatch(clearAIPlanning());
 
+    dispatch(clearTripVehicles());
+
+    dispatch(clearTripPlanning());
+
     const result = await dispatch(restorePlanningStateThunk(trip.threadId));
 
     if (restorePlanningStateThunk.fulfilled.match(result)) {
@@ -107,7 +113,9 @@ export const useMyTrips = () => {
   const handleCreateNewTrip = () => {
     dispatch(clearChat());
     dispatch(clearAIPlanning());
-
+    dispatch(clearTripVehicles());
+    dispatch(clearTripPlanning());
+    
     navigate("/trip-plan");
   };
 

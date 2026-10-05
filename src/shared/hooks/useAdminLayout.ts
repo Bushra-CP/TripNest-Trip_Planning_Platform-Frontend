@@ -1,7 +1,9 @@
 import type { AppDispatch } from "@/app/store";
 import { logoutThunk } from "@/features/traveler(user)/auth/redux/authThunk";
 import { clearAIPlanning } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
+import { clearChat } from "@/features/traveler(user)/trip-planning/redux/chat/chat.slice";
 import { clearTripPlanning } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
+import { clearTripVehicles } from "@/features/traveler(user)/trip-planning/redux/trip-vehicle/trip-vehicle.slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +28,10 @@ export const useAdminLayout = () => {
     dispatch(clearAIPlanning());
 
     dispatch(clearTripPlanning());
+
+    dispatch(clearChat());
+
+    dispatch(clearTripVehicles());
 
     dispatch(logoutThunk());
 

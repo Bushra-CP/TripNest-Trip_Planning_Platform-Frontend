@@ -1,10 +1,11 @@
 import React from "react";
 import { Plus, AlertCircle } from "lucide-react";
 
-import type {
-  FieldErrors,
-  UseFormHandleSubmit,
-  UseFormRegister,
+import {
+  type FieldErrors,
+  type UseFormHandleSubmit,
+  type UseFormRegister,
+  type UseFormWatch,
 } from "react-hook-form";
 
 import type { VehicleFormValues } from "@/features/traveler(user)/trip-planning/validation/vehicle.schema";
@@ -13,6 +14,7 @@ interface AddVehicleFormProps {
   register: UseFormRegister<VehicleFormValues>;
   handleSubmit: UseFormHandleSubmit<VehicleFormValues>;
   errors: FieldErrors<VehicleFormValues>;
+  watch: UseFormWatch<VehicleFormValues>;
   onAddVehicleSubmit: (data: VehicleFormValues) => void;
 }
 
@@ -20,8 +22,20 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
   register,
   handleSubmit,
   errors,
+  watch,
   onAddVehicleSubmit,
 }) => {
+  const getFuelEfficiencyUnit = () => {
+    switch (watch("fuelType")) {
+      case "ELECTRIC":
+        return "km/kWh";
+      case "CNG":
+        return "km/kg";
+      default:
+        return "km/l";
+    }
+  };
+
   return (
     <section className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-5 space-y-5">
       {/* Header */}
@@ -40,9 +54,7 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
       </div>
 
       <form onSubmit={handleSubmit(onAddVehicleSubmit)} className="space-y-5">
-        {/* ================================================== */}
         {/* FIRST ROW - VEHICLE MODEL & TYPE */}
-        {/* ================================================== */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
           {/* Vehicle Model */}
@@ -98,9 +110,7 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
           </div>
         </div>
 
-        {/* ================================================== */}
-        {/* SECOND ROW - FUEL, MILEAGE & CAPACITY */}
-        {/* ================================================== */}
+        {/* SECOND ROW - FUEL, fuelEfficiency & CAPACITY */}
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-start">
           {/* Fuel */}
@@ -127,10 +137,10 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
             )}
           </div>
 
-          {/* Mileage */}
+          {/* fuelEfficiency */}
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-700 block">
-              Est. Mileage
+              Est. Fuel Efficiency / Mileage
             </label>
 
             <div className="relative flex items-center">
@@ -139,7 +149,7 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
                 step="0.5"
                 min="1"
                 max="150"
-                {...register("mileage", {
+                {...register("fuelEfficiency", {
                   valueAsNumber: true,
                 })}
                 placeholder="e.g. 18"
@@ -147,13 +157,13 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
               />
 
               <span className="absolute right-2.5 text-[11px] font-bold text-slate-400 pointer-events-none">
-                km/l
+                {getFuelEfficiencyUnit()}
               </span>
             </div>
 
-            {errors.mileage && (
+            {errors.fuelEfficiency && (
               <p className="text-[10px] text-rose-600 font-semibold ml-1">
-                {errors.mileage.message}
+                {errors.fuelEfficiency.message}
               </p>
             )}
           </div>
@@ -189,9 +199,7 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
           </div>
         </div>
 
-        {/* ================================================== */}
         {/* THIRD ROW - ADDITIONAL DETAILS */}
-        {/* ================================================== */}
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
@@ -219,9 +227,7 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
           )}
         </div>
 
-        {/* ================================================== */}
         {/* GENERAL ERROR */}
-        {/* ================================================== */}
 
         {Object.keys(errors).length > 0 && (
           <div className="flex items-center gap-1.5 text-xs text-rose-600 font-semibold pt-1">
@@ -231,9 +237,7 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
           </div>
         )}
 
-        {/* ================================================== */}
         {/* SUBMIT */}
-        {/* ================================================== */}
 
         <div className="pt-1 flex items-center justify-end">
           <button

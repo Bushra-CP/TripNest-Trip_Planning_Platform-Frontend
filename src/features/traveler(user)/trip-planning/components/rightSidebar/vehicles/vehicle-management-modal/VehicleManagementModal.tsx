@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Car,
-  X,
-  Sparkles,
-  Check,
-  ChevronRight,
-} from "lucide-react";
+import { Car, X, Sparkles, Check, ChevronRight } from "lucide-react";
 
 import AddVehicleForm from "./AddVehicleForm";
 import VehicleList from "./VehicleList";
@@ -14,17 +8,20 @@ import useVehicleManagement from "../../../../hooks/useVehicleManagement";
 interface VehicleManagementModalProps {
   isOpen?: boolean;
   onClose?: () => void;
-  onSelectVehicle?: (vehicleId: string) => void;
+  onSelectVehicle?: (vehicleId: string) => void | Promise<void>;
+  confirmLabel?: string;
 }
 
 const VehicleManagementModal: React.FC<VehicleManagementModalProps> = ({
   isOpen = true,
   onClose,
   onSelectVehicle,
+  confirmLabel = "Use Selected Vehicle",
 }) => {
   const {
     register,
     handleSubmit,
+    watch,
     errors,
     onAddVehicleSubmit,
 
@@ -51,21 +48,16 @@ const VehicleManagementModal: React.FC<VehicleManagementModalProps> = ({
   // Confirm Selected Vehicle
   // --------------------------------
 
-  const handleConfirm = () => {
-    if (!selectedVehicle) return;
+const handleConfirm = async () => {
+  if (!selectedVehicle) return;
 
-    /*
-     * For now this only sends the selected vehicle ID
-     * to the parent.
-     *
-     * Later, when TripVehicle is implemented,
-     * this action can create/update the TripVehicle
-     * relationship in the database.
-     */
-    onSelectVehicle?.(selectedVehicle._id);
-
+  try {
+    await onSelectVehicle?.(selectedVehicle._id);
     onClose?.();
-  };
+  } catch (error) {
+    console.error("Failed to add vehicle to trip:", error);
+  }
+};
 
   if (!isOpen) return null;
 
@@ -91,8 +83,8 @@ const VehicleManagementModal: React.FC<VehicleManagementModalProps> = ({
               </div>
 
               <p className="text-xs text-slate-500 font-medium">
-                Add and select your vehicle for route cost optimization and
-                fuel calculation.
+                Add and select your vehicle for route cost optimization and fuel
+                calculation.
               </p>
             </div>
           </div>
@@ -113,6 +105,7 @@ const VehicleManagementModal: React.FC<VehicleManagementModalProps> = ({
           <AddVehicleForm
             register={register}
             handleSubmit={handleSubmit}
+            watch={watch}
             errors={errors}
             onAddVehicleSubmit={onAddVehicleSubmit}
           />
@@ -151,10 +144,8 @@ const VehicleManagementModal: React.FC<VehicleManagementModalProps> = ({
                 for calculations — AI will calculate total trip fuel expenses
                 based on{" "}
                 <strong className="text-slate-800">
-                  {selectedVehicle?.mileage || 0}{" "}
-                  {selectedVehicle?.fuelType === "ELECTRIC"
-                    ? "km/kWh"
-                    : "km/l"}
+                  {selectedVehicle?.fuelEfficiency || 0}{" "}
+                  {selectedVehicle?.fuelType === "ELECTRIC" ? "km/kWh" : "km/l"}
                 </strong>{" "}
                 and a capacity of{" "}
                 <strong className="text-slate-800">
@@ -197,7 +188,7 @@ const VehicleManagementModal: React.FC<VehicleManagementModalProps> = ({
               disabled={!selectedVehicle}
               className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#15803D] hover:bg-[#166534] disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold shadow-md shadow-[#15803D]/25 transition-all active:scale-95"
             >
-              <span>Use Selected Vehicle</span>
+              <span>{confirmLabel}</span>
 
               <ChevronRight className="w-4 h-4 stroke-[2.5]" />
             </button>

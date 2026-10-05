@@ -23,14 +23,14 @@ const useVehicleManagement = () => {
 
   const user = useSelector(selectUser);
 
-  //Redux Vehicle State
+  // Redux Vehicle State
   const vehicles = useSelector((state: RootState) => state.vehicle.vehicles);
 
   const loading = useSelector((state: RootState) => state.vehicle.loading);
 
   const error = useSelector((state: RootState) => state.vehicle.error);
 
-  //Vehicle Modal State
+  // Vehicle Modal State
   const [isVehicleModalOpen, setIsVehicleModalOpen] = useState(false);
 
   const [selectedVehicleId, setSelectedVehicleId] = useState<string>("");
@@ -52,18 +52,19 @@ const useVehicleManagement = () => {
     setSelectedVehicleId(vehicleId);
   };
 
-  //Fetch Vehicles
+  // Fetch Vehicles
   useEffect(() => {
     if (isVehicleModalOpen) {
       dispatch(fetchVehiclesThunk());
     }
   }, [isVehicleModalOpen, dispatch]);
 
-  //Add Vehicle Form
+  // Add Vehicle Form
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<VehicleFormValues>({
     resolver: zodResolver(vehicleSchema),
@@ -73,7 +74,7 @@ const useVehicleManagement = () => {
       name: "",
       type: "CAR",
       fuelType: "PETROL",
-      mileage: undefined,
+      fuelEfficiency: undefined,
       seatingCapacity: undefined,
       additionalDetails: "",
     },
@@ -105,6 +106,7 @@ const useVehicleManagement = () => {
     // Form
     register,
     handleSubmit,
+    watch,
     errors,
     onAddVehicleSubmit,
   };

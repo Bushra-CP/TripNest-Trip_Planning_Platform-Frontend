@@ -23,12 +23,12 @@ export const vehicleSchema = z.object({
   }),
 
   // Mileage
-  mileage: z
+  fuelEfficiency: z
     .number({
-      message: "Mileage is required",
+      message: "fuelEfficiency is required",
     })
-    .positive("Mileage must be greater than 0")
-    .max(150, "Please enter a valid mileage"),
+    .positive("fuelEfficiency must be greater than 0")
+    .max(150, "Please enter a valid fuelEfficiency/mileage"),
 
   // Seating capacity
   seatingCapacity: z

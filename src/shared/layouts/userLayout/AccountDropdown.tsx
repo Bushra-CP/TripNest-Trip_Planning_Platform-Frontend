@@ -16,6 +16,7 @@ import { logoutThunk } from "@/features/traveler(user)/auth/redux/authThunk";
 import { clearAIPlanning } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
 import { clearTripPlanning } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
 import { clearChat } from "@/features/traveler(user)/trip-planning/redux/chat/chat.slice";
+import { clearTripVehicles } from "@/features/traveler(user)/trip-planning/redux/trip-vehicle/trip-vehicle.slice";
 
 interface MenuItem {
   label: string;
@@ -81,6 +82,10 @@ const AccountDropdown = ({ onClose }: AccountDropdownProps) => {
       dispatch(clearAIPlanning());
 
       dispatch(clearTripPlanning());
+
+      dispatch(clearChat());
+
+      dispatch(clearTripVehicles());
 
       dispatch(clearChat());
 
