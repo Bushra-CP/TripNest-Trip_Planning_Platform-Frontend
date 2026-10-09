@@ -29,6 +29,7 @@ interface AIPlanningState {
 
   isComplete: boolean;
   canGenerateDraft: boolean;
+  routeChanged: boolean;
 
   route: RoutePlanningResult | null;
 
@@ -48,6 +49,7 @@ const initialState: AIPlanningState = {
 
   isComplete: false,
   canGenerateDraft: false,
+  routeChanged: false,
 
   route: null,
 
@@ -106,6 +108,8 @@ const aiPlanningSlice = createSlice({
 
         state.canGenerateDraft = action.payload.canGenerateDraft;
 
+        state.routeChanged = action.payload.routeChanged;
+
         state.route = action.payload.route;
       })
 
@@ -140,6 +144,8 @@ const aiPlanningSlice = createSlice({
         state.isComplete = action.payload.isComplete;
 
         state.canGenerateDraft = action.payload.canGenerateDraft;
+
+        state.routeChanged = action.payload.routeChanged;
 
         state.route = action.payload.route;
       })

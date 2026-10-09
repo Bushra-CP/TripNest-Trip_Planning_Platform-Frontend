@@ -23,6 +23,13 @@ import {
 } from "../redux/trip-vehicle/trip-vehicle.thunk";
 import { selectJoinedMember } from "../redux/member/member.selectors";
 import { toast } from "sonner";
+import { fetchTripVehicleCostsThunk } from "../redux/trip-cost/trip-cost.thunk";
+import { clearTripCosts } from "../redux/trip-cost/trip-cost.slice";
+import {
+  selectTripCostLoading,
+  selectTripVehicleCosts,
+} from "../redux/trip-cost/trip-cost.selectors";
+import { selectRoute } from "../redux/ai-planning/ai-planning.selectors";
 
 const useTripVehicleManagement = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,6 +43,12 @@ const useTripVehicleManagement = () => {
 
   const isLoading = useSelector(selectTripVehicleLoading);
   const error = useSelector(selectTripVehicleError);
+
+  const tripVehicleCosts = useSelector(selectTripVehicleCosts);
+
+  const tripCostLoading = useSelector(selectTripCostLoading);
+
+  const route = useSelector(selectRoute);
 
   const isGroupTrip = tripMode === "group";
 
@@ -75,6 +88,22 @@ const useTripVehicleManagement = () => {
   }, [dispatch, tripId]);
 
   /**
+   * Fetch trip vehicle costs
+   */
+  const fetchTripCosts = useCallback(async () => {
+    if (!tripId) return;
+
+    // Don't call cost API if there are no vehicles
+    if (tripVehicles.length === 0) return;
+
+    try {
+      await dispatch(fetchTripVehicleCostsThunk(tripId)).unwrap();
+    } catch (error) {
+      console.error("Failed to fetch trip costs:", error);
+    }
+  }, [dispatch, tripId, tripVehicles.length]);
+
+  /**
    * Load trip vehicles when trip changes
    */
   useEffect(() => {
@@ -84,13 +113,34 @@ const useTripVehicleManagement = () => {
     fetchFinalVehicle();
   }, [tripId, fetchTripVehicles, fetchFinalVehicle]);
 
-  const hasFinalVehicle = !!finalVehicle;
+  /**
+   * Fetch costs whenever vehicles exist
+   * This is mainly useful when the trip vehicle list changes.
+   */
+  useEffect(() => {
+    if (!tripId) return;
+
+    if (tripVehicles.length === 0) {
+      dispatch(clearTripCosts());
+      return;
+    }
+
+    if (!route) return;
+
+    fetchTripCosts();
+  }, [
+    tripId,
+    tripVehicles.length,
+    route,
+    route?.distanceMeters,
+    fetchTripCosts,
+    dispatch,
+  ]);
+
+  const hasFinalVehicle = isGroupTrip && !!finalVehicle;
 
   /**
    * Add vehicle to trip
-   *
-   * In solo mode this also becomes the final vehicle
-   * through the backend logic.
    */
   const handleAddVehicleToTrip = useCallback(
     async (vehicleId: string) => {
@@ -195,6 +245,9 @@ const useTripVehicleManagement = () => {
     [dispatch, tripId, canFinalize],
   );
 
+  /*
+   * Unfinalize vehicle
+   */
   const handleUnfinalize = useCallback(
     async (tripVehicleId: string) => {
       if (!tripId || !canFinalize) return;
@@ -243,6 +296,10 @@ const useTripVehicleManagement = () => {
     tripVehicles,
     finalVehicle,
 
+    //Trip vehicles costs
+    tripVehicleCosts,
+    tripCostLoading,
+
     // State
     isLoading,
     error,
@@ -250,6 +307,7 @@ const useTripVehicleManagement = () => {
     // Actions
     fetchTripVehicles,
     fetchFinalVehicle,
+    fetchTripCosts,
     handleAddVehicleToTrip,
     handleRemoveVehicle,
     handleVote,

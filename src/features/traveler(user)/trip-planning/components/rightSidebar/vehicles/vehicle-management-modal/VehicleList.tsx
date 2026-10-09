@@ -1,43 +1,61 @@
 import React from "react";
-import { Car, Bike, Gauge, CheckCircle2, Users } from "lucide-react";
+
+import {
+  Car,
+  Bike,
+  Gauge,
+  CheckCircle2,
+  Users,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 
 import type { VehicleResponse } from "@/features/traveler(user)/trip-planning/types/vehicle.types";
 
 interface VehicleListProps {
   vehicles: VehicleResponse[];
   selectedVehicleId: string;
+
   onSelectVehicle: (vehicleId: string) => void;
+
+  onEditVehicle: (vehicle: VehicleResponse) => void;
+
+  onDeleteVehicle: (vehicleId: string) => void;
 }
 
 const VehicleList: React.FC<VehicleListProps> = ({
   vehicles,
   selectedVehicleId,
   onSelectVehicle,
+  onEditVehicle,
+  onDeleteVehicle,
 }) => {
   return (
     <section className="space-y-3">
-      {/* Header */}
+      {/* HEADER */}
+
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-extrabold text-slate-900 tracking-tight">
+          <h3 className="text-sm font-extrabold tracking-tight text-slate-900">
             My Vehicles
           </h3>
 
-          <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-extrabold text-slate-600">
             {vehicles.length} Saved
           </span>
         </div>
 
-        <p className="text-[11px] text-slate-400 font-medium">
+        <p className="text-[11px] font-medium text-slate-400">
           Select one to add to this trip
         </p>
       </div>
 
-      {/* Empty State */}
+      {/* EMPTY STATE */}
+
       {vehicles.length === 0 ? (
-        <div className="py-12 px-6 text-center bg-white rounded-2xl border border-dashed border-slate-300 space-y-3">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100 text-[#15803D] flex items-center justify-center mx-auto shadow-sm">
-            <Car className="w-7 h-7 stroke-[1.8]" />
+        <div className="space-y-3 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-100 bg-emerald-50 text-[#15803D] shadow-sm">
+            <Car className="h-7 w-7 stroke-[1.8]" />
           </div>
 
           <div className="space-y-1">
@@ -45,14 +63,14 @@ const VehicleList: React.FC<VehicleListProps> = ({
               No vehicles added yet
             </h4>
 
-            <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed font-medium">
+            <p className="mx-auto max-w-sm text-xs font-medium leading-relaxed text-slate-500">
               Add your vehicle details above to use it for trip planning and
               cost estimation.
             </p>
           </div>
         </div>
       ) : (
-        <div className="space-y-2.5 max-h-[350px] overflow-y-auto pr-1">
+        <div className="max-h-[350px] space-y-2.5 overflow-y-auto pr-1">
           {vehicles.map((vehicle) => {
             const isSelected = selectedVehicleId === vehicle._id;
 
@@ -60,65 +78,69 @@ const VehicleList: React.FC<VehicleListProps> = ({
               <div
                 key={vehicle._id}
                 onClick={() => onSelectVehicle(vehicle._id)}
-                className={`group relative p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-4 outline-none ${
+                className={`group relative flex cursor-pointer items-center justify-between gap-4 rounded-2xl border p-3.5 outline-none transition-all duration-200 ${
                   isSelected
-                    ? "bg-[#F0FDF4] border-emerald-300 shadow-sm ring-1 ring-[#15803D]/20"
-                    : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/60"
+                    ? "border-emerald-300 bg-[#F0FDF4] shadow-sm ring-1 ring-[#15803D]/20"
+                    : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60"
                 }`}
               >
-                {/* Vehicle Info */}
-                <div className="flex items-center gap-3.5 min-w-0 flex-1">
-                  {/* Vehicle Icon */}
+                {/* VEHICLE INFO */}
+
+                <div className="flex min-w-0 flex-1 items-center gap-3.5">
+                  {/* ICON */}
+
                   <div
-                    className={`w-14 h-14 rounded-xl border shrink-0 relative flex items-center justify-center transition-colors ${
+                    className={`relative flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border transition-colors ${
                       isSelected
-                        ? "bg-emerald-100 border-emerald-200 text-[#15803D]"
-                        : "bg-slate-100 border-slate-200 text-slate-400"
+                        ? "border-emerald-200 bg-emerald-100 text-[#15803D]"
+                        : "border-slate-200 bg-slate-100 text-slate-400"
                     }`}
                   >
                     {vehicle.type === "BIKE" ? (
-                      <Bike className="w-7 h-7 stroke-[1.8]" />
+                      <Bike className="h-7 w-7 stroke-[1.8]" />
                     ) : (
-                      <Car className="w-7 h-7 stroke-[1.8]" />
+                      <Car className="h-7 w-7 stroke-[1.8]" />
                     )}
 
-                    {/* Vehicle Type Indicator */}
-                    <div className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-slate-900/80 text-white flex items-center justify-center">
+                    <div className="absolute bottom-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-slate-900/80 text-white">
                       {vehicle.type === "BIKE" ? (
-                        <Bike className="w-2.5 h-2.5" />
+                        <Bike className="h-2.5 w-2.5" />
                       ) : (
-                        <Car className="w-2.5 h-2.5" />
+                        <Car className="h-2.5 w-2.5" />
                       )}
                     </div>
                   </div>
 
-                  {/* Details */}
+                  {/* DETAILS */}
+
                   <div className="min-w-0 flex-1 space-y-1.5">
-                    {/* Name */}
+                    {/* NAME */}
+
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-extrabold text-slate-900 truncate">
+                      <h4 className="truncate text-sm font-extrabold text-slate-900">
                         {vehicle.name}
                       </h4>
 
                       {isSelected && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#15803D] bg-emerald-100/70 px-2 py-0.5 rounded-full shrink-0">
+                        <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-100/70 px-2 py-0.5 text-[10px] font-bold text-[#15803D]">
                           Selected
                         </span>
                       )}
                     </div>
 
-                    {/* Vehicle Tags */}
+                    {/* TAGS */}
+
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-bold">
+                      <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-700">
                         {vehicle.type}
                       </span>
 
-                      <span className="px-2 py-0.5 rounded-md bg-orange-50 text-orange-700 text-[10px] font-bold">
+                      <span className="rounded-md bg-orange-50 px-2 py-0.5 text-[10px] font-bold text-orange-700">
                         {vehicle.fuelType}
                       </span>
 
-                      <span className="flex items-center gap-1 text-slate-600 text-[11px] font-bold ml-1">
-                        <Gauge className="w-3 h-3 text-slate-400" />
+                      <span className="ml-1 flex items-center gap-1 text-[11px] font-bold text-slate-600">
+                        <Gauge className="h-3 w-3 text-slate-400" />
                         {vehicle.fuelEfficiency}{" "}
                         {vehicle.fuelType === "ELECTRIC"
                           ? "km/kWh"
@@ -127,44 +149,82 @@ const VehicleList: React.FC<VehicleListProps> = ({
                             : "km/l"}
                       </span>
 
-                      <span className="flex items-center gap-1 text-slate-600 text-[11px] font-bold ml-1">
-                        <Users className="w-3 h-3 text-slate-400" />
+                      <span className="ml-1 flex items-center gap-1 text-[11px] font-bold text-slate-600">
+                        <Users className="h-3 w-3 text-slate-400" />
                         {vehicle.seatingCapacity}{" "}
                         {vehicle.seatingCapacity === 1 ? "person" : "people"}
                       </span>
                     </div>
 
-                    {/* Additional Details */}
+                    {/* ADDITIONAL DETAILS */}
+
                     {vehicle.additionalDetails && (
-                      <p className="text-[10px] text-slate-500 font-medium truncate max-w-[420px]">
+                      <p className="max-w-[420px] truncate text-[10px] font-medium text-slate-500">
                         {vehicle.additionalDetails}
                       </p>
                     )}
                   </div>
                 </div>
 
-                {/* Select Button */}
-                <button
-                  type="button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onSelectVehicle(vehicle._id);
-                  }}
-                  className={`inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-95 shrink-0 ${
-                    isSelected
-                      ? "bg-[#15803D] text-white shadow-sm shadow-[#15803D]/25"
-                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                  }`}
-                >
-                  {isSelected ? (
-                    <>
-                      <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />
-                      <span>Selected</span>
-                    </>
-                  ) : (
-                    <span>Select</span>
-                  )}
-                </button>
+                {/* ACTIONS */}
+
+                <div className="flex shrink-0 items-center gap-1.5">
+                  {/* EDIT */}
+
+                  <button
+                    type="button"
+                    title="Edit vehicle"
+                    onClick={(event) => {
+                      event.stopPropagation();
+
+                      onEditVehicle(vehicle);
+                    }}
+                    className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-400 transition-all hover:bg-emerald-50 hover:text-[#15803D] active:scale-95"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+
+                  {/* DELETE */}
+
+                  <button
+                    type="button"
+                    title="Delete vehicle"
+                    onClick={(event) => {
+                      event.stopPropagation();
+
+                      onDeleteVehicle(vehicle._id);
+                    }}
+                    className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-400 transition-all hover:bg-red-50 hover:text-red-500 active:scale-95"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+
+                  {/* SELECT */}
+
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+
+                      onSelectVehicle(vehicle._id);
+                    }}
+                    className={`inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all active:scale-95 ${
+                      isSelected
+                        ? "bg-[#15803D] text-white shadow-sm shadow-[#15803D]/25"
+                        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                    }`}
+                  >
+                    {isSelected ? (
+                      <>
+                        <CheckCircle2 className="h-3.5 w-3.5 stroke-[2.5]" />
+
+                        <span>Selected</span>
+                      </>
+                    ) : (
+                      <span>Select</span>
+                    )}
+                  </button>
+                </div>
               </div>
             );
           })}

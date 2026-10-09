@@ -15,6 +15,8 @@ import {
   restorePlanningStateThunk,
   sendMessageThunk,
 } from "../redux/ai-planning/ai-planning.thunk";
+import { fetchTripVehicleCostsThunk } from "../redux/trip-cost/trip-cost.thunk";
+import { selectTripVehicles } from "../redux/trip-vehicle/trip-vehicle.selectors";
 
 export const useAIPlanning = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -29,8 +31,11 @@ export const useAIPlanning = () => {
     missingFields,
     isComplete,
     canGenerateDraft,
+    routeChanged,
     route,
   } = useSelector((state: RootState) => state.aiPlanning);
+
+  const tripVehicles = useSelector(selectTripVehicles);
 
   useEffect(() => {
     if (!threadId || hasRestoredRef.current) {
@@ -83,6 +88,18 @@ export const useAIPlanning = () => {
       };
 
       dispatch(addMessage(assistantMessage));
+
+      /**
+       * Route changed
+       * Fetch latest vehicle costs.
+       */
+      if (data.routeChanged && tripVehicles.length > 0) {
+        try {
+          await dispatch(fetchTripVehicleCostsThunk(data.tripId)).unwrap();
+        } catch (error) {
+          console.error("Failed to refresh trip costs:", error);
+        }
+      }
     } catch (error) {
       console.error("Failed to send AI message:", error);
 
@@ -106,6 +123,7 @@ export const useAIPlanning = () => {
     missingFields,
     isComplete,
     canGenerateDraft,
+    routeChanged,
     route,
     handleSend,
   };
