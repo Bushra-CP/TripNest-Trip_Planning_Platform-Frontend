@@ -41,7 +41,7 @@ import {
   getTripMembersThunk,
   joinGroupThunk,
 } from "@/features/traveler(user)/trip-planning/redux/member/member.thunk";
-
+import { clearTripVehicles } from "@/features/traveler(user)/trip-planning/redux/trip-vehicle/trip-vehicle.slice";
 
 interface HeaderProps {
   isDarkMode: boolean;
@@ -75,7 +75,6 @@ export default function Header({
   const tripMode = useSelector(selectMode);
 
   const roomId = useSelector(selectRoomId);
-
 
   // =====================================================
   // LOCAL STATE
@@ -115,6 +114,8 @@ export default function Header({
     dispatch(clearAIPlanning());
 
     dispatch(clearTripPlanning());
+
+    dispatch(clearTripVehicles());
 
     navigate("/trip-plan");
   };
@@ -227,8 +228,6 @@ export default function Header({
       toast.error("Failed to copy Room ID");
     }
   };
-
-
 
   // =====================================================
   // UI
@@ -349,8 +348,6 @@ export default function Header({
         {/* =================================================
             MEMBERS
         ================================================= */}
-
-        
 
         {/* =================================================
             THEME

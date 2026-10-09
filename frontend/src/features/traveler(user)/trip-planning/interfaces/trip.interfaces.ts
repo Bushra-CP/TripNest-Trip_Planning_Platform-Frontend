@@ -32,5 +32,6 @@ export interface AIChatResponse {
   missingFields: string[];
   isComplete: boolean;
   canGenerateDraft: boolean;
+  routeChanged:boolean;
   route: RoutePlanningResult | null;
 }

@@ -15,6 +15,7 @@ import vehicleSlice from "../features/traveler(user)/trip-planning/redux/vehicle
 import tripPlanningSlice from "../features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
 import memberSlice from "../features/traveler(user)/trip-planning/redux/member/member.slice";
 import tripVehicleSlice from '../features/traveler(user)/trip-planning/redux/trip-vehicle/trip-vehicle.slice';
+import tripCostSlice from '../features/traveler(user)/trip-planning/redux/trip-cost/trip-cost.slice';
 
 const authPersistConfig = {
   key: "auth",
@@ -42,5 +43,6 @@ export const rootReducer = combineReducers({
   myTrips: myTripsSlice,
   vehicle: vehicleSlice,
   member: memberSlice,
-  tripVehicle:tripVehicleSlice
+  tripVehicle:tripVehicleSlice,
+  tripCost: tripCostSlice,
 });

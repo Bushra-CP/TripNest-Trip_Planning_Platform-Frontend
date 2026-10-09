@@ -126,7 +126,6 @@ const AddVehicleForm: React.FC<AddVehicleFormProps> = ({
               <option value="PETROL">Petrol</option>
               <option value="DIESEL">Diesel</option>
               <option value="ELECTRIC">Electric</option>
-              <option value="CNG">CNG</option>
               <option value="OTHER">Other</option>
             </select>
 
