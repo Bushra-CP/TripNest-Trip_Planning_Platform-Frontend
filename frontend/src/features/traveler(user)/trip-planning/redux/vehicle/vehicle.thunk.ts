@@ -92,7 +92,9 @@ export const deleteVehicleThunk = createAsyncThunk<
   { rejectValue: string }
 >("vehicle/deleteVehicle", async (vehicleId, { rejectWithValue }) => {
   try {
-    return await vehicleApi.deleteVehicle(vehicleId);
+    const res = await vehicleApi.deleteVehicle(vehicleId);
+    // console.log(res);
+    return res;
   } catch (error) {
     const err = error as AxiosError<ApiError>;
 

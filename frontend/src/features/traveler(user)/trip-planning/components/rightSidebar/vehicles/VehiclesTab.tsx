@@ -59,6 +59,14 @@ interface VehicleCardProps {
   canFinalize: boolean;
   hasFinalVehicle: boolean;
 
+  /* Trip cost */
+  estimatedCost: number | null;
+  requiredEnergy: number | null;
+  energyPrice: number | null;
+  priceUnit: string | null;
+  costStatus: "AVAILABLE" | "UNAVAILABLE" | undefined;
+  tripCostLoading: boolean;
+
   isDarkMode: boolean;
 
   onVote: () => void;
@@ -91,7 +99,16 @@ const VehicleCard = ({
   canRemove,
   canFinalize,
   hasFinalVehicle,
+
+  estimatedCost,
+  requiredEnergy,
+  energyPrice,
+  priceUnit,
+  costStatus,
+  tripCostLoading,
+
   isDarkMode,
+
   onVote,
   onRemoveVote,
   onRemove,
@@ -99,12 +116,14 @@ const VehicleCard = ({
   onUnfinalize,
 }: VehicleCardProps) => {
   /*
-   * Select the icon before the JSX is rendered.
-   * vehicleIcons is defined outside the component,
-   * so no component is created during render.
+   * Select the icon before JSX is rendered.
    */
   const VehicleIcon =
     vehicleIcons[vehicle.type as keyof typeof vehicleIcons] || CircleHelp;
+
+  const isElectric = vehicle.fuelType === "ELECTRIC";
+
+  const energyUnit = isElectric ? "kWh" : "litres";
 
   return (
     <div
@@ -116,7 +135,7 @@ const VehicleCard = ({
             : "border-slate-200"
       }`}
     >
-      {/* Vehicle Icon */}
+      {/* VEHICLE ICON */}
 
       <div
         className={`flex h-20 items-center justify-center ${
@@ -126,9 +145,11 @@ const VehicleCard = ({
         <VehicleIcon size={72} strokeWidth={1.3} className="text-[#10b981]" />
       </div>
 
-      {/* Vehicle Details */}
+      {/* VEHICLE DETAILS */}
 
       <div className={`p-4 ${isDarkMode ? "bg-white/5" : "bg-white"}`}>
+        {/* NAME + FINAL */}
+
         <div className="flex items-center justify-between">
           <h4
             className={`font-bold ${
@@ -149,9 +170,11 @@ const VehicleCard = ({
           )}
         </div>
 
+        {/* VEHICLE INFORMATION */}
+
         <div className="mt-2 flex flex-wrap gap-2">
           <span className="rounded-full bg-[#10b981]/10 px-2 py-1 text-xs font-bold text-[#10b981]">
-            {vehicle.fuelEfficiency} km/l
+            {vehicle.fuelEfficiency} {isElectric ? "km/kWh" : "km/l"}
           </span>
 
           <span className="rounded-full bg-[#3B82F6]/10 px-2 py-1 text-xs font-bold text-[#3B82F6]">
@@ -169,6 +192,8 @@ const VehicleCard = ({
           </span>
         </div>
 
+        {/* ADDITIONAL DETAILS */}
+
         {vehicle.additionalDetails && (
           <p
             className={`mt-3 text-sm ${
@@ -179,7 +204,80 @@ const VehicleCard = ({
           </p>
         )}
 
-        {/* GROUP ONLY */}
+        {/* ========================================= */}
+        {/* TRIP COST */}
+        {/* ========================================= */}
+
+        <div
+          className={`mt-4 rounded-xl border p-3 ${
+            isDarkMode
+              ? "border-white/10 bg-white/5"
+              : "border-slate-200 bg-slate-50"
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <p
+              className={`text-[10px] font-black uppercase tracking-wider ${
+                isDarkMode ? "text-slate-400" : "text-slate-500"
+              }`}
+            >
+              Estimated Trip Cost
+            </p>
+
+            {tripCostLoading && (
+              <span className="text-[10px] text-slate-400">Calculating...</span>
+            )}
+          </div>
+
+          {!tripCostLoading &&
+            costStatus === "AVAILABLE" &&
+            estimatedCost !== null && (
+              <>
+                <p className="mt-1 text-xl font-bold text-[#10b981]">
+                  ₹{estimatedCost.toFixed(2)}
+                </p>
+
+                {requiredEnergy !== null &&
+                  energyPrice !== null &&
+                  priceUnit && (
+                    <p
+                      className={`mt-1 text-xs ${
+                        isDarkMode ? "text-slate-500" : "text-slate-400"
+                      }`}
+                    >
+                      {requiredEnergy.toFixed(2)} {energyUnit} × ₹
+                      {energyPrice.toFixed(2)}
+                      {" / "}
+                      {priceUnit === "per_kWh" ? "kWh" : "litre"}
+                    </p>
+                  )}
+              </>
+            )}
+
+          {!tripCostLoading && costStatus === "UNAVAILABLE" && (
+            <p
+              className={`mt-1 text-xs ${
+                isDarkMode ? "text-slate-500" : "text-slate-400"
+              }`}
+            >
+              Cost unavailable for this vehicle.
+            </p>
+          )}
+
+          {!tripCostLoading && costStatus === undefined && (
+            <p
+              className={`mt-1 text-xs ${
+                isDarkMode ? "text-slate-500" : "text-slate-400"
+              }`}
+            >
+              Cost will be calculated after the route is available.
+            </p>
+          )}
+        </div>
+
+        {/* ========================================= */}
+        {/* GROUP ONLY - VOTING */}
+        {/* ========================================= */}
 
         {isGroupTrip && (
           <div className="mt-4 flex items-center justify-between">
@@ -213,7 +311,9 @@ const VehicleCard = ({
           </div>
         )}
 
+        {/* ========================================= */}
         {/* OWNER ONLY */}
+        {/* ========================================= */}
 
         {isGroupTrip && canFinalize && (
           <>
@@ -258,7 +358,9 @@ const VehicleCard = ({
           </>
         )}
 
+        {/* ========================================= */}
         {/* REMOVE */}
+        {/* ========================================= */}
 
         {canRemove && !isFinal && (
           <button
@@ -292,9 +394,14 @@ const VehiclesTab = ({
     canAddVehicle,
     canVote,
     canFinalize,
+
     tripVehicles,
     finalVehicle,
     hasFinalVehicle,
+
+    tripVehicleCosts,
+    tripCostLoading,
+
     handleAddVehicleToTrip,
     handleRemoveVehicle,
     handleVote,
@@ -310,7 +417,8 @@ const VehiclesTab = ({
   const currentUserId = user?.userId;
 
   /**
-   * When a vehicle is selected from the personal vehicle modal,
+   * When a vehicle is selected from
+   * the personal vehicle modal,
    * add it to the current trip.
    */
   const handleVehicleSelection = async (vehicleId: string) => {
@@ -329,7 +437,10 @@ const VehiclesTab = ({
       closeVehicleModal();
     } catch (error) {
       console.log(error);
-      toast.error(error as string);
+
+      toast.error(
+        error instanceof Error ? error.message : "Failed to add vehicle",
+      );
     }
   };
 
@@ -341,7 +452,9 @@ const VehiclesTab = ({
             mobile ? "max-h-[calc(80vh-180px)]" : ""
           }`}
         >
+          {/* ========================================= */}
           {/* HEADER */}
+          {/* ========================================= */}
 
           <div className="flex items-center justify-between">
             <h3
@@ -369,7 +482,9 @@ const VehiclesTab = ({
             )}
           </div>
 
+          {/* ========================================= */}
           {/* VEHICLES */}
+          {/* ========================================= */}
 
           <div className="space-y-4">
             {tripVehicles.length === 0 ? (
@@ -407,6 +522,14 @@ const VehiclesTab = ({
                 const canRemove =
                   canAddVehicle && tripVehicle.addedBy === currentUserId;
 
+                /*
+                 * Find the cost belonging
+                 * to this trip vehicle.
+                 */
+                const cost = tripVehicleCosts.find(
+                  (item) => item.tripVehicleId === tripVehicle._id,
+                );
+
                 return (
                   <VehicleCard
                     key={tripVehicle._id}
@@ -420,6 +543,13 @@ const VehiclesTab = ({
                     canRemove={canRemove}
                     canFinalize={canFinalize}
                     hasFinalVehicle={hasFinalVehicle}
+                    /* COST */
+                    estimatedCost={cost?.estimatedCost ?? null}
+                    requiredEnergy={cost?.requiredEnergy ?? null}
+                    energyPrice={cost?.energyPrice ?? null}
+                    priceUnit={cost?.priceUnit ?? null}
+                    costStatus={cost?.costStatus}
+                    tripCostLoading={tripCostLoading}
                     isDarkMode={isDarkMode}
                     onVote={() => handleVote(tripVehicle._id)}
                     onRemoveVote={() => handleRemoveVote(tripVehicle._id)}
@@ -434,7 +564,9 @@ const VehiclesTab = ({
             )}
           </div>
 
+          {/* ========================================= */}
           {/* GROUP LEADING VEHICLE */}
+          {/* ========================================= */}
 
           {isGroupTrip &&
             tripVehicles.length > 0 &&
@@ -520,7 +652,9 @@ const VehiclesTab = ({
               );
             })()}
 
+          {/* ========================================= */}
           {/* SOLO SELECTED VEHICLE */}
+          {/* ========================================= */}
 
           {!isGroupTrip && tripVehicles.length > 0 && (
             <div
@@ -559,7 +693,9 @@ const VehiclesTab = ({
           )}
         </div>
 
+        {/* ========================================= */}
         {/* MESSAGE INPUT */}
+        {/* ========================================= */}
 
         <div
           className={`border-t p-4 ${
@@ -582,7 +718,9 @@ const VehiclesTab = ({
         </div>
       </div>
 
+      {/* ========================================= */}
       {/* VEHICLE MANAGEMENT MODAL */}
+      {/* ========================================= */}
 
       <VehicleManagementModal
         isOpen={isVehicleModalOpen}

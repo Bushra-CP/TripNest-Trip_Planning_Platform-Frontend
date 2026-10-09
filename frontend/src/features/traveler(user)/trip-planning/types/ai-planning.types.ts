@@ -25,6 +25,7 @@ export interface AIChatResponse {
   missingFields: string[];
   isComplete: boolean;
   canGenerateDraft: boolean;
+  routeChanged:boolean;
   route: RoutePlanningResult | null;
   ragSources: RagSource[];
 }
@@ -38,6 +39,7 @@ export interface RestoreAIPlanningResponse {
   missingFields: string[];
   isComplete: boolean;
   canGenerateDraft: boolean;
+  routeChanged:boolean;
   route: RoutePlanningResult | null;
 }
 
