@@ -23,3 +23,6 @@ export const selectRouteChanged = (state: RootState) =>
 export const selectRoute = (state: RootState) => state.aiPlanning.route;
 
 export const selectError = (state: RootState) => state.aiPlanning.error;
+
+export const selectGeneratedItinerary = (state: RootState) =>
+  state.aiPlanning.generatedItinerary;
