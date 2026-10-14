@@ -52,7 +52,7 @@ const useTripVehicleManagement = () => {
 
   const isGroupTrip = tripMode === "group";
 
-  console.log("joinedMember?.role:", joinedMember?.role);
+  // console.log("joinedMember?.role:", joinedMember?.role);
 
   const isOwner = joinedMember?.role === "OWNER";
 

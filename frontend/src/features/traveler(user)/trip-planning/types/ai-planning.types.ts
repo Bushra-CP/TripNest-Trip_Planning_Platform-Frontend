@@ -3,6 +3,7 @@ import type {
   ChatMessage,
   TripRequirements,
 } from "../interfaces/trip.interfaces";
+import type { GeneratedItinerary } from "./itinerary.types";
 
 export interface RagSourceMedia {
   type: "image" | "video";
@@ -25,9 +26,10 @@ export interface AIChatResponse {
   missingFields: string[];
   isComplete: boolean;
   canGenerateDraft: boolean;
-  routeChanged:boolean;
+  routeChanged: boolean;
   route: RoutePlanningResult | null;
   ragSources: RagSource[];
+  generatedItinerary: GeneratedItinerary | null;
 }
 
 export interface RestoreAIPlanningResponse {
@@ -39,8 +41,9 @@ export interface RestoreAIPlanningResponse {
   missingFields: string[];
   isComplete: boolean;
   canGenerateDraft: boolean;
-  routeChanged:boolean;
+  routeChanged: boolean;
   route: RoutePlanningResult | null;
+  generatedItinerary: GeneratedItinerary | null;
 }
 
 export interface SendMessageResponse {

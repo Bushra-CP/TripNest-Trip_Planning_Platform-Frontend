@@ -24,6 +24,8 @@ export const sendMessage = async (
     },
   );
 
+  console.log('check itinerary:',response.data.data);
+  
   return response.data.data;
 };
 
@@ -36,5 +38,7 @@ export const getPlanningState = async (
     data: RestoreAIPlanningResponse;
   }>(`trip-planning/trip/${threadId}`);
 
+  console.log('check itinerary:',response.data.data.generatedItinerary);
+  
   return response.data.data;
 };

@@ -8,6 +8,7 @@ import {
   restorePlanningStateThunk,
   sendMessageThunk,
 } from "./ai-planning.thunk";
+import type { GeneratedItinerary } from "../../types/itinerary.types";
 
 const defaultAIMessage: ChatMessage = {
   id: crypto.randomUUID(),
@@ -33,6 +34,8 @@ interface AIPlanningState {
 
   route: RoutePlanningResult | null;
 
+  generatedItinerary: GeneratedItinerary | null;
+
   error: string | null;
 }
 
@@ -52,6 +55,8 @@ const initialState: AIPlanningState = {
   routeChanged: false,
 
   route: null,
+
+  generatedItinerary: null,
 
   error: null,
 };
@@ -111,6 +116,10 @@ const aiPlanningSlice = createSlice({
         state.routeChanged = action.payload.routeChanged;
 
         state.route = action.payload.route;
+
+        if (action.payload.generatedItinerary) {
+          state.generatedItinerary = action.payload.generatedItinerary;
+        }
       })
 
       .addCase(sendMessageThunk.rejected, (state, action) => {
@@ -148,6 +157,8 @@ const aiPlanningSlice = createSlice({
         state.routeChanged = action.payload.routeChanged;
 
         state.route = action.payload.route;
+
+        state.generatedItinerary = action.payload.generatedItinerary ?? null;
       })
 
       .addCase(restorePlanningStateThunk.rejected, (state, action) => {
