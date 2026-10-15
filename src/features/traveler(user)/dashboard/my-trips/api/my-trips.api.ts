@@ -19,4 +19,10 @@ export const myTripsApi = {
 
     return response.data.data;
   },
+
+  async deleteTrip(tripId: string): Promise<void> {
+    await axiosInstance.delete(
+      `/trip-planning/trips/${encodeURIComponent(tripId)}`,
+    );
+  },
 };

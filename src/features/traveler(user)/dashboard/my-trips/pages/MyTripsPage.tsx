@@ -15,6 +15,7 @@ const MyTripsPage: React.FC = () => {
     setSearchQuery,
     viewState,
     handleSelectTrip,
+    handleDeleteTrip,
     handleCreateNewTrip,
     handleResetFilter,
     handleRetry,
@@ -40,6 +41,7 @@ const MyTripsPage: React.FC = () => {
           viewState={viewState}
           searchQuery={searchQuery}
           onSelectTrip={handleSelectTrip}
+          onDeleteTrip={handleDeleteTrip}
           onResetFilter={handleResetFilter}
           onRetry={handleRetry}
           onCreateTrip={handleCreateNewTrip}
