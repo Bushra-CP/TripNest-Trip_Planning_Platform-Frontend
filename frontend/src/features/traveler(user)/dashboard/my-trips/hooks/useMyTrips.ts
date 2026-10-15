@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 
 import type { AppDispatch, RootState } from "@/app/store";
 
-import { fetchMyTripsThunk } from "../redux/my-trips.thunk";
+import { deleteMyTripThunk, fetchMyTripsThunk } from "../redux/my-trips.thunk";
 import { restorePlanningStateThunk } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.thunk";
 import { clearAIPlanning } from "@/features/traveler(user)/trip-planning/redux/ai-planning/ai-planning.slice";
 import { clearChat } from "@/features/traveler(user)/trip-planning/redux/chat/chat.slice";
 import { clearTripVehicles } from "@/features/traveler(user)/trip-planning/redux/trip-vehicle/trip-vehicle.slice";
 import { clearTripPlanning } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
+import { toast } from "sonner";
 
 export type TripType = "Solo" | "Group";
 
@@ -107,6 +108,23 @@ export const useMyTrips = () => {
     }
   };
 
+  const handleDeleteTrip = async (trip: TripItem) => {
+    try {
+      await dispatch(deleteMyTripThunk(trip.id)).unwrap();
+
+      toast.success("Trip deleted successfully", {
+        description: `"${trip.title}" has been deleted.`,
+      });
+    } catch (error) {
+      toast.error("Failed to delete trip", {
+        description:
+          typeof error === "string"
+            ? error
+            : "Something went wrong. Please try again.",
+      });
+    }
+  };
+
   /*
    * Create a new trip.
    */
@@ -115,7 +133,7 @@ export const useMyTrips = () => {
     dispatch(clearAIPlanning());
     dispatch(clearTripVehicles());
     dispatch(clearTripPlanning());
-    
+
     navigate("/trip-plan");
   };
 
@@ -158,6 +176,7 @@ export const useMyTrips = () => {
     error,
 
     handleSelectTrip,
+    handleDeleteTrip,
     handleCreateNewTrip,
     handleResetFilter,
     handleRetry,

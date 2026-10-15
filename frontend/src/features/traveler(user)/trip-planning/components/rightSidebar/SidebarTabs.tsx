@@ -1,4 +1,4 @@
-import { Car, Clock, CreditCard, MessageSquare, Users } from "lucide-react";
+import { Car, Clock, MessageSquare, Users } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 import { useSelector } from "react-redux";
 
@@ -48,12 +48,12 @@ const tabs = [
     icon: Clock,
     groupOnly: false,
   },
-  {
-    id: "LEDGER" as const,
-    label: "LEDGER",
-    icon: CreditCard,
-    groupOnly: false,
-  },
+  // {
+  //   id: "LEDGER" as const,
+  //   label: "LEDGER",
+  //   icon: CreditCard,
+  //   groupOnly: false,
+  // },
 ];
 
 const SidebarTabs = ({
