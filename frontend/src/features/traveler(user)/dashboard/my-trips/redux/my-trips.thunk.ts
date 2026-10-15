@@ -31,3 +31,25 @@ export const fetchMyTripsThunk = createAsyncThunk<
     }
   },
 );
+
+export const deleteMyTripThunk = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>(
+  "myTrips/deleteMyTrip",
+
+  async (tripId, { rejectWithValue }) => {
+    try {
+      await myTripsApi.deleteTrip(tripId);
+
+      return tripId;
+    } catch (error) {
+      const err = error as AxiosError<ApiError>;
+
+      return rejectWithValue(
+        err.response?.data?.message ?? "Failed to delete trip",
+      );
+    }
+  },
+);

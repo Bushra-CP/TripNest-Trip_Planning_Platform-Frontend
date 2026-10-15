@@ -5,17 +5,19 @@ import SidebarTabs from "./SidebarTabs";
 import ChatTab from "./chat/ChatTab";
 import PeopleTab from "./people/PeopleTab";
 import VehiclesTab from "./vehicles/VehiclesTab";
-import LedgerTab from "./ledger/LedgerTab";
+// import LedgerTab from "./ledger/LedgerTab";
 import ItineraryTab from "./itinerary/ItineraryTab";
 
 import { selectMode } from "@/features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.selectors";
 
-export type TabType =
-  | "CHAT"
-  | "PEOPLE"
-  | "VEHICLES"
-  | "LEDGER"
-  | "ITINERARY";
+// export type TabType =
+//   | "CHAT"
+//   | "PEOPLE"
+//   | "VEHICLES"
+//   | "LEDGER"
+//   | "ITINERARY";
+
+export type TabType = "CHAT" | "PEOPLE" | "VEHICLES" | "ITINERARY";
 
 interface RightSidebarProps {
   mobile?: boolean;
@@ -51,9 +53,7 @@ const RightSidebar = ({
    * those tabs. Use VEHICLES as the effective tab.
    */
   const effectiveActiveTab: TabType =
-    tripMode === "solo" &&
-    (activeTab === "CHAT" ||
-      activeTab === "PEOPLE")
+    tripMode === "solo" && (activeTab === "CHAT" || activeTab === "PEOPLE")
       ? "VEHICLES"
       : activeTab;
 
@@ -61,39 +61,23 @@ const RightSidebar = ({
     switch (effectiveActiveTab) {
       case "CHAT":
         return (
-          <ChatTab
-            mobile={mobile}
-            isDarkMode={isDarkMode}
-            theme={theme}
-          />
+          <ChatTab mobile={mobile} isDarkMode={isDarkMode} theme={theme} />
         );
 
       case "PEOPLE":
         return (
-          <PeopleTab
-            mobile={mobile}
-            isDarkMode={isDarkMode}
-            theme={theme}
-          />
+          <PeopleTab mobile={mobile} isDarkMode={isDarkMode} theme={theme} />
         );
 
       case "VEHICLES":
         return (
-          <VehiclesTab
-            mobile={mobile}
-            isDarkMode={isDarkMode}
-            theme={theme}
-          />
+          <VehiclesTab mobile={mobile} isDarkMode={isDarkMode} theme={theme} />
         );
 
-      case "LEDGER":
-        return (
-          <LedgerTab
-            mobile={mobile}
-            isDarkMode={isDarkMode}
-            theme={theme}
-          />
-        );
+      // case "LEDGER":
+      //   return (
+      //     <LedgerTab mobile={mobile} isDarkMode={isDarkMode} theme={theme} />
+      //   );
 
       case "ITINERARY":
         return (
@@ -120,9 +104,7 @@ const RightSidebar = ({
 
       <div
         className={`flex min-h-0 flex-col ${
-          mobile
-            ? "max-h-[calc(80vh-60px)]"
-            : "h-[calc(100vh-64px)]"
+          mobile ? "max-h-[calc(80vh-60px)]" : "h-[calc(100vh-64px)]"
         }`}
       >
         {renderContent()}
