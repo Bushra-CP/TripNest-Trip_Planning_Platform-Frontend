@@ -312,31 +312,19 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose }) => {
      PUBLISH POST
   ========================================================== */
 
-  const handlePublish = async (data: CreatePostFormData) => {
-    try {
-      const files = mediaList.map((media) => media.file);
+  const handlePublish = (data: CreatePostFormData) => {
+    const files = mediaList.map((media) => media.file);
 
-      const createdPost = await createPost({
+    createPost(
+      {
         title: data.title,
         destination: data.destination,
         content: data.content,
         tags: data.tags,
         media: files,
-      });
-
-      console.log("=================================");
-      console.log("POST CREATED SUCCESSFULLY");
-      console.log("=================================");
-      console.log("Created Post:", createdPost);
-
-      alert("Post published successfully!");
-
-      onClose();
-    } catch (error) {
-      console.error("Failed to create post:", error);
-
-      alert("Failed to publish post. Please try again.");
-    }
+      },
+      onClose,
+    );
   };
 
   /* ==========================================================

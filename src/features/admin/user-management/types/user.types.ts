@@ -51,6 +51,8 @@ export interface UpdateUserStatusResponse {
 export interface UserDetails {
   id: string;
 
+  tripCount:number;
+  
   fullName: string;
 
   email: string;

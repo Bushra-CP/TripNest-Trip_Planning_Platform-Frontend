@@ -22,8 +22,8 @@ const tripTalesSlice = createSlice({
   initialState,
 
   reducers: {
-    setNewPostsAvailable: (state, action) => {
-      state.newPostsAvailable = action.payload;
+    setNewPostsAvailable: (state) => {
+      state.newPostsAvailable = true;
     },
 
     clearNewPostsAvailable: (state) => {

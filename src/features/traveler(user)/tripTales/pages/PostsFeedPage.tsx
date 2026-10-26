@@ -6,6 +6,7 @@ import TripTalesPostCard from "../components/trip-tales/TripTalesPostCard";
 import TripTalesSidebar from "../components/trip-tales/TripTalesSidebar";
 
 import { useTripTales } from "../hooks/useTripTales";
+import { useTripTalesSocket } from "../hooks/useTripTalesSocket";
 
 type FeedFilter = "All" | "Recent" | "Popular" | "Photos" | "Videos";
 
@@ -79,6 +80,8 @@ const PostsFeedPage: React.FC = () => {
     handlePostClick,
   } = useTripTales();
 
+  useTripTalesSocket();
+
   /* ==========================================================
      FILTER
   ========================================================== */
@@ -113,7 +116,9 @@ const PostsFeedPage: React.FC = () => {
   ========================================================== */
 
   const handleRefreshPosts = async () => {
-    await refreshPosts();
+    setSearchQuery("");
+    setActiveFilter("All");
+    refreshPosts();
     clearNewPosts();
   };
 
@@ -136,7 +141,6 @@ const PostsFeedPage: React.FC = () => {
   const handleSave = (id: string) => {
     console.log("Save post:", id);
   };
-  
 
   /* ==========================================================
      FILTER + SEARCH
@@ -221,18 +225,73 @@ const PostsFeedPage: React.FC = () => {
       />
 
       {/* ======================================================
-          NEW POSTS NOTIFICATION
-      ====================================================== */}
-
+    NEW POSTS NOTIFICATION
+====================================================== */}
       {newPostsAvailable && (
-        <div className="flex justify-center pt-5">
-          <button
-            type="button"
+        <div className="sticky top-4 z-40 flex justify-center px-4 pt-3">
+          <div
+            role="button"
+            tabIndex={0}
             onClick={handleRefreshPosts}
-            className="px-5 py-2 rounded-full bg-[#15803D] hover:bg-[#166534] text-white text-xs font-bold shadow-md transition-all"
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                handleRefreshPosts();
+              }
+            }}
+            className="flex w-full max-w-md cursor-pointer items-center gap-3
+                 rounded-xl border border-gray-200 bg-white px-4 py-3
+                 shadow-lg transition-all duration-200
+                 hover:-translate-y-0.5 hover:shadow-xl"
           >
-            New posts available
-          </button>
+            {/* Notification Icon */}
+            <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-green-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+
+              {/* Unread indicator */}
+              <span className="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-green-500" />
+            </div>
+
+            {/* Notification Content */}
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold text-gray-900">
+                New posts are available!
+              </p>
+
+              <p className="mt-0.5 text-xs text-gray-500">
+                Tap to see the latest travel stories.
+              </p>
+            </div>
+
+            {/* Arrow */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 shrink-0 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
         </div>
       )}
 

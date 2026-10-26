@@ -101,6 +101,16 @@ const UserDetailsModal = ({ open, user, onClose }: UserDetailsModalProps) => {
               </div>
             )}
           </div>
+
+          <div>
+            <h4 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-500">
+              Trip Counts
+            </h4>
+
+            <div className="rounded-xl border bg-slate-50 p-4 text-sm">
+              {user.tripCount}
+            </div>
+          </div>
         </div>
 
         {/* Footer */}

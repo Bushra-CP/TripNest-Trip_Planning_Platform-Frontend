@@ -7,6 +7,8 @@ interface ServerToClientEvents {
   roomJoined: (roomId: string) => void;
 
   roomError: (message: string) => void;
+
+  "post:new-available": (data: { postId: string }) => void;
 }
 
 interface ClientToServerEvents {

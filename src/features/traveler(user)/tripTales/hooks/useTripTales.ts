@@ -5,6 +5,7 @@ import type { CreatePostData } from "../types/trip-tales.types";
 import { clearNewPostsAvailable } from "../redux/trip-tales.slice";
 import { tripTalesApi } from "../api/trip-tales.api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const useTripTales = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,8 +19,26 @@ export const useTripTales = () => {
     return dispatch(fetchPostsThunk());
   };
 
-  const createPost = async (postData: CreatePostData) => {
-    return dispatch(createPostThunk(postData)).unwrap();
+  const createPost = (
+    postData: CreatePostData,
+    onSubmitted?: () => void,
+  ): void => {
+    // Show the notification immediately.
+    toast.success("Your post has been submitted! It will be visible soon.");
+
+    // Close the modal immediately after submission begins.
+    onSubmitted?.();
+
+    // Continue the API request without blocking the UI.
+    void dispatch(createPostThunk(postData))
+      .unwrap()
+      .catch((error: unknown) => {
+        toast.error(
+          typeof error === "string"
+            ? error
+            : "Failed to submit your post. Please try again.",
+        );
+      });
   };
 
   const fetchPostById = (postId: string) => {
@@ -43,7 +62,6 @@ export const useTripTales = () => {
     loading,
     error,
     newPostsAvailable,
-
     fetchPosts,
     createPost,
     fetchPostById,
