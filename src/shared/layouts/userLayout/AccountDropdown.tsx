@@ -8,7 +8,7 @@ import {
   LogOut,
   ChevronRight,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "@/app/store";
 import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
@@ -71,6 +71,7 @@ const menuItems: MenuItem[] = [
 
 const AccountDropdown = ({ onClose }: AccountDropdownProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const user = useSelector(selectUser);
@@ -92,6 +93,8 @@ const AccountDropdown = ({ onClose }: AccountDropdownProps) => {
       const result = await dispatch(logoutThunk()).unwrap();
 
       console.log("logout successful", result);
+
+      navigate("/login");
     } catch (error) {
       console.error(" Logout failed:", error);
     }

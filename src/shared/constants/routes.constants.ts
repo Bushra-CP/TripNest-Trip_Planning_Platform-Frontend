@@ -16,6 +16,7 @@ export const APP_ROUTES = {
   ADMIN_LOGIN: "/admin/login",
   ADMIN_DASHBOARD: "/admin/dashboard",
   ADMIN_USER_MANAGEMENT: "/admin/users",
+  ADMIN_TRIP_TALES_MANAGEMENT: "/admin/trip-tales-management",
 
   //ERROR PAGES
   UNAUTHERISED_PAGE: "/403",

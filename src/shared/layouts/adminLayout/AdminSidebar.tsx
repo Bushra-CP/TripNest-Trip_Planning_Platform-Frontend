@@ -1,7 +1,7 @@
 import {
   BarChart3,
   Flag,
-  Gavel,
+  Globe,
   LayoutDashboard,
   LibraryBig,
   Settings,
@@ -32,9 +32,9 @@ const menuItems = [
     path: "/admin/knowledge-base",
   },
   {
-    label: "Moderation",
-    icon: Gavel,
-    path: "/admin/moderation",
+    label: "Trip Tales Management",
+    icon: Globe,
+    path: "/admin/trip-tales-management",
   },
   {
     label: "Reports",

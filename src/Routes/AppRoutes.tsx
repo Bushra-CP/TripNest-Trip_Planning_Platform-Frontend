@@ -5,7 +5,7 @@ import RegisterPage from "@/features/traveler(user)/register/pages/RegisterPage"
 import LoginPage from "@/features/traveler(user)/auth/pages/LoginPage";
 import HomePage from "@/features/traveler(user)/home/pages/HomePage";
 import ForgotPasswordPage from "@/features/traveler(user)/forgot-password/pages/ForgotPasswordPage";
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "@/Routes/ProtectedRoute";
 import UnauthorizedPage from "@/features/traveler(user)/error-pages/pages/UnauthorizedPage";
 import NotFoundPage from "@/features/traveler(user)/error-pages/pages/NotFoundPage";
 import ResetPasswordPage from "@/features/traveler(user)/forgot-password/pages/ResetPasswordPage";
@@ -18,7 +18,7 @@ import AdminLoginPage from "@/features/admin/login/pages/AdminLoginPage";
 import AdminDashboardPage from "@/features/admin/dashboard/pages/AdminDashboardPage";
 import AdminLayout from "@/layouts/AdminLayout";
 import UserManagement from "@/features/admin/user-management/pages/UserManagement";
-import PublicRoute from "./PublicRoute";
+import PublicRoute from "@/Routes/PublicRoute";
 import { APP_ROUTES } from "@/shared/constants/routes.constants";
 import RightSidebar from "@/features/traveler(user)/trip-planning/components/rightSidebar/RightSidebar";
 import TripPlanningPage from "@/features/traveler(user)/trip-planning/pages/TripPlanningPage";
@@ -27,6 +27,7 @@ import PostsFeedPage from "@/features/traveler(user)/tripTales/pages/PostsFeedPa
 import PostDetailPage from "@/features/traveler(user)/tripTales/pages/PostDetailPage";
 import PostDetailPage2 from "@/features/traveler(user)/tripTales/pages/PostDetailPage2";
 import MyTripsPage from "@/features/traveler(user)/dashboard/my-trips/pages/MyTripsPage";
+import AdminTripTalesManagement from "@/features/admin/tripTales-management/pages/AdminTripTalesManagement";
 
 export default function AppRoutes() {
   return (
@@ -92,6 +93,10 @@ export default function AppRoutes() {
                 path="/admin/knowledge-base"
                 element={<AIKnowledgeBase />}
               />
+              <Route
+                path={APP_ROUTES.ADMIN_TRIP_TALES_MANAGEMENT}
+                element={<AdminTripTalesManagement />}
+              />
             </Route>
           </Route>
           /*----------------------- ERROR ROUTES ------------------------*/
@@ -102,7 +107,24 @@ export default function AppRoutes() {
           />
           {/* Not Found */}
           <Route path={APP_ROUTES.NOT_FOUND_PAGE} element={<NotFoundPage />} />
-          <Route path="/plan" element={<RightSidebar />} />
+          <Route
+            path="/plan"
+            element={
+              <RightSidebar
+                isDarkMode={false}
+                theme={{
+                  surface: undefined,
+                  border: undefined,
+                  input: undefined,
+                  iconButton: undefined,
+                  divider: undefined,
+                  primaryText: undefined,
+                  secondaryText: undefined,
+                  mutedText: undefined,
+                }}
+              />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

@@ -43,11 +43,12 @@ export interface RestoreAIPlanningResponse {
   canGenerateDraft: boolean;
   routeChanged: boolean;
   route: RoutePlanningResult | null;
+  ragSources: RagSource[];
   generatedItinerary: GeneratedItinerary | null;
 }
 
 export interface SendMessageResponse {
   success: boolean;
-
+  message: string;
   data: AIChatResponse;
 }
