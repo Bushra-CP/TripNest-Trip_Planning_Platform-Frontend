@@ -1,44 +1,89 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState, AppDispatch } from "@/app/store";
-import { createPostThunk, fetchPostsThunk } from "../redux/trip-tales.thunk";
-import type { CreatePostData } from "../types/trip-tales.types";
-import { clearNewPostsAvailable } from "../redux/trip-tales.slice";
-import { tripTalesApi } from "../api/trip-tales.api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
+import type { RootState, AppDispatch } from "@/app/store";
+
+import {
+  createPostThunk,
+  fetchPostsThunk,
+  fetchMyProfileThunk,
+  fetchMyPostsThunk,
+  fetchMyPostByIdThunk,
+  updateMyPostThunk,
+  deleteMyPostThunk,
+} from "../redux/trip-tales.thunk";
+
+import {
+  clearNewPostsAvailable,
+  clearSelectedMyPost,
+} from "../redux/trip-tales.slice";
+
+import { tripTalesApi } from "../api/trip-tales.api";
+
+import type {
+  CreatePostData,
+  MyPostsQuery,
+  UpdateMyPostData,
+} from "../types/trip-tales.types";
 
 export const useTripTales = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { posts, loading, error, newPostsAvailable } = useSelector(
-    (state: RootState) => state.tripTales,
-  );
+  const tripTalesState = useSelector((state: RootState) => state.tripTales);
+
+  const {
+    posts,
+    loading,
+    error,
+    newPostsAvailable,
+
+    myProfile,
+    profileLoading,
+    profileError,
+
+    myPosts,
+    myPostsPagination,
+    myPostsLoading,
+    myPostsError,
+
+    selectedMyPost,
+    myPostLoading,
+    myPostError,
+
+    updatePostLoading,
+    updatePostError,
+
+    deletePostLoading,
+    deletePostError,
+  } = tripTalesState;
+
+  // ==========================================
+  // PUBLIC TRIPTALES
+  // ==========================================
 
   const fetchPosts = () => {
     return dispatch(fetchPostsThunk());
   };
 
-  const createPost = (
+  const createPost = async (
     postData: CreatePostData,
     onSubmitted?: () => void,
-  ): void => {
-    // Show the notification immediately.
-    toast.success("Your post has been submitted! It will be visible soon.");
+  ): Promise<void> => {
+    try {
+      await dispatch(createPostThunk(postData)).unwrap();
 
-    // Close the modal immediately after submission begins.
-    onSubmitted?.();
+      toast.success("Your post has been submitted! It will be visible soon.");
 
-    // Continue the API request without blocking the UI.
-    void dispatch(createPostThunk(postData))
-      .unwrap()
-      .catch((error: unknown) => {
-        toast.error(
-          typeof error === "string"
-            ? error
-            : "Failed to submit your post. Please try again.",
-        );
-      });
+      onSubmitted?.();
+    } catch (error) {
+      toast.error(
+        typeof error === "string"
+          ? error
+          : "Failed to submit your post. Please try again.",
+      );
+    }
   };
 
   const fetchPostById = (postId: string) => {
@@ -46,7 +91,7 @@ export const useTripTales = () => {
   };
 
   const refreshPosts = () => {
-    dispatch(fetchPostsThunk());
+    return dispatch(fetchPostsThunk());
   };
 
   const clearNewPosts = () => {
@@ -57,7 +102,84 @@ export const useTripTales = () => {
     navigate(`/trip-tales/posts/${postId}`);
   };
 
+  // ==========================================
+  // MY PROFILE
+  // ==========================================
+
+  const fetchMyProfile = () => {
+    return dispatch(fetchMyProfileThunk());
+  };
+
+  // ==========================================
+  // MY POSTS
+  // ==========================================
+
+  const fetchMyPosts = (query?: MyPostsQuery) => {
+    return dispatch(fetchMyPostsThunk(query));
+  };
+
+  const fetchMyPostById = (postId: string) => {
+    return dispatch(fetchMyPostByIdThunk(postId));
+  };
+
+  // ==========================================
+  // UPDATE MY POST
+  // ==========================================
+
+  const updateMyPost = async (
+    postId: string,
+    postData: UpdateMyPostData,
+  ): Promise<boolean> => {
+    try {
+      await dispatch(
+        updateMyPostThunk({
+          postId,
+          postData,
+        }),
+      ).unwrap();
+
+      toast.success("Your TripTale has been updated successfully.");
+
+      return true;
+    } catch (error) {
+      toast.error(
+        typeof error === "string" ? error : "Failed to update your TripTale.",
+      );
+
+      return false;
+    }
+  };
+
+  // ==========================================
+  // DELETE MY POST
+  // ==========================================
+
+  const deleteMyPost = async (postId: string): Promise<boolean> => {
+    try {
+      await dispatch(deleteMyPostThunk(postId)).unwrap();
+
+      toast.success("Your TripTale has been deleted successfully.");
+
+      return true;
+    } catch (error) {
+      toast.error(
+        typeof error === "string" ? error : "Failed to delete your TripTale.",
+      );
+
+      return false;
+    }
+  };
+
+  // ==========================================
+  // CLEAR SELECTED POST
+  // ==========================================
+
+  const clearSelectedPost = () => {
+    dispatch(clearSelectedMyPost());
+  };
+
   return {
+    // Public TripTales
     posts,
     loading,
     error,
@@ -68,5 +190,35 @@ export const useTripTales = () => {
     refreshPosts,
     clearNewPosts,
     handlePostClick,
+
+    // My profile
+    myProfile,
+    profileLoading,
+    profileError,
+    fetchMyProfile,
+
+    // My posts
+    myPosts,
+    myPostsPagination,
+    myPostsLoading,
+    myPostsError,
+    fetchMyPosts,
+
+    // Individual post
+    selectedMyPost,
+    myPostLoading,
+    myPostError,
+    fetchMyPostById,
+    clearSelectedPost,
+
+    // Update
+    updateMyPost,
+    updatePostLoading,
+    updatePostError,
+
+    // Delete
+    deleteMyPost,
+    deletePostLoading,
+    deletePostError,
   };
 };

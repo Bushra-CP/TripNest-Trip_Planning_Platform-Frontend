@@ -62,6 +62,13 @@ export const SERVER_ROUTES = {
   GET_POSTS: "/trip-tales/posts",
   GET_POST_BY_ID: "/trip-tales/posts/:postId",
 
+  // MY TRIPTALES
+  GET_MY_PROFILE: "/my-profile",
+  GET_MY_POSTS: "/trip-tales/my-posts",
+  GET_MY_POST_BY_ID: "/trip-tales/my-posts/:postId",
+  UPDATE_MY_POST: "/trip-tales/my-posts/:postId",
+  DELETE_MY_POST: "/trip-tales/my-posts/:postId",
+
   //ADMIN RELATED
   ADMIN_USERS: "/admin/users",
   UPDATE_USER_STATUS: "/admin/user/:id",
