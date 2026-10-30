@@ -14,8 +14,9 @@ import myTripsSlice from "../features/traveler(user)/dashboard/my-trips/redux/my
 import vehicleSlice from "../features/traveler(user)/trip-planning/redux/vehicle/vehicle.slice";
 import tripPlanningSlice from "../features/traveler(user)/trip-planning/redux/trip-planning/trip-planning.slice";
 import memberSlice from "../features/traveler(user)/trip-planning/redux/member/member.slice";
-import tripVehicleSlice from '../features/traveler(user)/trip-planning/redux/trip-vehicle/trip-vehicle.slice';
-import tripCostSlice from '../features/traveler(user)/trip-planning/redux/trip-cost/trip-cost.slice';
+import tripVehicleSlice from "../features/traveler(user)/trip-planning/redux/trip-vehicle/trip-vehicle.slice";
+import tripCostSlice from "../features/traveler(user)/trip-planning/redux/trip-cost/trip-cost.slice";
+import adminTripTalesSlice from "@/features/admin/tripTales-management/redux/admin-trip-tales.slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -34,7 +35,7 @@ export const rootReducer = combineReducers({
   register: registerReducer,
   forgotPassword: forgotPasswordSlice,
   otp: otpSlice,
-  user: userSlice,
+  user: userSlice, //admin user management related
   tripPlanning: tripPlanningSlice,
   chat: chatSlice,
   aiPlanning: persistReducer(aiPlanningPersistConfig, aiPlanningSlice),
@@ -43,6 +44,7 @@ export const rootReducer = combineReducers({
   myTrips: myTripsSlice,
   vehicle: vehicleSlice,
   member: memberSlice,
-  tripVehicle:tripVehicleSlice,
+  tripVehicle: tripVehicleSlice,
   tripCost: tripCostSlice,
+  adminTripTales: adminTripTalesSlice,
 });

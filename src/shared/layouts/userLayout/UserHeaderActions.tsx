@@ -42,7 +42,10 @@ const UserHeaderActions = () => {
 
       {/* Avatar */}
 
-      <div ref={dropdownRef} className="relative">
+      <div
+        ref={dropdownRef}
+        className={`relative ${isDropdownOpen ? "z-[9999]" : "z-auto"}`}
+      >
         <button
           onClick={toggleDropdown}
           className="
