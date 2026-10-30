@@ -68,4 +68,11 @@ export const SERVER_ROUTES = {
   GET_USER: "/admin/user/:id",
   ADMIN_KNOWLEDGE_DOCUMENTS: "/admin/knowledge-documents",
   ADMIN_KNOWLEDGE_DOCUMENT_BY_ID: "/admin/knowledge-documents/:id",
+
+  // ADMIN TRIPTALES MANAGEMENT
+  ADMIN_TRIPTALES: "/admin/trip-tales",
+  ADMIN_TRIPTALES_STATS: "/admin/trip-tales/stats",
+  ADMIN_TRIPTALES_BY_ID: "/admin/trip-tales/:postId",
+  BLOCK_TRIPTALES_POST: "/admin/trip-tales/:postId/block",
+  UNBLOCK_TRIPTALES_POST: "/admin/trip-tales/:postId/unblock",
 } as const;

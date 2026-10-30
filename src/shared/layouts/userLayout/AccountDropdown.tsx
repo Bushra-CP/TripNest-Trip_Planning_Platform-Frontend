@@ -105,7 +105,9 @@ const AccountDropdown = ({ onClose }: AccountDropdownProps) => {
       className="
       absolute
       right-0
-      mt-4
+      top-full
+      z-9999
+      mt-2
       w-72
       overflow-hidden
       rounded-3xl

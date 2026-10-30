@@ -5,11 +5,11 @@ import RegisterPage from "@/features/traveler(user)/register/pages/RegisterPage"
 import LoginPage from "@/features/traveler(user)/auth/pages/LoginPage";
 import HomePage from "@/features/traveler(user)/home/pages/HomePage";
 import ForgotPasswordPage from "@/features/traveler(user)/forgot-password/pages/ForgotPasswordPage";
-import ProtectedRoute from "@/Routes/ProtectedRoute";
+import ProtectedRoute from "@/routes/ProtectedRoute";
 import UnauthorizedPage from "@/features/traveler(user)/error-pages/pages/UnauthorizedPage";
 import NotFoundPage from "@/features/traveler(user)/error-pages/pages/NotFoundPage";
 import ResetPasswordPage from "@/features/traveler(user)/forgot-password/pages/ResetPasswordPage";
-import UserProfile from "@/features/traveler(user)/dashboard/profile/pages/UserProfile";
+import UserProfile from "@/features/traveler(user)/dashboard/edit-profile/pages/UserProfile";
 import UserLayout from "@/layouts/UserLayout";
 import PrivacySettingsPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/PrivacySettingsPage";
 import ChangePasswordPage from "@/features/traveler(user)/dashboard/privacy-settings/pages/ChangePasswordPage";
@@ -18,7 +18,7 @@ import AdminLoginPage from "@/features/admin/login/pages/AdminLoginPage";
 import AdminDashboardPage from "@/features/admin/dashboard/pages/AdminDashboardPage";
 import AdminLayout from "@/layouts/AdminLayout";
 import UserManagement from "@/features/admin/user-management/pages/UserManagement";
-import PublicRoute from "@/Routes/PublicRoute";
+import PublicRoute from "@/routes/PublicRoute";
 import { APP_ROUTES } from "@/shared/constants/routes.constants";
 import RightSidebar from "@/features/traveler(user)/trip-planning/components/rightSidebar/RightSidebar";
 import TripPlanningPage from "@/features/traveler(user)/trip-planning/pages/TripPlanningPage";
@@ -28,6 +28,7 @@ import PostDetailPage from "@/features/traveler(user)/tripTales/pages/PostDetail
 import PostDetailPage2 from "@/features/traveler(user)/tripTales/pages/PostDetailPage2";
 import MyTripsPage from "@/features/traveler(user)/dashboard/my-trips/pages/MyTripsPage";
 import AdminTripTalesManagement from "@/features/admin/tripTales-management/pages/AdminTripTalesManagement";
+import MyTripTalesProfile from "@/features/traveler(user)/profile/pages/MyTripTalesProfile";
 
 export default function AppRoutes() {
   return (
@@ -60,7 +61,7 @@ export default function AppRoutes() {
             <Route path="/trip-tales" element={<PostsFeedPage />} />
             /*----------------------- USER ROUTES ------------------------*/
             <Route element={<ProtectedRoute allowedRoles={["TRAVELER"]} />}>
-              <Route path={APP_ROUTES.PROFILE} element={<UserProfile />} />
+              <Route path="/edit-profile" element={<UserProfile />} />
 
               <Route
                 path={APP_ROUTES.SETTINGS}
@@ -75,6 +76,10 @@ export default function AppRoutes() {
                 element={<ChangeEmailPage />}
               />
               <Route path="/my-trips" element={<MyTripsPage />} />
+              <Route
+                path={APP_ROUTES.PROFILE}
+                element={<MyTripTalesProfile />}
+              />
             </Route>
           </Route>
           <Route path="/trip-plan" element={<TripPlanningPage />} />
