@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Heart,
   MessageCircle,
   Share2,
   Bookmark,
-  Play,
   MoreHorizontal,
   CheckCircle2,
   MapPin,
 } from "lucide-react";
+import { toast } from "sonner";
 
 import type { CreatePostResponse } from "../../types/trip-tales.types";
+import { useTripTalesLikes } from "../../hooks/useTripTalesLikes";
+import LikesModal from "./LikesModal";
 
 interface TripTalesPostCardProps {
   post: CreatePostResponse;
@@ -26,11 +28,39 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
   onPostClick,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLikesOpen, setIsLikesOpen] = useState(false);
+
+  const {
+    postLikes,
+    initializeLikes,
+    toggleLike,
+    likes,
+    pagination,
+    likesLoading,
+    error,
+    openLikes,
+    changeLikesPage,
+    closeLikes,
+    toggleLoading,
+  } = useTripTalesLikes();
+
+  const currentLike = postLikes[post.id];
+
+  const likesCount = currentLike?.likesCount ?? post.likesCount ?? 0;
+
+  const isLiked =
+    currentLike?.isLikedByCurrentUser ?? post.isLikedByCurrentUser ?? false;
+
+  useEffect(() => {
+    initializeLikes(
+      post.id,
+      post.likesCount ?? 0,
+      post.isLikedByCurrentUser ?? false,
+    );
+  }, [post.id, post.likesCount, post.isLikedByCurrentUser, initializeLikes]);
 
   const plainTextContent = post.content?.replace(/<[^>]*>/g, "").trim() ?? "";
-
   const previewLength = 500;
-
   const shouldShowMore = plainTextContent.length > previewLength;
 
   const previewContent = shouldShowMore
@@ -38,15 +68,11 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
     : plainTextContent;
 
   const user = post.user;
-
   const media = post.media ?? [];
-
   const tags = post.tags ?? [];
-
   const firstMedia = media[0];
 
   const userName = user?.fullName || "Traveler";
-
   const profileImageUrl = user?.profileImageUrl || "";
 
   const formattedDate = post.createdAt
@@ -57,356 +83,289 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
       })
     : "";
 
-  const handlePostClick = () => {
-    onPostClick(post.id);
+  const handlePostClick = () => onPostClick(post.id);
+
+  const handleLike = async () => {
+    if (toggleLoading) return;
+
+    try {
+      await toggleLike(post.id, isLiked);
+      onLike(post.id);
+    } catch (error) {
+      toast.error(typeof error === "string" ? error : "Unable to update like.");
+    }
+  };
+
+  const handleOpenLikes = async () => {
+    setIsLikesOpen(true);
+    await openLikes(post.id, 1);
+  };
+
+  const handleCloseLikes = () => {
+    setIsLikesOpen(false);
+    closeLikes();
+  };
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `${window.location.origin}/trip-tales/posts/${post.id}`,
+      );
+      toast.success("Post link copied!");
+    } catch {
+      toast.error("Unable to copy post link.");
+    }
   };
 
   return (
-    <article className="bg-white rounded-3xl border border-[#E2E8F0] shadow-sm hover:shadow-md transition-shadow overflow-hidden p-6 space-y-5">
-      {/* ==================================================
-          AUTHOR
-      ================================================== */}
+    <>
+      <article className="space-y-5 overflow-hidden rounded-3xl border border-[#E2E8F0] bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+        {/* AUTHOR */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {profileImageUrl ? (
+              <img
+                src={profileImageUrl}
+                alt={userName}
+                className="h-10 w-10 rounded-full border border-slate-200 object-cover"
+              />
+            ) : (
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-bold text-emerald-700">
+                {userName.charAt(0).toUpperCase()}
+              </div>
+            )}
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          {/* PROFILE IMAGE */}
-
-          {profileImageUrl ? (
-            <img
-              src={profileImageUrl}
-              alt={userName}
-              className="w-10 h-10 rounded-full object-cover border border-slate-200"
-            />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
-              {userName.charAt(0).toUpperCase()}
-            </div>
-          )}
-
-          {/* USER DETAILS */}
-
-          <div>
-            <div className="flex items-center gap-2">
-              <h4 className="text-sm font-extrabold">{userName}</h4>
-
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#15803D] bg-[#DCFCE7] px-2 py-0.5 rounded-full">
-                <CheckCircle2 className="w-3 h-3" />
-                Traveler
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2 text-[11px] text-slate-400">
-              {formattedDate && <span>{formattedDate}</span>}
-
-              {formattedDate && post.destination && <span>•</span>}
-
-              {post.destination && (
-                <span className="inline-flex items-center gap-0.5 text-slate-500">
-                  <MapPin className="w-3 h-3 text-[#EA580C]" />
-
-                  {post.destination}
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="text-sm font-extrabold">{userName}</h4>
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#DCFCE7] px-2 py-0.5 text-[10px] font-bold text-[#15803D]">
+                  <CheckCircle2 className="h-3 w-3" />
+                  Traveler
                 </span>
-              )}
+              </div>
+
+              <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                {formattedDate && <span>{formattedDate}</span>}
+                {formattedDate && post.destination && <span>•</span>}
+                {post.destination && (
+                  <span className="inline-flex items-center gap-0.5 text-slate-500">
+                    <MapPin className="h-3 w-3 text-[#EA580C]" />
+                    {post.destination}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={(event) => event.stopPropagation()}
+            className="p-1 text-slate-400 hover:text-slate-600"
+            aria-label="More post options"
+          >
+            <MoreHorizontal className="h-5 w-5" />
+          </button>
         </div>
 
-        {/* MORE */}
+        {/* CONTENT */}
+        <div className="cursor-pointer space-y-1" onClick={handlePostClick}>
+          {post.title && (
+            <h2 className="text-lg font-black text-slate-900">{post.title}</h2>
+          )}
 
-        <button
-          type="button"
-          onClick={(event) => {
-            event.stopPropagation();
-          }}
-          className="text-slate-400 hover:text-slate-600 p-1"
-        >
-          <MoreHorizontal className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* ==================================================
-          CONTENT
-      ================================================== */}
-
-      <div className="space-y-1 cursor-pointer" onClick={handlePostClick}>
-        {post.title && (
-          <h2 className="text-lg font-black text-slate-900">{post.title}</h2>
-        )}
-
-        {!isExpanded ? (
-          <p className="text-sm text-slate-600 leading-relaxed">
-            {previewContent}
-
-            {shouldShowMore && (
+          {!isExpanded ? (
+            <p className="text-sm leading-relaxed text-slate-600">
+              {previewContent}
+              {shouldShowMore && (
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setIsExpanded(true);
+                  }}
+                  className="ml-1 font-bold text-[#15803D] hover:text-[#166534]"
+                >
+                  More
+                </button>
+              )}
+            </p>
+          ) : (
+            <div className="text-sm leading-relaxed text-slate-600">
+              <div
+                className="prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: post.content || "" }}
+              />
               <button
                 type="button"
                 onClick={(event) => {
                   event.stopPropagation();
-                  setIsExpanded(true);
+                  setIsExpanded(false);
                 }}
-                className="font-bold text-[#15803D] hover:text-[#166534] ml-1"
+                className="mt-1 font-bold text-[#15803D] hover:text-[#166534]"
               >
-                More
+                Less
               </button>
+            </div>
+          )}
+        </div>
+
+        {/* TAGS */}
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-md border border-[#DCFCE7] bg-[#F0FDF4] px-2.5 py-0.5 text-[11px] font-bold text-[#15803D]"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* MEDIA */}
+        {media.length > 0 && (
+          <div onClick={handlePostClick} className="cursor-pointer">
+            {media.length === 1 && firstMedia && (
+              <div className="relative overflow-hidden rounded-2xl bg-slate-900">
+                {firstMedia.type === "video" ? (
+                  <video
+                    src={firstMedia.url}
+                    controls
+                    onClick={(event) => event.stopPropagation()}
+                    className="max-h-[500px] w-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={firstMedia.url}
+                    alt={post.title || "Travel"}
+                    className="max-h-[500px] w-full object-cover"
+                  />
+                )}
+              </div>
             )}
-          </p>
-        ) : (
-          <div className="text-sm text-slate-600 leading-relaxed">
-            <div
-              className="prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{
-                __html: post.content || "",
-              }}
-            />
+
+            {media.length > 1 && (
+              <div className="grid grid-cols-2 gap-2 overflow-hidden rounded-2xl">
+                {media.slice(0, 4).map((item, index) => (
+                  <div
+                    key={item.key}
+                    className="relative h-52 overflow-hidden rounded-xl bg-slate-100"
+                  >
+                    {item.type === "video" ? (
+                      <video
+                        src={item.url}
+                        controls
+                        onClick={(event) => event.stopPropagation()}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={item.url}
+                        alt={`Travel media ${index + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    )}
+
+                    {index === 3 && media.length > 4 && (
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50">
+                        <span className="text-lg font-black text-white">
+                          +{media.length - 4}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ACTIONS */}
+        <div className="flex items-center justify-between border-t border-slate-100 pt-3">
+          <div className="flex items-center gap-6">
+            <div className="inline-flex items-center gap-1.5">
+              <button
+                type="button"
+                disabled={toggleLoading}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  void handleLike();
+                }}
+                aria-label={isLiked ? "Unlike post" : "Like post"}
+                className={`inline-flex items-center gap-1.5 text-xs font-bold transition-colors disabled:opacity-50 ${
+                  isLiked
+                    ? "text-rose-600"
+                    : "text-slate-500 hover:text-rose-600"
+                }`}
+              >
+                <Heart
+                  className={`h-4 w-4 ${
+                    isLiked ? "fill-rose-600 stroke-rose-600" : ""
+                  }`}
+                />
+              </button>
+
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  void handleOpenLikes();
+                }}
+                className="text-xs font-bold text-slate-500 hover:text-rose-600"
+              >
+                {likesCount.toLocaleString()}
+              </button>
+            </div>
 
             <button
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
-                setIsExpanded(false);
+                handlePostClick();
               }}
-              className="font-bold text-[#15803D] hover:text-[#166534] mt-1"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#15803D]"
             >
-              Less
+              <MessageCircle className="h-4 w-4" />
+              Comments
+            </button>
+
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                void handleShare();
+              }}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900"
+            >
+              <Share2 className="h-4 w-4" />
             </button>
           </div>
-        )}
-      </div>
-
-      {/* ==================================================
-          TAGS
-      ================================================== */}
-
-      {tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-[11px] font-bold text-[#15803D] bg-[#F0FDF4] border border-[#DCFCE7] px-2.5 py-0.5 rounded-md"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* ==================================================
-          MEDIA
-      ================================================== */}
-
-      {media.length > 0 && (
-        <div onClick={handlePostClick} className="cursor-pointer">
-          {/* ==================================================
-              ONE MEDIA
-          ================================================== */}
-
-          {media.length === 1 && firstMedia && (
-            <div className="relative rounded-2xl overflow-hidden bg-slate-900">
-              {firstMedia.type === "video" ? (
-                <>
-                  <video
-                    src={firstMedia.url}
-                    controls
-                    onClick={(event) => event.stopPropagation()}
-                    className="w-full max-h-[500px] object-cover"
-                  />
-
-                  <div className="absolute top-3 left-3 pointer-events-none">
-                    <span className="inline-flex items-center gap-1 bg-black/70 text-white text-[9px] font-bold px-2 py-1 rounded">
-                      <Play className="w-2.5 h-2.5 fill-white" />
-                      Video
-                    </span>
-                  </div>
-                </>
-              ) : (
-                <img
-                  src={firstMedia.url}
-                  alt={post.title || "Travel"}
-                  className="w-full max-h-[500px] object-cover"
-                />
-              )}
-            </div>
-          )}
-
-          {/* ==================================================
-              TWO MEDIA
-          ================================================== */}
-
-          {media.length === 2 && (
-            <div className="grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
-              {media.map((item) => (
-                <div
-                  key={item.key}
-                  className="relative h-72 overflow-hidden rounded-xl bg-slate-100"
-                >
-                  {item.type === "video" ? (
-                    <video
-                      src={item.url}
-                      controls
-                      onClick={(event) => event.stopPropagation()}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={item.url}
-                      alt="Travel"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* ==================================================
-              THREE MEDIA
-          ================================================== */}
-
-          {media.length === 3 && (
-            <div className="grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
-              <div className="row-span-2 h-[380px] rounded-xl overflow-hidden bg-slate-100">
-                {media[0].type === "video" ? (
-                  <video
-                    src={media[0].url}
-                    controls
-                    onClick={(event) => event.stopPropagation()}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src={media[0].url}
-                    alt="Travel"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-
-              {media.slice(1).map((item) => (
-                <div
-                  key={item.key}
-                  className="h-[188px] rounded-xl overflow-hidden bg-slate-100"
-                >
-                  {item.type === "video" ? (
-                    <video
-                      src={item.url}
-                      controls
-                      onClick={(event) => event.stopPropagation()}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={item.url}
-                      alt="Travel"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* ==================================================
-              FOUR OR MORE MEDIA
-          ================================================== */}
-
-          {media.length >= 4 && (
-            <div className="grid grid-cols-2 gap-2 rounded-2xl overflow-hidden">
-              {media.slice(0, 4).map((item, index) => (
-                <div
-                  key={item.key}
-                  className="relative h-52 overflow-hidden rounded-xl bg-slate-100"
-                >
-                  {item.type === "video" ? (
-                    <video
-                      src={item.url}
-                      controls
-                      onClick={(event) => event.stopPropagation()}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={item.url}
-                      alt={`Travel media ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-
-                  {index === 3 && media.length > 4 && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
-                      <span className="text-white text-lg font-black">
-                        +{media.length - 4}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ==================================================
-          ACTIONS
-      ================================================== */}
-
-      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          {/* LIKE */}
 
           <button
             type="button"
             onClick={(event) => {
               event.stopPropagation();
-              onLike(post.id);
+              onSave(post.id);
             }}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-rose-600"
+            aria-label="Save post"
+            className="p-1.5 text-slate-400 hover:text-[#15803D]"
           >
-            <Heart className="w-4 h-4" />0
-          </button>
-
-          {/* COMMENTS */}
-
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-
-              alert(`Opening comments for ${post.title || userName}`);
-            }}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#15803D]"
-          >
-            <MessageCircle className="w-4 h-4" />0
-          </button>
-
-          {/* SHARE */}
-
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-
-              alert("Sharing link copied to clipboard!");
-            }}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900"
-          >
-            <Share2 className="w-4 h-4" />
+            <Bookmark className="h-4 w-4" />
           </button>
         </div>
+      </article>
 
-        {/* SAVE */}
-
-        <button
-          type="button"
-          onClick={(event) => {
-            event.stopPropagation();
-            onSave(post.id);
-          }}
-          className="p-1.5 text-slate-400 hover:text-[#15803D]"
-        >
-          <Bookmark className="w-4 h-4" />
-        </button>
-      </div>
-    </article>
+      <LikesModal
+        isOpen={isLikesOpen}
+        likes={likes}
+        pagination={pagination}
+        loading={likesLoading}
+        error={error}
+        onClose={handleCloseLikes}
+        onPageChange={(page) => void changeLikesPage(post.id, page)}
+      />
+    </>
   );
 };
 

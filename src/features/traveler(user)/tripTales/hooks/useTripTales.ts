@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -63,120 +64,135 @@ export const useTripTales = () => {
   // PUBLIC TRIPTALES
   // ==========================================
 
-  const fetchPosts = () => {
+  const fetchPosts = useCallback(() => {
     return dispatch(fetchPostsThunk());
-  };
+  }, [dispatch]);
 
-  const createPost = async (
-    postData: CreatePostData,
-    onSubmitted?: () => void,
-  ): Promise<void> => {
-    try {
-      await dispatch(createPostThunk(postData)).unwrap();
+  const createPost = useCallback(
+    async (
+      postData: CreatePostData,
+      onSubmitted?: () => void,
+    ): Promise<void> => {
+      try {
+        await dispatch(createPostThunk(postData)).unwrap();
 
-      toast.success("Your post has been submitted! It will be visible soon.");
+        toast.success("Your post has been submitted! It will be visible soon.");
 
-      onSubmitted?.();
-    } catch (error) {
-      toast.error(
-        typeof error === "string"
-          ? error
-          : "Failed to submit your post. Please try again.",
-      );
-    }
-  };
+        onSubmitted?.();
+      } catch (error) {
+        toast.error(
+          typeof error === "string"
+            ? error
+            : "Failed to submit your post. Please try again.",
+        );
+      }
+    },
+    [dispatch],
+  );
 
-  const fetchPostById = (postId: string) => {
+  const fetchPostById = useCallback((postId: string) => {
     return tripTalesApi.getPostById(postId);
-  };
+  }, []);
 
-  const refreshPosts = () => {
+  const refreshPosts = useCallback(() => {
     return dispatch(fetchPostsThunk());
-  };
+  }, [dispatch]);
 
-  const clearNewPosts = () => {
+  const clearNewPosts = useCallback(() => {
     dispatch(clearNewPostsAvailable());
-  };
+  }, [dispatch]);
 
-  const handlePostClick = (postId: string) => {
-    navigate(`/trip-tales/posts/${postId}`);
-  };
+  const handlePostClick = useCallback(
+    (postId: string) => {
+      navigate(`/trip-tales/posts/${postId}`);
+    },
+    [navigate],
+  );
 
   // ==========================================
   // MY PROFILE
   // ==========================================
 
-  const fetchMyProfile = () => {
+  const fetchMyProfile = useCallback(() => {
     return dispatch(fetchMyProfileThunk());
-  };
+  }, [dispatch]);
 
   // ==========================================
   // MY POSTS
   // ==========================================
 
-  const fetchMyPosts = (query?: MyPostsQuery) => {
-    return dispatch(fetchMyPostsThunk(query));
-  };
+  const fetchMyPosts = useCallback(
+    (query?: MyPostsQuery) => {
+      return dispatch(fetchMyPostsThunk(query));
+    },
+    [dispatch],
+  );
 
-  const fetchMyPostById = (postId: string) => {
-    return dispatch(fetchMyPostByIdThunk(postId));
-  };
+  const fetchMyPostById = useCallback(
+    (postId: string) => {
+      return dispatch(fetchMyPostByIdThunk(postId));
+    },
+    [dispatch],
+  );
 
   // ==========================================
   // UPDATE MY POST
   // ==========================================
 
-  const updateMyPost = async (
-    postId: string,
-    postData: UpdateMyPostData,
-  ): Promise<boolean> => {
-    try {
-      await dispatch(
-        updateMyPostThunk({
-          postId,
-          postData,
-        }),
-      ).unwrap();
+  const updateMyPost = useCallback(
+    async (postId: string, postData: UpdateMyPostData): Promise<boolean> => {
+      try {
+        await dispatch(
+          updateMyPostThunk({
+            postId,
+            postData,
+          }),
+        ).unwrap();
 
-      toast.success("Your TripTale has been updated successfully.");
+        toast.success("Your TripTale has been updated successfully.");
 
-      return true;
-    } catch (error) {
-      toast.error(
-        typeof error === "string" ? error : "Failed to update your TripTale.",
-      );
+        return true;
+      } catch (error) {
+        toast.error(
+          typeof error === "string" ? error : "Failed to update your TripTale.",
+        );
 
-      return false;
-    }
-  };
+        return false;
+      }
+    },
+    [dispatch],
+  );
 
   // ==========================================
   // DELETE MY POST
   // ==========================================
 
-  const deleteMyPost = async (postId: string): Promise<boolean> => {
-    try {
-      await dispatch(deleteMyPostThunk(postId)).unwrap();
+  const deleteMyPost = useCallback(
+    async (postId: string): Promise<boolean> => {
+      try {
+        await dispatch(deleteMyPostThunk(postId)).unwrap();
 
-      toast.success("Your TripTale has been deleted successfully.");
+        toast.success("Your TripTale has been deleted successfully.");
 
-      return true;
-    } catch (error) {
-      toast.error(
-        typeof error === "string" ? error : "Failed to delete your TripTale.",
-      );
+        return true;
+      } catch (error) {
+        toast.error(
+          typeof error === "string" ? error : "Failed to delete your TripTale.",
+        );
 
-      return false;
-    }
-  };
+        return false;
+      }
+    },
+    [dispatch],
+  );
 
   // ==========================================
   // CLEAR SELECTED POST
   // ==========================================
 
-  const clearSelectedPost = () => {
+  const clearSelectedPost = useCallback(() => {
     dispatch(clearSelectedMyPost());
-  };
+  }, [dispatch]);
 
   return {
     // Public TripTales
