@@ -25,6 +25,10 @@ export interface CreatePostResponse {
   tags: string[];
   media: PostMedia[];
   createdAt: string;
+
+  // Likes
+  likesCount: number;
+  isLikedByCurrentUser: boolean;
 }
 
 export interface MyPostResponse extends CreatePostResponse {
@@ -120,4 +124,44 @@ export interface DeleteMyPostApiResponse {
   data?: {
     id: string;
   };
+}
+
+//LIKE-DISLIKE RELATED
+export interface PostLikeUser {
+  userId: string;
+  fullName: string;
+  profileImageUrl: string;
+  likedAt: string;
+}
+
+export interface PostLikesPagination {
+  currentPage: number;
+  totalPages: number;
+  totalLikes: number;
+  limit: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface PostLikesResponse {
+  likes: PostLikeUser[];
+  pagination: PostLikesPagination;
+}
+
+export interface PostLikesApiResponse {
+  success: boolean;
+  message: string;
+  data: PostLikesResponse;
+}
+
+export interface TogglePostLikeResponse {
+  postId: string;
+  likesCount: number;
+  isLikedByCurrentUser: boolean;
+}
+
+export interface TogglePostLikeApiResponse {
+  success: boolean;
+  message: string;
+  data: TogglePostLikeResponse;
 }

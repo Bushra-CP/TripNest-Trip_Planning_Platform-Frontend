@@ -12,6 +12,10 @@ import type {
   MyPostsResponse,
   MyProfileApiResponse,
   MyProfileResponse,
+  PostLikesApiResponse,
+  PostLikesResponse,
+  TogglePostLikeApiResponse,
+  TogglePostLikeResponse,
   UpdateMyPostApiResponse,
   UpdateMyPostData,
 } from "../types/trip-tales.types";
@@ -133,5 +137,42 @@ export const tripTalesApi = {
     );
 
     return response.data.data?.id ?? postId;
+  },
+
+  //////////// LIKE POST ////////////
+  async likePost(postId: string): Promise<TogglePostLikeResponse> {
+    const response = await axiosInstance.post<TogglePostLikeApiResponse>(
+      SERVER_ROUTES.LIKE_POST.replace(":postId", postId),
+    );
+
+    return response.data.data;
+  },
+
+  //////////// UNLIKE POST ////////////
+  async unlikePost(postId: string): Promise<TogglePostLikeResponse> {
+    const response = await axiosInstance.delete<TogglePostLikeApiResponse>(
+      SERVER_ROUTES.UNLIKE_POST.replace(":postId", postId),
+    );
+
+    return response.data.data;
+  },
+
+  //////////// GET POST LIKES ////////////
+  async getPostLikes(
+    postId: string,
+    page = 1,
+    limit = 10,
+  ): Promise<PostLikesResponse> {
+    const response = await axiosInstance.get<PostLikesApiResponse>(
+      SERVER_ROUTES.GET_POST_LIKES.replace(":postId", postId),
+      {
+        params: {
+          page,
+          limit,
+        },
+      },
+    );
+
+    return response.data.data;
   },
 };

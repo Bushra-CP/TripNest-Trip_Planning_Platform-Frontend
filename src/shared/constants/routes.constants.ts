@@ -69,6 +69,11 @@ export const SERVER_ROUTES = {
   UPDATE_MY_POST: "/trip-tales/my-posts/:postId",
   DELETE_MY_POST: "/trip-tales/my-posts/:postId",
 
+  // TRIPTALES LIKES
+  LIKE_POST: "/trip-tales/posts/:postId/like",
+  UNLIKE_POST: "/trip-tales/posts/:postId/like",
+  GET_POST_LIKES: "/trip-tales/posts/:postId/likes",
+
   //ADMIN RELATED
   ADMIN_USERS: "/admin/users",
   UPDATE_USER_STATUS: "/admin/user/:id",

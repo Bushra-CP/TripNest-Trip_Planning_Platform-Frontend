@@ -25,7 +25,6 @@ import TripPlanningPage from "@/features/traveler(user)/trip-planning/pages/Trip
 import AIKnowledgeBase from "@/features/admin/ai-knowledge-docs-management/pages/AIKnowledgeBase";
 import PostsFeedPage from "@/features/traveler(user)/tripTales/pages/PostsFeedPage";
 import PostDetailPage from "@/features/traveler(user)/tripTales/pages/PostDetailPage";
-import PostDetailPage2 from "@/features/traveler(user)/tripTales/pages/PostDetailPage2";
 import MyTripsPage from "@/features/traveler(user)/dashboard/my-trips/pages/MyTripsPage";
 import AdminTripTalesManagement from "@/features/admin/tripTales-management/pages/AdminTripTalesManagement";
 import MyTripTalesProfile from "@/features/traveler(user)/profile/pages/MyTripTalesProfile";
@@ -57,7 +56,6 @@ export default function AppRoutes() {
               path="/trip-tales/posts/:postId"
               element={<PostDetailPage />}
             />
-            <Route path="/post" element={<PostDetailPage2 />} />
             <Route path="/trip-tales" element={<PostsFeedPage />} />
             /*----------------------- USER ROUTES ------------------------*/
             <Route element={<ProtectedRoute allowedRoles={["TRAVELER"]} />}>
