@@ -7,9 +7,7 @@ interface PostMediaGalleryProps {
   post: CreatePostResponse;
 }
 
-const PostMediaGallery: React.FC<PostMediaGalleryProps> = ({
-  post,
-}) => {
+const PostMediaGallery: React.FC<PostMediaGalleryProps> = ({ post }) => {
   if (!post.media || post.media.length === 0) {
     return null;
   }
@@ -26,16 +24,13 @@ const PostMediaGallery: React.FC<PostMediaGalleryProps> = ({
         </h3>
 
         <span className="text-[11px] font-bold text-slate-400">
-          {post.media.length}{" "}
-          {post.media.length === 1 ? "item" : "items"}
+          {post.media.length} {post.media.length === 1 ? "item" : "items"}
         </span>
       </div>
 
       <div
         className={`grid gap-3 ${
-          post.media.length === 1
-            ? "grid-cols-1"
-            : "grid-cols-2 sm:grid-cols-3"
+          post.media.length === 1 ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3"
         }`}
       >
         {post.media.map((media) => (

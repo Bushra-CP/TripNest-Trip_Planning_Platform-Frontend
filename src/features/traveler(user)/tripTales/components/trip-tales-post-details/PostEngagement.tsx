@@ -10,6 +10,7 @@ interface PostEngagementProps {
   onToggleSave: () => void;
   onShare: () => void;
   onShowLikes: () => void;
+  onShowComments?: () => void;
   isLikeLoading?: boolean;
 }
 
@@ -22,11 +23,14 @@ const PostEngagement: React.FC<PostEngagementProps> = ({
   onToggleSave,
   onShare,
   onShowLikes,
+  onShowComments,
   isLikeLoading = false,
 }) => {
   return (
     <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-[#E2E8F0] bg-white p-6 shadow-sm sm:flex-row">
       <div className="flex items-center gap-6 text-xs font-bold text-slate-600">
+        {/* LIKES */}
+
         <div className="inline-flex items-center gap-2">
           <button
             type="button"
@@ -53,11 +57,20 @@ const PostEngagement: React.FC<PostEngagementProps> = ({
           </button>
         </div>
 
-        <div className="inline-flex items-center gap-2 text-slate-600">
+        {/* COMMENTS */}
+
+        <button
+          type="button"
+          onClick={onShowComments}
+          className="inline-flex items-center gap-2 text-slate-600 transition hover:text-[#15803D]"
+        >
           <MessageSquare className="h-5 w-5 text-slate-400" />
+
           <span>{commentsCount} comments</span>
-        </div>
+        </button>
       </div>
+
+      {/* ACTIONS */}
 
       <div className="flex w-full items-center justify-end gap-3 sm:w-auto">
         <button
@@ -70,6 +83,7 @@ const PostEngagement: React.FC<PostEngagementProps> = ({
           }`}
         >
           <Bookmark className={`h-4 w-4 ${isSaved ? "fill-white" : ""}`} />
+
           <span>{isSaved ? "Saved to My Trips" : "Save to My Trips"}</span>
         </button>
 

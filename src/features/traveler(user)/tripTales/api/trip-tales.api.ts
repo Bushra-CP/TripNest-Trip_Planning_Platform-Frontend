@@ -1,6 +1,10 @@
 import { axiosInstance } from "@/shared/api/axios";
 import { SERVER_ROUTES } from "@/shared/constants/routes.constants";
 import type {
+  CommentApiResponse,
+  CommentResponse,
+  CommentsApiResponse,
+  CommentsResponse,
   CreatePostApiResponse,
   CreatePostData,
   CreatePostResponse,
@@ -139,7 +143,7 @@ export const tripTalesApi = {
     return response.data.data?.id ?? postId;
   },
 
-  //////////// LIKE POST ////////////
+  // LIKE POST
   async likePost(postId: string): Promise<TogglePostLikeResponse> {
     const response = await axiosInstance.post<TogglePostLikeApiResponse>(
       SERVER_ROUTES.LIKE_POST.replace(":postId", postId),
@@ -148,7 +152,7 @@ export const tripTalesApi = {
     return response.data.data;
   },
 
-  //////////// UNLIKE POST ////////////
+  // UNLIKE POST
   async unlikePost(postId: string): Promise<TogglePostLikeResponse> {
     const response = await axiosInstance.delete<TogglePostLikeApiResponse>(
       SERVER_ROUTES.UNLIKE_POST.replace(":postId", postId),
@@ -157,7 +161,7 @@ export const tripTalesApi = {
     return response.data.data;
   },
 
-  //////////// GET POST LIKES ////////////
+  // GET POST LIKES
   async getPostLikes(
     postId: string,
     page = 1,
@@ -174,5 +178,70 @@ export const tripTalesApi = {
     );
 
     return response.data.data;
+  },
+
+  // CREATE COMMENT
+  async createComment(
+    postId: string,
+    content: string,
+  ): Promise<CommentResponse> {
+    const response = await axiosInstance.post<CommentApiResponse>(
+      SERVER_ROUTES.CREATE_POST_COMMENT.replace(":postId", postId),
+      { content },
+    );
+
+    return response.data.data;
+  },
+
+  // CREATE REPLY
+  async createReply(
+    commentId: string,
+    content: string,
+  ): Promise<CommentResponse> {
+    const response = await axiosInstance.post<CommentApiResponse>(
+      SERVER_ROUTES.CREATE_COMMENT_REPLY.replace(":commentId", commentId),
+      { content },
+    );
+
+    return response.data.data;
+  },
+
+  // GET POST COMMENTS
+  async getPostComments(
+    postId: string,
+    page = 1,
+    limit = 10,
+  ): Promise<CommentsResponse> {
+    const response = await axiosInstance.get<CommentsApiResponse>(
+      SERVER_ROUTES.GET_POST_COMMENTS.replace(":postId", postId),
+      {
+        params: {
+          page,
+          limit,
+        },
+      },
+    );
+
+    return response.data.data;
+  },
+
+  // UPDATE COMMENT
+  async updateComment(
+    commentId: string,
+    content: string,
+  ): Promise<CommentResponse> {
+    const response = await axiosInstance.patch<CommentApiResponse>(
+      SERVER_ROUTES.UPDATE_COMMENT.replace(":commentId", commentId),
+      { content },
+    );
+
+    return response.data.data;
+  },
+
+  // DELETE COMMENT
+  async deleteComment(commentId: string): Promise<void> {
+    await axiosInstance.delete(
+      SERVER_ROUTES.DELETE_COMMENT.replace(":commentId", commentId),
+    );
   },
 };

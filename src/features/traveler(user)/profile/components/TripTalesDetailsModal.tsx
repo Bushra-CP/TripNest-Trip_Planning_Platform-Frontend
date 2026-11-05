@@ -9,6 +9,7 @@ import {
   Image as ImageIcon,
   CalendarDays,
   Heart,
+  MessageCircle,
 } from "lucide-react";
 
 import type { MyPostResponse } from "../../tripTales/types/trip-tales.types";
@@ -17,6 +18,10 @@ import TripTalesContent from "@/features/admin/tripTales-management/components/T
 
 import { useTripTalesLikes } from "../../tripTales/hooks/useTripTalesLikes";
 import LikesModal from "../../tripTales/components/trip-tales/LikesModal";
+import { useSelector } from "react-redux";
+import { useTripTalesComments } from "../../tripTales/hooks/useTripTalesComments";
+import { selectUser } from "../../auth/redux/authSelectors";
+import PostComments from "../../tripTales/components/trip-tales-post-details/PostComments";
 
 interface Props {
   post: MyPostResponse;
@@ -28,6 +33,7 @@ interface Props {
 const TripTalesDetailsModal = ({ post, onClose, onEdit, onDelete }: Props) => {
   const [mediaIndex, setMediaIndex] = useState(0);
   const [isLikesOpen, setIsLikesOpen] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   // ==========================================
   // LIKES
@@ -42,6 +48,34 @@ const TripTalesDetailsModal = ({ post, onClose, onEdit, onDelete }: Props) => {
     changeLikesPage,
     closeLikes,
   } = useTripTalesLikes();
+
+  // ==========================================
+  // COMMENTS
+  // ==========================================
+
+  const currentUser = useSelector(selectUser);
+
+  const {
+    comments,
+    pagination: commentsPagination,
+    loading: commentsLoading,
+    submitting: commentSubmitting,
+    editing: commentEditing,
+    deletingCommentId,
+    error: commentsError,
+    editComment,
+    removeComment,
+    changePage,
+  } = useTripTalesComments(post.id);
+
+  const safeCommentsPagination = commentsPagination ?? {
+    currentPage: 1,
+    totalPages: 1,
+    totalComments: 0,
+    limit: 10,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  };
 
   const handleShowLikes = async () => {
     setIsLikesOpen(true);
@@ -309,6 +343,61 @@ const TripTalesDetailsModal = ({ post, onClose, onEdit, onDelete }: Props) => {
 
                   <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" />
                 </button>
+
+                {/* ================================== */}
+                {/* COMMENTS */}
+                {/* ================================== */}
+
+                <div className="border-t border-slate-100 pt-5">
+                  {/* COMMENTS HEADER */}
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <MessageCircle className="h-5 w-5 text-[#15803D]" />
+
+                      <h3 className="text-sm font-bold text-slate-800">
+                        Comments (
+                        {post.commentsCount ??
+                          commentsPagination?.totalComments ??
+                          0}
+                        )
+                      </h3>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowComments((previous) => !previous)}
+                      className="rounded-lg bg-emerald-50 px-3 py-2 text-xs font-bold text-[#15803D] transition hover:bg-emerald-100"
+                    >
+                      {showComments ? "Hide" : "Show"}
+                    </button>
+                  </div>
+
+                  {/* COMMENTS LIST */}
+
+                  {showComments && (
+                    <div className="mt-5">
+                      <PostComments
+                        comments={comments}
+                        pagination={safeCommentsPagination}
+                        currentUserId={currentUser?.userId}
+                        currentUserImage={currentUser?.profileImage}
+                        loading={commentsLoading}
+                        submitting={commentSubmitting}
+                        editing={commentEditing}
+                        deletingCommentId={deletingCommentId}
+                        error={commentsError}
+                        showAddComment={false}
+                        allowReplies={false}
+                        onAddComment={async () => {}}
+                        onReply={async () => {}}
+                        onEditComment={editComment}
+                        onDeleteComment={removeComment}
+                        onPageChange={changePage}
+                      />
+                    </div>
+                  )}
+                </div>
 
                 {/* MEDIA INFORMATION */}
 

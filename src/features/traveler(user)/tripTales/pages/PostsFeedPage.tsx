@@ -77,6 +77,7 @@ const PostsFeedPage: React.FC = () => {
     fetchPosts,
     refreshPosts,
     clearNewPosts,
+    handleCommentsClick,
     handlePostClick,
   } = useTripTales();
 
@@ -348,6 +349,7 @@ const PostsFeedPage: React.FC = () => {
                   post={post}
                   onLike={handleLike}
                   onSave={handleSave}
+                  onCommentClick={handleCommentsClick}
                   onPostClick={handlePostClick}
                 />
               ))}

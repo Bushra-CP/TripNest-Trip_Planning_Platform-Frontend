@@ -1,31 +1,48 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 import { useTripTales } from "../hooks/useTripTales";
 import { useTripTalesLikes } from "../hooks/useTripTalesLikes";
+import { useTripTalesComments } from "../hooks/useTripTalesComments";
 
-import TripTalesPostDetailHeader from "../components/trip-tales-post-details.tsx/TripTalesPostDetailHeader";
-import PostAuthorHeader from "../components/trip-tales-post-details.tsx/PostAuthorHeader";
-import PostContent from "../components/trip-tales-post-details.tsx/PostContent";
-import PostMediaGallery from "../components/trip-tales-post-details.tsx/PostMediaGallery";
-import PostEngagement from "../components/trip-tales-post-details.tsx/PostEngagement";
-import PostComments from "../components/trip-tales-post-details.tsx/PostComments";
-import PostDetailSidebar from "../components/trip-tales-post-details.tsx/PostDetailSidebar";
-import RelatedPosts from "../components/trip-tales-post-details.tsx/RelatedPosts";
+import { selectUser } from "@/features/traveler(user)/auth/redux/authSelectors";
+
+import TripTalesPostDetailHeader from "../components/trip-tales-post-details/TripTalesPostDetailHeader";
+import PostAuthorHeader from "../components/trip-tales-post-details/PostAuthorHeader";
+import PostContent from "../components/trip-tales-post-details/PostContent";
+import PostMediaGallery from "../components/trip-tales-post-details/PostMediaGallery";
+import PostEngagement from "../components/trip-tales-post-details/PostEngagement";
+import PostComments from "../components/trip-tales-post-details/PostComments";
+import PostDetailSidebar from "../components/trip-tales-post-details/PostDetailSidebar";
+import RelatedPosts from "../components/trip-tales-post-details/RelatedPosts";
 import LikesModal from "../components/trip-tales/LikesModal";
 
 import type { CreatePostResponse } from "../types/trip-tales.types";
-import type { CommentItem } from "../types/post-detail.types";
 
 const PostDetailPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
   const navigate = useNavigate();
 
-  // TripTales
+  const location = useLocation();
+
+  const shouldScrollToComments = (
+    location.state as { scrollToComments?: boolean } | null
+  )?.scrollToComments;
+
+  const currentUser = useSelector(selectUser);
+
+  // ==========================================
+  // TRIPTALES
+  // ==========================================
+
   const { posts, fetchPostById, fetchPosts } = useTripTales();
 
-  // Likes
+  // ==========================================
+  // LIKES
+  // ==========================================
+
   const {
     postLikes,
     initializeLikes,
@@ -40,20 +57,59 @@ const PostDetailPage: React.FC = () => {
     closeLikes,
   } = useTripTalesLikes();
 
-  // Post state
+  // ==========================================
+  // COMMENTS
+  // ==========================================
+
+  const {
+    comments,
+    pagination: commentsPagination,
+    loading: commentsLoading,
+    submitting: commentSubmitting,
+    editing: commentEditing,
+    deletingCommentId,
+    error: commentsError,
+    addComment,
+    replyToComment,
+    editComment,
+    removeComment,
+    changePage,
+  } = useTripTalesComments(postId ?? "");
+
+  const safeCommentsPagination = commentsPagination ?? {
+    currentPage: 1,
+    totalPages: 1,
+    totalComments: 0,
+    limit: 10,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  };
+
+  // ==========================================
+  // POST STATE
+  // ==========================================
+
   const [post, setPost] = useState<CreatePostResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // UI state
+  // ==========================================
+  // UI STATE
+  // ==========================================
+
   const [isSaved, setIsSaved] = useState(false);
   const [isLikesOpen, setIsLikesOpen] = useState(false);
 
-  // Comments state
-  const [newComment, setNewComment] = useState("");
-  const [comments, setComments] = useState<CommentItem[]>([]);
+  // Comments section reference
+  const commentsSectionRef = useRef<HTMLElement>(null);
 
-  // Current post likes from Redux
+  const handleShowComments = () => {
+    commentsSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   const currentLike = postId ? postLikes[postId] : undefined;
 
   const likesCount = currentLike?.likesCount ?? post?.likesCount ?? 0;
@@ -61,12 +117,11 @@ const PostDetailPage: React.FC = () => {
   const isLiked =
     currentLike?.isLikedByCurrentUser ?? post?.isLikedByCurrentUser ?? false;
 
-  // --------------------------------------------------
-  // Fetch Post By ID
-  // --------------------------------------------------
+  // ==========================================
+  // FETCH POST
+  // ==========================================
 
   useEffect(() => {
-    // Invalid post ID is handled during rendering.
     if (!postId) return;
 
     let isActive = true;
@@ -82,7 +137,6 @@ const PostDetailPage: React.FC = () => {
 
         setPost(data);
 
-        // Initialize the likes state from the backend.
         initializeLikes(
           data.id,
           data.likesCount ?? 0,
@@ -109,9 +163,32 @@ const PostDetailPage: React.FC = () => {
     };
   }, [postId, fetchPostById, initializeLikes]);
 
-  // --------------------------------------------------
-  // Fetch Posts For Related Posts
-  // --------------------------------------------------
+  // ==========================================
+  // SCROLL TO COMMENTS
+  // ==========================================
+
+  useEffect(() => {
+    if (!shouldScrollToComments || loading || !post) return;
+
+    const timer = setTimeout(() => {
+      commentsSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+      // Clear navigation state so it doesn't scroll again
+      navigate(location.pathname, {
+        replace: true,
+        state: null,
+      });
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [shouldScrollToComments, loading, post, navigate, location.pathname]);
+
+  // ==========================================
+  // FETCH RELATED POSTS
+  // ==========================================
 
   useEffect(() => {
     if (posts.length === 0) {
@@ -119,9 +196,9 @@ const PostDetailPage: React.FC = () => {
     }
   }, [posts.length, fetchPosts]);
 
-  // --------------------------------------------------
-  // Toggle Like
-  // --------------------------------------------------
+  // ==========================================
+  // TOGGLE LIKE
+  // ==========================================
 
   const handleToggleLike = async () => {
     if (!post || toggleLoading) return;
@@ -137,9 +214,9 @@ const PostDetailPage: React.FC = () => {
     }
   };
 
-  // --------------------------------------------------
-  // Open Likes List
-  // --------------------------------------------------
+  // ==========================================
+  // OPEN LIKES
+  // ==========================================
 
   const handleShowLikes = async () => {
     if (!post) return;
@@ -153,26 +230,26 @@ const PostDetailPage: React.FC = () => {
     }
   };
 
-  // --------------------------------------------------
-  // Close Likes Modal
-  // --------------------------------------------------
+  // ==========================================
+  // CLOSE LIKES
+  // ==========================================
 
   const handleCloseLikes = () => {
     setIsLikesOpen(false);
     closeLikes();
   };
 
-  // --------------------------------------------------
-  // Save
-  // --------------------------------------------------
+  // ==========================================
+  // SAVE
+  // ==========================================
 
   const handleToggleSave = () => {
     setIsSaved((previous) => !previous);
   };
 
-  // --------------------------------------------------
-  // Share
-  // --------------------------------------------------
+  // ==========================================
+  // SHARE
+  // ==========================================
 
   const handleShare = async () => {
     try {
@@ -186,67 +263,18 @@ const PostDetailPage: React.FC = () => {
     }
   };
 
-  // --------------------------------------------------
-  // Add Comment
-  // --------------------------------------------------
-
-  const handleAddComment = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const text = newComment.trim();
-
-    if (!text) return;
-
-    const comment: CommentItem = {
-      id: crypto.randomUUID(),
-      author: "You",
-      avatar: "",
-      timeAgo: "Just now",
-      text,
-      likes: 0,
-      isLiked: false,
-    };
-
-    setComments((previous) => [...previous, comment]);
-
-    setNewComment("");
-  };
-
-  // --------------------------------------------------
-  // Comment Like
-  // --------------------------------------------------
-
-  const handleCommentLike = (commentId: string) => {
-    setComments((previous) =>
-      previous.map((comment) => {
-        if (comment.id !== commentId) return comment;
-
-        const nextIsLiked = !comment.isLiked;
-
-        return {
-          ...comment,
-          isLiked: nextIsLiked,
-          likes: nextIsLiked
-            ? comment.likes + 1
-            : Math.max(0, comment.likes - 1),
-        };
-      }),
-    );
-  };
-
-  // --------------------------------------------------
-  // Invalid Post ID
-  // --------------------------------------------------
+  // ==========================================
+  // INVALID POST ID
+  // ==========================================
 
   if (!postId) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#F8FAFC] px-6">
+        {" "}
         <h2 className="text-xl font-black text-slate-900">Invalid Post</h2>
-
         <p className="mt-2 text-center text-sm text-slate-500">
           The requested post ID is invalid.
         </p>
-
         <button
           type="button"
           onClick={() => navigate("/trip-tales")}
@@ -258,31 +286,31 @@ const PostDetailPage: React.FC = () => {
     );
   }
 
-  // --------------------------------------------------
-  // Loading
-  // --------------------------------------------------
+  // ==========================================
+  // LOADING
+  // ==========================================
 
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC]">
-        <div className="text-sm text-slate-500">Loading post...</div>
+        {" "}
+        <div className="text-sm text-slate-500">Loading post...</div>{" "}
       </div>
     );
   }
 
-  // --------------------------------------------------
-  // Error
-  // --------------------------------------------------
+  // ==========================================
+  // ERROR
+  // ==========================================
 
   if (error || !post) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[#F8FAFC] px-6">
+        {" "}
         <h2 className="text-xl font-black text-slate-900">Post not found</h2>
-
         <p className="mt-2 text-center text-sm text-slate-500">
           {error ?? "The post you are looking for does not exist."}
         </p>
-
         <button
           type="button"
           onClick={() => navigate("/trip-tales")}
@@ -294,48 +322,32 @@ const PostDetailPage: React.FC = () => {
     );
   }
 
-  // --------------------------------------------------
-  // Main UI
-  // --------------------------------------------------
+  // ==========================================
+  // MAIN UI
+  // ==========================================
 
   return (
     <div className="min-h-screen bg-[#F4FAFF]">
-      {/* Page Header */}
-
+      {" "}
       <TripTalesPostDetailHeader
         isSaved={isSaved}
         onToggleSave={handleToggleSave}
         onShare={handleShare}
       />
-
-      {/* Main Content */}
-
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-        {/* Post Author Header */}
-
         <section className="mb-10 lg:mb-12">
           <PostAuthorHeader post={post} />
         </section>
 
-        {/* Article + Sidebar */}
-
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10 xl:gap-12">
-          {/* Main Article */}
-
           <article className="min-w-0 space-y-8 lg:space-y-10">
-            {/* Post Content */}
-
             <section>
               <PostContent post={post} />
             </section>
 
-            {/* Media */}
-
             <section>
               <PostMediaGallery post={post} />
             </section>
-
-            {/* Tags */}
 
             {post.tags.length > 0 && (
               <section>
@@ -352,36 +364,50 @@ const PostDetailPage: React.FC = () => {
               </section>
             )}
 
-            {/* Engagement */}
+            {/* ENGAGEMENT */}
 
             <section>
               <PostEngagement
                 likesCount={likesCount}
                 isLiked={isLiked}
                 isSaved={isSaved}
-                commentsCount={comments.length}
+                commentsCount={post.commentsCount ?? 0}
                 onToggleLike={handleToggleLike}
                 onToggleSave={handleToggleSave}
                 onShare={handleShare}
                 onShowLikes={handleShowLikes}
+                onShowComments={handleShowComments}
                 isLikeLoading={toggleLoading}
               />
             </section>
 
-            {/* Comments */}
+            {/* COMMENTS */}
 
-            <section>
+            <section
+              ref={commentsSectionRef}
+              id="comments"
+              className="scroll-mt-24"
+            >
               <PostComments
                 comments={comments}
-                newComment={newComment}
-                onCommentChange={setNewComment}
-                onAddComment={handleAddComment}
-                onCommentLike={handleCommentLike}
+                pagination={safeCommentsPagination}
+                currentUserId={currentUser?.userId}
+                currentUserImage={currentUser?.profileImage}
+                loading={commentsLoading}
+                submitting={commentSubmitting}
+                editing={commentEditing}
+                deletingCommentId={deletingCommentId}
+                error={commentsError}
+                onAddComment={addComment}
+                onReply={replyToComment}
+                onEditComment={editComment}
+                onDeleteComment={removeComment}
+                onPageChange={changePage}
               />
             </section>
           </article>
 
-          {/* Sidebar */}
+          {/* SIDEBAR */}
 
           <aside className="min-w-0 lg:sticky lg:top-24">
             <div className="space-y-6">
@@ -390,7 +416,7 @@ const PostDetailPage: React.FC = () => {
           </aside>
         </div>
 
-        {/* Related Posts */}
+        {/* RELATED POSTS */}
 
         <section className="mt-12 border-t border-[#E2E8F0] pt-10 lg:mt-16 lg:pt-12">
           <RelatedPosts
@@ -401,9 +427,7 @@ const PostDetailPage: React.FC = () => {
           />
         </section>
       </main>
-
-      {/* Likes Modal */}
-
+      {/* LIKES MODAL */}
       <LikesModal
         isOpen={isLikesOpen}
         likes={likes}

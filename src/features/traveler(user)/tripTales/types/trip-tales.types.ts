@@ -29,6 +29,8 @@ export interface CreatePostResponse {
   // Likes
   likesCount: number;
   isLikedByCurrentUser: boolean;
+
+  commentsCount: number;
 }
 
 export interface MyPostResponse extends CreatePostResponse {
@@ -164,4 +166,60 @@ export interface TogglePostLikeApiResponse {
   success: boolean;
   message: string;
   data: TogglePostLikeResponse;
+}
+
+// ==========================================
+// TRIPTALES COMMENTS
+// ==========================================
+export interface CommentUser {
+  id: string;
+  fullName: string;
+  profileImageUrl: string;
+}
+
+export interface CommentResponse {
+  id: string;
+  postId: string;
+  parentCommentId: string | null;
+
+  user: CommentUser;
+
+  content: string;
+
+  // Nested replies
+  replies: CommentResponse[];
+  repliesCount: number;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CommentsPagination {
+  currentPage: number;
+  totalPages: number;
+  totalComments: number;
+  limit: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface CommentsResponse {
+  comments: CommentResponse[];
+  pagination: CommentsPagination;
+}
+
+export interface CommentsApiResponse {
+  success: boolean;
+  message: string;
+  data: CommentsResponse;
+}
+
+export interface CommentApiResponse {
+  success: boolean;
+  message: string;
+  data: CommentResponse;
+}
+
+export interface CreateCommentData {
+  content: string;
 }
