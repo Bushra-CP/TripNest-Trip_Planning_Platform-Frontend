@@ -74,6 +74,13 @@ export const SERVER_ROUTES = {
   UNLIKE_POST: "/trip-tales/posts/:postId/like",
   GET_POST_LIKES: "/trip-tales/posts/:postId/likes",
 
+  // TRIPTALES COMMENTS
+  CREATE_POST_COMMENT: "/trip-tales/posts/:postId/comments",
+  CREATE_COMMENT_REPLY: "/trip-tales/comments/:commentId/replies",
+  GET_POST_COMMENTS: "/trip-tales/posts/:postId/comments",
+  UPDATE_COMMENT: "/trip-tales/comments/:commentId",
+  DELETE_COMMENT: "/trip-tales/comments/:commentId",
+
   //ADMIN RELATED
   ADMIN_USERS: "/admin/users",
   UPDATE_USER_STATUS: "/admin/user/:id",

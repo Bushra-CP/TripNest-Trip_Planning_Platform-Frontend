@@ -7,14 +7,10 @@ interface PostAuthorHeaderProps {
   post: CreatePostResponse;
 }
 
-const PostAuthorHeader: React.FC<PostAuthorHeaderProps> = ({
-  post,
-}) => {
+const PostAuthorHeader: React.FC<PostAuthorHeaderProps> = ({ post }) => {
   const [isFollowing, setIsFollowing] = useState(false);
 
-  const formattedDate = new Date(
-    post.createdAt,
-  ).toLocaleDateString("en-IN", {
+  const formattedDate = new Date(post.createdAt).toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -60,7 +56,6 @@ const PostAuthorHeader: React.FC<PostAuthorHeaderProps> = ({
 
               <span className="text-[10px] font-bold text-[#15803D] bg-[#DCFCE7] px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3 text-[#15803D]" />
-
                 Traveler
               </span>
             </div>
@@ -82,9 +77,7 @@ const PostAuthorHeader: React.FC<PostAuthorHeaderProps> = ({
         >
           <UserPlus className="w-3.5 h-3.5" />
 
-          <span>
-            {isFollowing ? "Following" : "Follow"}
-          </span>
+          <span>{isFollowing ? "Following" : "Follow"}</span>
         </button>
       </div>
     </section>

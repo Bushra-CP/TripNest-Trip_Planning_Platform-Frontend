@@ -18,6 +18,7 @@ interface TripTalesPostCardProps {
   post: CreatePostResponse;
   onLike: (id: string) => void;
   onSave: (id: string) => void;
+  onCommentClick: (id: string) => void;
   onPostClick: (id: string) => void;
 }
 
@@ -25,6 +26,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
   post,
   onLike,
   onSave,
+  onCommentClick,
   onPostClick,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -84,6 +86,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
     : "";
 
   const handlePostClick = () => onPostClick(post.id);
+  const handleCommentClick = () => onCommentClick(post.id);
 
   const handleLike = async () => {
     if (toggleLoading) return;
@@ -322,12 +325,12 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
-                handlePostClick();
+                handleCommentClick();
               }}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#15803D]"
             >
               <MessageCircle className="h-4 w-4" />
-              Comments
+              {post.commentsCount ?? 0} Comments
             </button>
 
             <button

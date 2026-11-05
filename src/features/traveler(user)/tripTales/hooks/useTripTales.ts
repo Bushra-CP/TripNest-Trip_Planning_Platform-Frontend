@@ -102,6 +102,15 @@ export const useTripTales = () => {
     dispatch(clearNewPostsAvailable());
   }, [dispatch]);
 
+  const handleCommentsClick = useCallback(
+    (postId: string) => {
+      navigate(`/trip-tales/posts/${postId}`, {
+        state: { scrollToComments: true },
+      });
+    },
+    [navigate],
+  );
+
   const handlePostClick = useCallback(
     (postId: string) => {
       navigate(`/trip-tales/posts/${postId}`);
@@ -205,6 +214,7 @@ export const useTripTales = () => {
     fetchPostById,
     refreshPosts,
     clearNewPosts,
+    handleCommentsClick,
     handlePostClick,
 
     // My profile
