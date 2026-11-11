@@ -28,6 +28,7 @@ import PostDetailPage from "@/features/traveler(user)/tripTales/pages/PostDetail
 import MyTripsPage from "@/features/traveler(user)/dashboard/my-trips/pages/MyTripsPage";
 import AdminTripTalesManagement from "@/features/admin/tripTales-management/pages/AdminTripTalesManagement";
 import MyTripTalesProfile from "@/features/traveler(user)/profile/pages/MyTripTalesProfile";
+import MyReportsPage from "@/features/traveler(user)/post-reports/pages/MyReportsPage";
 
 export default function AppRoutes() {
   return (
@@ -78,6 +79,7 @@ export default function AppRoutes() {
                 path={APP_ROUTES.PROFILE}
                 element={<MyTripTalesProfile />}
               />
+              <Route path="/my-reports" element={<MyReportsPage />} />
             </Route>
           </Route>
           <Route path="/trip-plan" element={<TripPlanningPage />} />

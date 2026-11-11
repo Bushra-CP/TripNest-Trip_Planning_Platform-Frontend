@@ -3,7 +3,6 @@ import {
   Map,
   Bookmark,
   FileText,
-  Bell,
   Settings,
   LogOut,
   ChevronRight,
@@ -56,10 +55,10 @@ const menuItems: MenuItem[] = [
     icon: FileText,
   },
   {
-    label: "Notifications",
-    sub: "Latest updates and alerts",
-    path: "/notifications",
-    icon: Bell,
+    label: "My Reports",
+    sub: "Your submitted reports",
+    path: "/my-reports",
+    icon: FileText,
   },
   {
     label: "Settings",
