@@ -81,6 +81,12 @@ export const SERVER_ROUTES = {
   UPDATE_COMMENT: "/trip-tales/comments/:commentId",
   DELETE_COMMENT: "/trip-tales/comments/:commentId",
 
+  // POST REPORTS RELATED
+  CREATE_POST_REPORT: "/trip-tales/posts/:postId/reports",
+  GET_MY_REPORTS: "/trip-tales/my-reports",
+  GET_MY_REPORT_BY_ID: "/trip-tales/my-reports/:reportId",
+  CANCEL_MY_REPORT: "/trip-tales/my-reports/:reportId",
+
   //ADMIN RELATED
   ADMIN_USERS: "/admin/users",
   UPDATE_USER_STATUS: "/admin/user/:id",

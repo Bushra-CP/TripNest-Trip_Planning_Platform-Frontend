@@ -7,12 +7,15 @@ import {
   MoreHorizontal,
   CheckCircle2,
   MapPin,
+  Flag,
 } from "lucide-react";
 import { toast } from "sonner";
-
 import type { CreatePostResponse } from "../../types/trip-tales.types";
 import { useTripTalesLikes } from "../../hooks/useTripTalesLikes";
 import LikesModal from "./LikesModal";
+import { usePostReports } from "@/features/traveler(user)/post-reports/hooks/usePostReports";
+import type { CreatePostReportPayload } from "@/features/traveler(user)/post-reports/types/post-report.types";
+import ReportPostModal from "./ReportPostModal";
 
 interface TripTalesPostCardProps {
   post: CreatePostResponse;
@@ -32,6 +35,10 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLikesOpen, setIsLikesOpen] = useState(false);
 
+  // Report-related states
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
   const {
     postLikes,
     initializeLikes,
@@ -45,6 +52,8 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
     closeLikes,
     toggleLoading,
   } = useTripTalesLikes();
+
+  const { createReport, createLoading: reportLoading } = usePostReports();
 
   const currentLike = postLikes[post.id];
 
@@ -88,6 +97,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
   const handlePostClick = () => onPostClick(post.id);
   const handleCommentClick = () => onCommentClick(post.id);
 
+  // LIKE
   const handleLike = async () => {
     if (toggleLoading) return;
 
@@ -99,6 +109,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
     }
   };
 
+  // OPEN LIKES MODAL
   const handleOpenLikes = async () => {
     setIsLikesOpen(true);
     await openLikes(post.id, 1);
@@ -109,14 +120,39 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
     closeLikes();
   };
 
+  // SHARE
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(
         `${window.location.origin}/trip-tales/posts/${post.id}`,
       );
+
       toast.success("Post link copied!");
     } catch {
       toast.error("Unable to copy post link.");
+    }
+  };
+
+  // OPEN REPORT MODAL
+  const handleOpenReportModal = () => {
+    setIsMenuOpen(false);
+    setIsReportModalOpen(true);
+  };
+
+  // SUBMIT POST REPORT
+  const handleSubmitReport = async (payload: CreatePostReportPayload) => {
+    try {
+      await createReport(post.id, payload);
+
+      toast.success("Your report has been submitted successfully.");
+    } catch (error) {
+      toast.error(
+        typeof error === "string"
+          ? error
+          : "Unable to submit your report. Please try again.",
+      );
+
+      throw error;
     }
   };
 
@@ -141,6 +177,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h4 className="text-sm font-extrabold">{userName}</h4>
+
                 <span className="inline-flex items-center gap-1 rounded-full bg-[#DCFCE7] px-2 py-0.5 text-[10px] font-bold text-[#15803D]">
                   <CheckCircle2 className="h-3 w-3" />
                   Traveler
@@ -149,7 +186,9 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
 
               <div className="flex items-center gap-2 text-[11px] text-slate-400">
                 {formattedDate && <span>{formattedDate}</span>}
+
                 {formattedDate && post.destination && <span>•</span>}
+
                 {post.destination && (
                   <span className="inline-flex items-center gap-0.5 text-slate-500">
                     <MapPin className="h-3 w-3 text-[#EA580C]" />
@@ -160,14 +199,51 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={(event) => event.stopPropagation()}
-            className="p-1 text-slate-400 hover:text-slate-600"
-            aria-label="More post options"
-          >
-            <MoreHorizontal className="h-5 w-5" />
-          </button>
+          {/* THREE DOT MENU */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                setIsMenuOpen((previous) => !previous);
+              }}
+              className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+              aria-label="More post options"
+              aria-expanded={isMenuOpen}
+              aria-haspopup="menu"
+            >
+              <MoreHorizontal className="h-5 w-5" />
+            </button>
+
+            {isMenuOpen && (
+              <>
+                {/* Outside click layer */}
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setIsMenuOpen(false)}
+                />
+
+                {/* Dropdown */}
+                <div
+                  role="menu"
+                  className="absolute right-0 top-full z-20 mt-2 w-48 overflow-hidden rounded-xl border border-slate-100 bg-white p-1.5 shadow-xl"
+                >
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleOpenReportModal();
+                    }}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                  >
+                    <Flag className="h-4 w-4" />
+                    Report Post
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {/* CONTENT */}
@@ -179,6 +255,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
           {!isExpanded ? (
             <p className="text-sm leading-relaxed text-slate-600">
               {previewContent}
+
               {shouldShowMore && (
                 <button
                   type="button"
@@ -198,6 +275,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
                 className="prose prose-sm max-w-none"
                 dangerouslySetInnerHTML={{ __html: post.content || "" }}
               />
+
               <button
                 type="button"
                 onClick={(event) => {
@@ -287,6 +365,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
         {/* ACTIONS */}
         <div className="flex items-center justify-between border-t border-slate-100 pt-3">
           <div className="flex items-center gap-6">
+            {/* LIKE */}
             <div className="inline-flex items-center gap-1.5">
               <button
                 type="button"
@@ -321,6 +400,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
               </button>
             </div>
 
+            {/* COMMENTS */}
             <button
               type="button"
               onClick={(event) => {
@@ -333,6 +413,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
               {post.commentsCount ?? 0} Comments
             </button>
 
+            {/* SHARE */}
             <button
               type="button"
               onClick={(event) => {
@@ -345,6 +426,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
             </button>
           </div>
 
+          {/* SAVE */}
           <button
             type="button"
             onClick={(event) => {
@@ -359,6 +441,7 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
         </div>
       </article>
 
+      {/* LIKES MODAL */}
       <LikesModal
         isOpen={isLikesOpen}
         likes={likes}
@@ -367,6 +450,16 @@ const TripTalesPostCard: React.FC<TripTalesPostCardProps> = ({
         error={error}
         onClose={handleCloseLikes}
         onPageChange={(page) => void changeLikesPage(post.id, page)}
+      />
+
+      {/* REPORT POST MODAL */}
+      <ReportPostModal
+        isOpen={isReportModalOpen}
+        postTitle={post.title}
+        authorName={userName}
+        isSubmitting={reportLoading}
+        onClose={() => setIsReportModalOpen(false)}
+        onSubmit={handleSubmitReport}
       />
     </>
   );
