@@ -17,6 +17,7 @@ export const APP_ROUTES = {
   ADMIN_DASHBOARD: "/admin/dashboard",
   ADMIN_USER_MANAGEMENT: "/admin/users",
   ADMIN_TRIP_TALES_MANAGEMENT: "/admin/trip-tales-management",
+  ADMIN_POST_REPORTS: "/admin/post-reports",
 
   //ERROR PAGES
   UNAUTHERISED_PAGE: "/403",
@@ -100,4 +101,10 @@ export const SERVER_ROUTES = {
   ADMIN_TRIPTALES_BY_ID: "/admin/trip-tales/:postId",
   BLOCK_TRIPTALES_POST: "/admin/trip-tales/:postId/block",
   UNBLOCK_TRIPTALES_POST: "/admin/trip-tales/:postId/unblock",
+
+  // ADMIN POST REPORT MANAGEMENT
+  ADMIN_POST_REPORTS: "/admin/trip-tales/reports",
+  ADMIN_POST_REPORTS_STATS: "/admin/trip-tales/reports/stats",
+  ADMIN_POST_REPORT_BY_ID: "/admin/trip-tales/reports/:reportId",
+  UPDATE_ADMIN_POST_REPORT_STATUS: "/admin/trip-tales/reports/:reportId/status",
 } as const;
