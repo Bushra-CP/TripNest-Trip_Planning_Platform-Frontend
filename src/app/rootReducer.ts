@@ -20,6 +20,7 @@ import adminTripTalesSlice from "@/features/admin/tripTales-management/redux/adm
 import tripTalesLikesSlice from "@/features/traveler(user)/tripTales/redux/trip-tales-likes.slice";
 import tripTalesCommentsSlice from "../features/traveler(user)/tripTales/redux/trip-tales-comments.slice";
 import postReportSlice from "../features/traveler(user)/post-reports/redux/post-report.slice";
+import adminPostReportsSlice from "@/features/admin/post-reports/redux/admin-post-reports.slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -53,4 +54,5 @@ export const rootReducer = combineReducers({
   tripTalesLikes: tripTalesLikesSlice,
   tripTalesComments: tripTalesCommentsSlice,
   postReport: postReportSlice,
+  adminPostReports: adminPostReportsSlice, //admin post reports management related
 });

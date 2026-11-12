@@ -26,7 +26,7 @@ const menuItems = [
     icon: Users,
     path: "/admin/users",
   },
-    {
+  {
     label: "Knowledge Base",
     icon: LibraryBig,
     path: "/admin/knowledge-base",
@@ -37,9 +37,9 @@ const menuItems = [
     path: "/admin/trip-tales-management",
   },
   {
-    label: "Reports",
+    label: "Post Reports",
     icon: Flag,
-    path: "/admin/reports",
+    path: "/admin/post-reports",
   },
   {
     label: "Analytics",
