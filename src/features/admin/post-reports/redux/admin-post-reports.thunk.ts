@@ -18,8 +18,6 @@ export const fetchAdminPostReports = createAsyncThunk<
   { rejectValue: string }
 >("adminPostReports/fetchReports", async (query, { rejectWithValue }) => {
   try {
-    console.log("2. Redux thunk called", query);
-
     return await adminPostReportsApi.getReports(query);
   } catch (error) {
     if (axios.isAxiosError(error)) {

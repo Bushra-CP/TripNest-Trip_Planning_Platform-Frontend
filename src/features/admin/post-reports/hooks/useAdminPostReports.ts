@@ -37,8 +37,6 @@ export const useAdminPostReports = () => {
   // Fetch reports with filters and pagination.
   const fetchReports = useCallback(
     async (query: AdminPostReportsQuery) => {
-      console.log("1. Custom hook called", query);
-
       return dispatch(fetchAdminPostReports(query)).unwrap();
     },
     [dispatch],
