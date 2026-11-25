@@ -16,8 +16,6 @@ export const adminPostReportsApi = {
   async getReports(
     query: AdminPostReportsQuery,
   ): Promise<AdminPostReportsListResponse> {
-    console.log("calling api");
-
     const response = await axiosInstance.get<
       AdminPostReportsApiResponse<AdminPostReportsListResponse>
     >(SERVER_ROUTES.ADMIN_POST_REPORTS, {
